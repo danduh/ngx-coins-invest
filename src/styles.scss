@@ -1,0 +1,14 @@
+@import "assets/material";
+@import "assets/aw-cryptocoins/cryptocoins.css";
+@import "assets/aw-cryptocoins/cryptocoins-colors.css";
+
+.clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}

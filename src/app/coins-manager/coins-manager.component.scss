@@ -1,0 +1,67 @@
+.coin-card {
+  md-card-header {
+    position: relative;
+    .coin-add-link {
+      position: absolute;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      transition: opacity 300ms linear;
+    }
+    &:hover {
+      .coin-add-link {
+        opacity: 1;
+      }
+    }
+  }
+
+  width: 400px;
+  margin: 2px;
+
+}
+
+.mat-card-avatar {
+  width: 128px;
+  height: 128px;
+}
+
+.positive, .negative {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+
+
+div.form {
+  width: 500px;
+  margin: 0 auto;
+  md-list {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    i.cc {
+      font-size: 3em;
+      float: left;
+      margin-right: 20px;
+    }
+    h4, p {
+      margin: 0;
+    }
+    div.coin-data {
+      width: 30%;
+      float: left;
+    }
+  }
+}
+
+.example-full-width {
+  width: 100%;
+}

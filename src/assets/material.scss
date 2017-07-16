@@ -1,0 +1,22 @@
+@import '~@angular/material/theming';
+
+// Plus imports for other components in your app.
+
+// Include the base styles for Angular Material core. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include mat-core();
+
+
+$compit-primary: mat-palette($mat-blue);
+$compit-accent: mat-palette($mat-blue, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$compit-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$compit-theme: mat-light-theme($compit-primary, $compit-accent, $compit-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($compit-theme);

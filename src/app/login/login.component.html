@@ -1,0 +1,17 @@
+<app-header [title]="'Login'"></app-header>
+<div class="form">
+    <p>
+        <md-input-container class="example-full-width">
+            <input mdInput type="text" placeholder="User Name" [(ngModel)]="username"/>
+        </md-input-container>
+        <md-input-container class="example-full-width">
+            <input mdInput type="password" placeholder="Password" [(ngModel)]="password"/>
+        </md-input-container>
+    </p>
+    <p>
+        <button md-raised-button color="primary" (click)="login()">Submit</button>
+    </p>
+    <p>
+        {{error}}
+    </p>
+</div>

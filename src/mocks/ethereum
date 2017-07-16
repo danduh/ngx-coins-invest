@@ -1,0 +1,17 @@
+[    {
+         "id": "ethereum",
+         "name": "Ethereum",
+         "symbol": "ETH",
+         "rank": "2",
+         "price_usd": "221.688",
+         "price_btc": "0.0925796",
+         "24h_volume_usd": "592498000.0",
+         "market_cap_usd": "20657502823.0",
+         "available_supply": "93182774.0",
+         "total_supply": "93182774.0",
+         "percent_change_1h": "-0.9",
+         "percent_change_24h": "-9.28",
+         "percent_change_7d": "-22.87",
+         "last_updated": "1499701447"
+     }
+]
