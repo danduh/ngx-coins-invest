@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CoinsService } from '../coins.service';
+import { CoinsService } from '../services/coins.service';
 import { CoinModel } from '../models/common';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';

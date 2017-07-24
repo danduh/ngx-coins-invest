@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
-import { CoinsService } from '../coins.service';
+import { CoinsService } from '../services/coins.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -40,11 +40,11 @@ export class CoinsManagerComponent implements OnInit {
     submit() {
         this.coinService.addCoin(this.coin)
             .subscribe((response) => {
-                this.router.navigate(['/coins'])
+                this.router.navigate(['/current-status']);
             })
     }
 
     updateValue(ev) {
-        console.log(ev.target.innerText)
+        console.log(ev.target.innerText);
     }
 }

@@ -7,22 +7,23 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoinsListComponent } from './coins-list/coins-list.component';
-import { CoinsService } from './coins.service';
+import { CoinsService } from './services/coins.service';
 import { CoinsManagerComponent } from './coins-manager/coins-manager.component';
-import { TradeApiService } from './trade-api.service';
-import { PriceFormatPipe } from './price-format.pipe';
-import { CommonModule } from '@angular/common';
+import { TradeApiService } from './services/trade-api.service';
+import { PriceFormatPipe } from './pipes/price-format.pipe';
 import { AuthServiceStub } from "./services/auth.service.stub";
 import { FilterPipe } from './pipes/filter.pipe';
+import { CurrentStatusComponent } from './current-status/current-status.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'coins', component: CoinsListComponent},
     {path: 'manage', component: CoinsManagerComponent},
+    {path: 'current-status', component: CurrentStatusComponent},
     {path: 'investto/:coinId', component: CoinsManagerComponent},
     {path: '', component: CoinsListComponent}
 ];
@@ -35,7 +36,8 @@ export const MainRoutes: Routes = [
         CoinsListComponent,
         CoinsManagerComponent,
         PriceFormatPipe,
-        FilterPipe
+        FilterPipe,
+        CurrentStatusComponent
     ],
     imports: [
         BrowserAnimationsModule,

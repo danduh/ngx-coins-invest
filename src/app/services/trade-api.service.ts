@@ -17,14 +17,14 @@ export class TradeApiService {
     }
 
     getListPair(abbrs, money) {
-        let calls = [];
-        for (let abbr of abbrs) {
-            calls.push(this.getOnePair(abbr, money))
+        const calls = [];
+        for (const abbr of abbrs) {
+            calls.push(this.getOnePair(abbr, money));
         }
         return Observable.forkJoin(...calls)
             .map((resp) => {
                 return resp;
-            })
+            });
 
     }
 
