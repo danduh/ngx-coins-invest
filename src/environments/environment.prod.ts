@@ -1,3 +1,3 @@
-import { allConfig } from "./env.config";
+import { allConfig } from './env.config';
 
 export const environment = Object.assign({production: true}, allConfig.prod);
