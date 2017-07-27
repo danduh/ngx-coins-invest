@@ -49,8 +49,8 @@ export const MainRoutes: Routes = [
         AngularMaterialModule
     ],
     providers: [
-        {provide: AuthService, useClass: AuthServiceStub},
-        // AuthService,
+        // {provide: AuthService, useClass: AuthServiceStub},
+        AuthService,
         CoinsService,
         TradeApiService
     ],

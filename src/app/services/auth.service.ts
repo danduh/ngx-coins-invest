@@ -93,10 +93,9 @@ export class AuthService {
 
             newPasswordRequired: (msg) => {
                 // TODO: Should to be done!!!
-                //$this.cognitoUser.completeNewPasswordChallenge('Amazon20018', null,  $this.callbackObj());
-                console.log('newPasswordRequired', msg)
+                console.log('newPasswordRequired', msg);
             }
-        }
+        };
     }
 
     signin(username, password): Observable<any> {
