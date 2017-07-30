@@ -1,0 +1,23 @@
+<md-card class="coin-card">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image">
+      <img [src]="coin.logo">
+    </div>
+
+    <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
+
+    <md-card-subtitle>
+      {{coin.price_usd|priceFormat}} -
+      <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
+                ({{coin.percent_change_24h}}%)
+                </span>
+    </md-card-subtitle>
+    <md-card-subtitle>BTC {{coin.price_btc}}</md-card-subtitle>
+    <a class="coin-add-link" md-mini-fab routerLink="/investto/{{coin.id}}">
+      <md-icon>check</md-icon>
+    </a>
+  </md-card-header>
+  <md-card-content>
+
+  </md-card-content>
+</md-card>

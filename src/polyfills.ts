@@ -24,7 +24,7 @@ import 'zone.js/dist/zone';
 //
 // // Needed for: IE9
 // // import 'classlist.js';
-//node -v
+// node -v
 
 // // Animations
 // // Needed for: All but Chrome and Firefox, Not supported in IE9
@@ -38,8 +38,8 @@ import 'zone.js/dist/zone';
 // // Needed for: IE10, IE11
 // // import 'classlist.js';
 
-import 'rxjs/add/observable/throw';
 // import 'rxjs/add/observable/flatMap';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/catch';

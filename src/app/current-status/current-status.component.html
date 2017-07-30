@@ -1,25 +1,6 @@
 <app-header [title]="'Current Status'"></app-header>
-
 <md-grid-list cols="4" rowHeight="300px" gutterSize="10px">
     <md-grid-tile *ngFor="let coin of visibleCoins | async">
-        <md-card class="coin-card">
-            <md-card-header>
-                <div md-card-avatar class="example-header-image">
-                    <img [src]="coin.logo">
-                </div>
-
-                <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
-
-                <md-card-subtitle>
-                    Bought at ($) {{coin.price_usd|priceFormat}}
-                </md-card-subtitle>
-                <md-card-subtitle>
-                    BTC {{coin.price_btc}}
-                </md-card-subtitle>
-            </md-card-header>
-            <md-card-content>
-
-            </md-card-content>
-        </md-card>
+        <app-coin-card [coin]="coin"></app-coin-card>
     </md-grid-tile>
 </md-grid-list>

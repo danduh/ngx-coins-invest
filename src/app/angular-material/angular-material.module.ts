@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 import {
     MdSelectModule, MdAutocompleteModule, MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule,
     MdTooltipModule, MdSlideToggleModule, MdGridListModule, MdCardModule, MdTabsModule, MdToolbarModule, MdListModule,
-    MdMenuModule, MdIconModule, MdSnackBarModule
+    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule
 } from '@angular/material';
+import { DialogComponent } from "../components/dialog/dialog.component";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
+    declarations: [DialogComponent],
     imports: [
+        CommonModule,
+        MdDialogModule,
         MdSnackBarModule,
         MdIconModule,
         MdMenuModule,
@@ -25,6 +30,8 @@ import {
         MdSlideToggleModule,
     ],
     exports: [
+        CommonModule,
+        MdDialogModule,
         MdSnackBarModule,
         MdIconModule,
         MdMenuModule,
@@ -41,6 +48,10 @@ import {
         MdAutocompleteModule,
         MdSelectModule,
         MdButtonModule,
+        DialogComponent
+    ],
+    bootstrap: [
+        DialogComponent
     ]
 })
 export class AngularMaterialModule {

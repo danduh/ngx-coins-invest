@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
+import { environment } from "../../environments/environment";
 
 @Injectable()
 export class CoinsService {
     // baseUrl = 'https://rqoxmx1q80.execute-api.us-east-1.amazonaws.com/dev/';
-    baseUrl = 'http://localhost:8090/';
+
+    baseUrl = environment['baseApiUrl'];
 
     private cachedList: CoinModel[];
 
@@ -26,6 +28,7 @@ export class CoinsService {
     }
 
     public getList(): Observable<CoinModel[]> {
+        console.log(environment);
         const options = this.getAuthHeader();
         return this.http.get(`${this.baseUrl}coins`, options)
             .map(this.postRequestSuccess.bind(this));

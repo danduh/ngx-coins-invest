@@ -26,7 +26,8 @@
       "environments": {
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts",
-        "mock": "environments/environment.mock.ts"
+        "mock": "environments/environment.mock.ts",
+        "local": "environments/environment.local.ts"
       }
     }
   ],

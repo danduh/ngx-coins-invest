@@ -3,13 +3,9 @@
         <md-icon>more_vert</md-icon>
     </button>
     <md-menu #menu="mdMenu">
-        <a routerLink="/manage" md-menu-item class="">
-            <md-icon>settings</md-icon>
-            <span>Add Coin</span>
-        </a>
-        <a routerLink="/coins" md-menu-item class="">
-            <md-icon>list</md-icon>
-            <span>Show All</span>
+        <a *ngFor="let item of menuItems" [routerLink]="item.link" md-menu-item class="">
+            <md-icon>{{item.icon}}</md-icon>
+            <span>{{item.label}}</span>
         </a>
     </md-menu>
     <h3>{{title}}</h3>

@@ -15,17 +15,21 @@ import { CoinsService } from './services/coins.service';
 import { CoinsManagerComponent } from './coins-manager/coins-manager.component';
 import { TradeApiService } from './services/trade-api.service';
 import { PriceFormatPipe } from './pipes/price-format.pipe';
-import { AuthServiceStub } from "./services/auth.service.stub";
 import { FilterPipe } from './pipes/filter.pipe';
 import { CurrentStatusComponent } from './current-status/current-status.component';
+import { AuthGuard } from "./services/auth-guard";
+import { HttpClientModule } from "@angular/common/http";
+import { ChartsService } from "./services/charts/charts.service";
+import { CoinCardComponent } from './components/coin-card/coin-card.component';
 
 export const MainRoutes: Routes = [
-    {path: 'login', component: LoginComponent},
-    {path: 'coins', component: CoinsListComponent},
-    {path: 'manage', component: CoinsManagerComponent},
-    {path: 'current-status', component: CurrentStatusComponent},
-    {path: 'investto/:coinId', component: CoinsManagerComponent},
-    {path: '', component: CoinsListComponent}
+    {path: 'login', component: LoginComponent, data: {logout: false}},
+    {path: 'logout', component: LoginComponent, data: {logout: true}},
+    {path: 'coins', component: CoinsListComponent, canActivate: [AuthGuard]},
+    {path: 'manage', component: CoinsManagerComponent, canActivate: [AuthGuard]},
+    {path: 'current-status', component: CurrentStatusComponent, canActivate: [AuthGuard]},
+    {path: 'investto/:coinId', component: CoinsManagerComponent, canActivate: [AuthGuard]},
+    {path: '', component: CoinsListComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
@@ -37,9 +41,11 @@ export const MainRoutes: Routes = [
         CoinsManagerComponent,
         PriceFormatPipe,
         FilterPipe,
-        CurrentStatusComponent
+        CurrentStatusComponent,
+        CoinCardComponent
     ],
     imports: [
+        HttpClientModule,
         BrowserAnimationsModule,
         BrowserModule,
         FormsModule,
@@ -50,6 +56,8 @@ export const MainRoutes: Routes = [
     ],
     providers: [
         // {provide: AuthService, useClass: AuthServiceStub},
+        ChartsService,
+        AuthGuard,
         AuthService,
         CoinsService,
         TradeApiService

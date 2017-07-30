@@ -6,10 +6,20 @@ import {
     CognitoUserSession
 } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs/Observable';
+import { MdDialog, MdDialogConfig } from "@angular/material";
+import { DialogComponent } from "../components/dialog/dialog.component";
 
 const poolData = {
     UserPoolId: 'us-east-1_QrRslpjCt', // Your user pool id here
     ClientId: '5ld1g5pf3pj7thfkf886ggsqfd' // Your client id here
+};
+
+let WRONG_CREDENTIALS: MdDialogConfig = {
+    data: {
+        title: 'Authorization',
+        message: 'Incorrect username or password.',
+        options: [{value: true, label: 'OK'}]
+    }
 };
 
 
@@ -17,11 +27,11 @@ const poolData = {
 export class AuthService {
     private authenticationDetails;
     private userData;
-    private cognitoUser;
+    private cognitoUser: CognitoUser;
     private userPool;
     public tokens: CognitoUserSession;
 
-    constructor() {
+    constructor(private dialog: MdDialog,) {
         this.init();
     }
 
@@ -77,7 +87,6 @@ export class AuthService {
     }
 
     callbackObj(observe) {
-        let $this = this;
         return {
             onSuccess: function (result) {
                 observe.next(true);
@@ -98,7 +107,7 @@ export class AuthService {
         };
     }
 
-    signin(username, password): Observable<any> {
+    signIn(username, password): Observable<any> {
         let authenticationData = {
             Username: username,
             Password: password,
@@ -118,11 +127,21 @@ export class AuthService {
 
     }
 
+    signOut() {
+        if (!!this.cognitoUser) {
+            this.cognitoUser.signOut();
+        }
+    }
+
     saveToken(token: string) {
         localStorage.setItem('access_token', token);
     }
 
     errorHandler(err) {
-        console.error(err)
+        if (err.statusCode === 400) {
+            this.dialog.open(DialogComponent, WRONG_CREDENTIALS);
+        } else {
+            console.error(err);
+        }
     }
 }

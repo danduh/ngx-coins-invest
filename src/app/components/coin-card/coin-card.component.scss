@@ -1,0 +1,36 @@
+.coin-card {
+  md-card-header {
+    position: relative;
+    .coin-add-link {
+      position: absolute;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      transition: opacity 300ms linear;
+    }
+    &:hover {
+      .coin-add-link {
+        opacity: 1;
+      }
+    }
+  }
+  margin: 2px;
+}
+
+.mat-card-avatar {
+  width: 64px;
+  height: 64px;
+}
+
+.positive, .negative {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}

@@ -3,6 +3,7 @@ import { CoinsService } from '../services/coins.service';
 import { CoinModel } from '../models/common';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { ChartsService } from "../services/charts/charts.service";
 
 @Component({
     selector: 'app-coins-list',
@@ -20,7 +21,8 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     private searchValueSubscription: Subscription;
 
 
-    constructor(private coinsService: CoinsService) {
+    constructor(private coinsService: CoinsService,
+                private charts: ChartsService) {
     }
 
     ngOnInit() {
