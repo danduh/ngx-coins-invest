@@ -1,4 +1,4 @@
-import { MenuItem } from "../components/header/header.component";
+import { MenuItem } from "../components/side-menu/side-menu.component";
 
 export const MENU_LIST: MenuItem[] = [
     {

@@ -1,6 +1,12 @@
 @import "assets/material";
 @import "assets/aw-cryptocoins/cryptocoins.css";
 @import "assets/aw-cryptocoins/cryptocoins-colors.css";
+@import "assets/reset-css";
+
+body {
+  margin: 0;
+  font-size: 18px;
+}
 
 .clearfix {
   &:before,

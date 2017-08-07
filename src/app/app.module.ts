@@ -21,6 +21,9 @@ import { AuthGuard } from "./services/auth-guard";
 import { HttpClientModule } from "@angular/common/http";
 import { ChartsService } from "./services/charts/charts.service";
 import { CoinCardComponent } from './components/coin-card/coin-card.component';
+import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
+import { ViewCardModeComponent } from './components/view-card-mode/view-card-mode.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false}},
@@ -42,7 +45,10 @@ export const MainRoutes: Routes = [
         PriceFormatPipe,
         FilterPipe,
         CurrentStatusComponent,
-        CoinCardComponent
+        CoinCardComponent,
+        ViewListModeComponent,
+        ViewCardModeComponent,
+        SideMenuComponent
     ],
     imports: [
         HttpClientModule,

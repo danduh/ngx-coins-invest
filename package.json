@@ -1,14 +1,21 @@
 {
   "name": "ngx-coins-invest",
   "version": "0.0.0",
-  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --e=local --port 4200",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build": "ng build",
+    "BUILD_TASKS": "*************************BUILDS***********************",
+    "build:dev": "ng build --prod --e=dev",
+    "build:prod": "ng build --prod --e=prod",
+    "UPLOAD_TASKS": "************************UPLOADS************************",
+    "uploadTo:prod": "aws-fed-deployment --dpl-config config/deploy.prod.config.json",
+    "uploadTo:dev": "aws-fed-deployment --dpl-config config/deploy.dev.config.json",
+    "DELIVERY_TASKS": "**********************DELIVERY*************************",
+    "delivery:prod": "yarn build:prod && yarn uploadTo:prod"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +31,7 @@
     "@angular/platform-browser-dynamic": "^4.3.2",
     "@angular/router": "^4.3.2",
     "amazon-cognito-identity-js": "^1.19.0",
+    "aws-fed-deployment": "git+https://github.com/danduh/aws-fed-deploy.git",
     "core-js": "^2.4.1",
     "rxjs": "^5.4.2",
     "ts-helpers": "^1.1.2",
@@ -50,5 +58,6 @@
     "typescript": "2.2.1",
     "webpack": "^3.0.0",
     "webpack-node-externals": "^1.6.0"
-  }
+  },
+  "license": "MIT"
 }

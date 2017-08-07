@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import {
     MdSelectModule, MdAutocompleteModule, MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule,
     MdTooltipModule, MdSlideToggleModule, MdGridListModule, MdCardModule, MdTabsModule, MdToolbarModule, MdListModule,
-    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule
+    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
@@ -28,6 +28,7 @@ import { CommonModule } from "@angular/common";
         MdRadioModule,
         MdCheckboxModule,
         MdSlideToggleModule,
+        MdSidenavModule,
     ],
     exports: [
         CommonModule,
@@ -48,7 +49,8 @@ import { CommonModule } from "@angular/common";
         MdAutocompleteModule,
         MdSelectModule,
         MdButtonModule,
-        DialogComponent
+        MdSidenavModule,
+        DialogComponent,
     ],
     bootstrap: [
         DialogComponent

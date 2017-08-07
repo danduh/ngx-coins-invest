@@ -8,8 +8,8 @@ import { environment } from "../../environments/environment";
 
 @Injectable()
 export class CoinsService {
-    // baseUrl = 'https://rqoxmx1q80.execute-api.us-east-1.amazonaws.com/dev/';
-
+    // baseUrl = 'https://i10kcmw72h.execute-api.us-east-1.amazonaws.com/dev/';
+    //
     baseUrl = environment['baseApiUrl'];
 
     private cachedList: CoinModel[];

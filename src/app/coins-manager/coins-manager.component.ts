@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CoinsManagerComponent implements OnInit {
     public coin: InvestedCoinModel;
+    public coinToBuy: InvestedCoinModel;
     public coins: CoinModel[] = [];
     private paramsSubs: Subscription;
     private coinDataSubs: Subscription;
@@ -27,21 +28,23 @@ export class CoinsManagerComponent implements OnInit {
     }
 
     getCoinData(coinId) {
-        if (!!this.coinDataSubs)
+        if (!!this.coinDataSubs) {
             this.coinDataSubs.unsubscribe();
+        }
 
         this.coinDataSubs = this.coinService.getOneCoin(coinId)
             .subscribe((coin) => {
                 this.coin = new InvestedCoinModel(coin);
+                this.coinToBuy = new InvestedCoinModel(coin);
                 this.coinDataSubs.unsubscribe();
-            })
+            });
     }
 
     submit() {
-        this.coinService.addCoin(this.coin)
+        this.coinService.addCoin(this.coinToBuy)
             .subscribe((response) => {
                 this.router.navigate(['/current-status']);
-            })
+            });
     }
 
     updateValue(ev) {

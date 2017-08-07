@@ -1,4 +1,3 @@
-<app-header [title]="'Add To Invest'"></app-header>
 <div class="form" *ngIf="!!coin">
     <md-card class="example-card">
         <md-card-header>
@@ -17,11 +16,14 @@
         </md-card-header>
 
         <md-card-content>
-            <md-input-container class="example-full-width">
-                <input mdInput type="number" placeholder="quantity" [(ngModel)]="coin.quantity"/>
+            <md-input-container class="">
+                <input mdInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.quantity"/>
+            </md-input-container>
+            <md-input-container class="">
+                <input mdInput type="number" placeholder="Price" [(ngModel)]="coinToBuy.price_usd"/>
             </md-input-container>
             <md-input-container class="example-full-width">
-                <input mdInput type="text" placeholder="Note" [(ngModel)]="coin.description"/>
+                <input mdInput type="text" placeholder="Note" [(ngModel)]="coinToBuy.description"/>
             </md-input-container>
         </md-card-content>
         <md-card-actions>

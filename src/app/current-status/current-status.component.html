@@ -1,4 +1,3 @@
-<app-header [title]="'Current Status'"></app-header>
 <md-grid-list cols="4" rowHeight="300px" gutterSize="10px">
     <md-grid-tile *ngFor="let coin of visibleCoins | async">
         <app-coin-card [coin]="coin"></app-coin-card>

@@ -1,12 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { MENU_LIST } from "../../constants/fixtures";
-
-export interface MenuItem {
-    link: string;
-    label: string;
-    icon: string;
-    weight: number;
-}
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-header',
@@ -16,7 +8,7 @@ export interface MenuItem {
 })
 export class HeaderComponent implements OnInit {
     @Input() title: string;
-    public menuItems = MENU_LIST.sort((item) => -item.weight);
+    @Output('toggleMenu') toggleMenu = new EventEmitter();
 
     constructor() {
     }

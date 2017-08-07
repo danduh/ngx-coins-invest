@@ -1,12 +1,6 @@
 <md-toolbar color="primary">
-    <button md-icon-button [mdMenuTriggerFor]="menu">
+    <button md-icon-button (click)="toggleMenu.emit()">
         <md-icon>more_vert</md-icon>
     </button>
-    <md-menu #menu="mdMenu">
-        <a *ngFor="let item of menuItems" [routerLink]="item.link" md-menu-item class="">
-            <md-icon>{{item.icon}}</md-icon>
-            <span>{{item.label}}</span>
-        </a>
-    </md-menu>
     <h3>{{title}}</h3>
 </md-toolbar>
