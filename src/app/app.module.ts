@@ -24,13 +24,20 @@ import { CoinCardComponent } from './components/coin-card/coin-card.component';
 import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
 import { ViewCardModeComponent } from './components/view-card-mode/view-card-mode.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { PermissionsDirective } from "./directives/permissions.directive";
+import { ListModeItemComponent } from './components/list-mode-item/list-mode-item.component';
+import { StoreModule } from '@ngrx/store';
+import { investedReducer } from "./states/invested-reducer";
+import { InvestedFacade } from "./states/invested-facade";
+import { MarketTickerService } from "./services/market-ticker.service";
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false}},
     {path: 'logout', component: LoginComponent, data: {logout: true}},
     {path: 'coins', component: CoinsListComponent, canActivate: [AuthGuard]},
     {path: 'manage', component: CoinsManagerComponent, canActivate: [AuthGuard]},
-    {path: 'current-status', component: CurrentStatusComponent, canActivate: [AuthGuard]},
+    {path: 'portfolio', component: CurrentStatusComponent, canActivate: [AuthGuard]},
+    {path: 'portfolio/:viewType', component: CurrentStatusComponent, canActivate: [AuthGuard]},
     {path: 'investto/:coinId', component: CoinsManagerComponent, canActivate: [AuthGuard]},
     {path: '', component: CoinsListComponent, canActivate: [AuthGuard]}
 ];
@@ -48,7 +55,9 @@ export const MainRoutes: Routes = [
         CoinCardComponent,
         ViewListModeComponent,
         ViewCardModeComponent,
-        SideMenuComponent
+        SideMenuComponent,
+        PermissionsDirective,
+        ListModeItemComponent
     ],
     imports: [
         HttpClientModule,
@@ -58,7 +67,8 @@ export const MainRoutes: Routes = [
         ReactiveFormsModule,
         HttpModule,
         RouterModule.forRoot(MainRoutes),
-        AngularMaterialModule
+        AngularMaterialModule,
+        StoreModule.forRoot({investedStore: investedReducer})
     ],
     providers: [
         // {provide: AuthService, useClass: AuthServiceStub},
@@ -66,10 +76,15 @@ export const MainRoutes: Routes = [
         AuthGuard,
         AuthService,
         CoinsService,
-        TradeApiService
+        TradeApiService,
+        InvestedFacade,
+        MarketTickerService
     ],
     bootstrap: [AppComponent],
-    exports: [RouterModule]
+    exports: [
+        RouterModule,
+        // PermissionsDirective
+    ]
 })
 export class AppModule {
 }

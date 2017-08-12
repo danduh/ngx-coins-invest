@@ -6,7 +6,6 @@
 // have to load a single css file for Angular Material in your app.
 @include mat-core();
 
-
 $compit-primary: mat-palette($mat-blue);
 $compit-accent: mat-palette($mat-blue, A200, A100, A400);
 
@@ -20,3 +19,12 @@ $compit-theme: mat-light-theme($compit-primary, $compit-accent, $compit-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($compit-theme);
+
+.mat-cell {
+  font-size: 18px;
+}
+
+.mat-header-cell {
+  font-size: 18px;
+  text-transform: uppercase;
+}

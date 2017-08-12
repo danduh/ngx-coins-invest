@@ -2,15 +2,18 @@ import { NgModule } from '@angular/core';
 import {
     MdSelectModule, MdAutocompleteModule, MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule,
     MdTooltipModule, MdSlideToggleModule, MdGridListModule, MdCardModule, MdTabsModule, MdToolbarModule, MdListModule,
-    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule
+    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule, MdTableModule
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
+import { CdkTableModule } from "@angular/cdk";
 
 @NgModule({
     declarations: [DialogComponent],
     imports: [
         CommonModule,
+        CdkTableModule,
+        MdTableModule,
         MdDialogModule,
         MdSnackBarModule,
         MdIconModule,
@@ -32,6 +35,8 @@ import { CommonModule } from "@angular/common";
     ],
     exports: [
         CommonModule,
+        CdkTableModule,
+        MdTableModule,
         MdDialogModule,
         MdSnackBarModule,
         MdIconModule,

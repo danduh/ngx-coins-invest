@@ -2,9 +2,9 @@ import { MenuItem } from "../components/side-menu/side-menu.component";
 
 export const MENU_LIST: MenuItem[] = [
     {
-        link: '/current-status',
-        label: 'Current',
-        icon: 'widgets',
+        link: '/portfolio',
+        label: 'Portfolio',
+        icon: 'pie_chart',
         weight: 10
     },
     {

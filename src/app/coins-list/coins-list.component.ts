@@ -4,6 +4,7 @@ import { CoinModel } from '../models/common';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { ChartsService } from "../services/charts/charts.service";
+import { InvestedFacade } from "../states/invested-facade";
 
 @Component({
     selector: 'app-coins-list',
@@ -22,6 +23,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
 
     constructor(private coinsService: CoinsService,
+                private investedFacade: InvestedFacade,
                 private charts: ChartsService) {
     }
 
@@ -40,7 +42,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
                     this.searchTerm = value;
                 });
         }
-
     }
 
     showMoreCoins() {

@@ -31,14 +31,13 @@ export class AuthService {
     private userPool;
     public tokens: CognitoUserSession;
 
-    constructor(private dialog: MdDialog,) {
+    constructor(private dialog: MdDialog) {
         this.init();
     }
 
     init() {
         this.userPool = new CognitoUserPool(poolData);
         this.cognitoUser = this.userPool.getCurrentUser();
-        console.log(this.isLoggedIn());
     }
 
     public isLoggedIn(): boolean {

@@ -13,3 +13,12 @@ export class AppComponent implements OnInit {
     ngOnInit() {
     }
 }
+
+Array.prototype['getUnique'] = function () {
+    let _obj = {};
+    let _l = this.length;
+    while (_l--) {
+        _obj[this[_l]] = null;
+    }
+    return Object.keys(_obj);
+};

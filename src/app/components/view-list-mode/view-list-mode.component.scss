@@ -1,0 +1,34 @@
+.list-view {
+  md-list-item {
+    border-bottom: 1px solid #e0e0e0;
+    &:nth-child(even) {
+      background: #EEEEEE
+    }
+
+    /deep/ .mat-list-text {
+      height: 100%;
+      padding-top: 6px;
+    }
+  }
+  .mat-row {
+    height: 75px;
+  }
+  .row-content {
+    display: inline-block;
+    padding-left: 10px;
+    h3 {
+      font-size: 1.25em;
+      font-weight: 600;
+    }
+  }
+  /deep/ .mat-card-avatar {
+    width: 64px;
+    height: 64px;
+  }
+  md-icon {
+    float: left;
+    width: 64px !important;
+    height: 64px !important;
+    display: inline-block;
+  }
+}

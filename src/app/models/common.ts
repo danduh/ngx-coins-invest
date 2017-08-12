@@ -3,9 +3,10 @@ export class CoinModel {
     symbol: string;
     quantity: number;
     value?: number;
-    logo: string;
-    id: string;
-    market_cap_usd: number;
+    logo?: string;
+    id?: string;
+    market_cap_usd?: number;
+    price_usd: number;
 
     constructor(coin) {
         const keys = Object.keys(coin);
@@ -16,17 +17,22 @@ export class CoinModel {
             this[key] = coin[key];
         }
     }
+
 }
 
 export class InvestedCoinModel extends CoinModel {
     investId?: string;
     createdAt?: number;
     updatedAt?: number;
-    description: string;
+    description?: string;
     quantity: number;
+    openPrice?: number;
+    plUsd?: number;
+    plPct?: number;
+    amount?: number;
 
     constructor(coin: CoinModel) {
-        super(coin)
+        super(coin);
 
     }
 }

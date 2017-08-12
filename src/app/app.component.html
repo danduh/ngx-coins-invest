@@ -1,6 +1,6 @@
 <app-header [title]="'Coins'" (toggleMenu)="sidenav.toggle()"></app-header>
 <md-sidenav-container>
-    <md-sidenav #sidenav mode="side" opened="true">
+    <md-sidenav *appHasPerms="'isLoggedIn'" #sidenav mode="side" opened="true">
         <app-side-menu></app-side-menu>
     </md-sidenav>
     <router-outlet></router-outlet>

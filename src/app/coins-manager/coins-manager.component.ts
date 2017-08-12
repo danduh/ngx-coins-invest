@@ -41,9 +41,10 @@ export class CoinsManagerComponent implements OnInit {
     }
 
     submit() {
+        this.coinToBuy.amount = this.coinToBuy.openPrice * this.coinToBuy.quantity;
         this.coinService.addCoin(this.coinToBuy)
             .subscribe((response) => {
-                this.router.navigate(['/current-status']);
+                this.router.navigate(['/portfolio']);
             });
     }
 
