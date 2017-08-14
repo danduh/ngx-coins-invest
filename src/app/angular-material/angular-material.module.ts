@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import {
     MdSelectModule, MdAutocompleteModule, MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule,
     MdTooltipModule, MdSlideToggleModule, MdGridListModule, MdCardModule, MdTabsModule, MdToolbarModule, MdListModule,
-    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule, MdTableModule
+    MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule, MdTableModule,
+    MdProgressSpinnerModule
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
@@ -32,6 +33,7 @@ import { CdkTableModule } from "@angular/cdk";
         MdCheckboxModule,
         MdSlideToggleModule,
         MdSidenavModule,
+        MdProgressSpinnerModule,
     ],
     exports: [
         CommonModule,
@@ -56,6 +58,7 @@ import { CdkTableModule } from "@angular/cdk";
         MdButtonModule,
         MdSidenavModule,
         DialogComponent,
+        MdProgressSpinnerModule,
     ],
     bootstrap: [
         DialogComponent

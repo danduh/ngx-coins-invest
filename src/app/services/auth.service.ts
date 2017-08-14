@@ -8,6 +8,8 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogConfig } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { isNullOrUndefined } from "util";
 
 const poolData = {
     UserPoolId: 'us-east-1_QrRslpjCt', // Your user pool id here
@@ -22,6 +24,22 @@ let WRONG_CREDENTIALS: MdDialogConfig = {
     }
 };
 
+let PASSWORD_POLICY = (msg) => {
+    return {
+        data: {
+            title: 'Password Policy',
+            message: msg,
+            options: [{value: true, label: 'OK'}]
+        }
+    };
+};
+
+export const parseJwt = (token) => {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+};
+
 
 @Injectable()
 export class AuthService {
@@ -29,7 +47,20 @@ export class AuthService {
     private userData;
     private cognitoUser: CognitoUser;
     private userPool;
+    private parsedJwt: any;
+
+    _isLoggedInSubs: BehaviorSubject<boolean> = new BehaviorSubject(null);
+
+    get isLoggedInSubs() {
+        return this._isLoggedInSubs.asObservable();
+    }
+
+    set isLoggedInSubs(value: any) {
+        this._isLoggedInSubs.next(value);
+    }
+
     public tokens: CognitoUserSession;
+
 
     constructor(private dialog: MdDialog) {
         this.init();
@@ -38,14 +69,19 @@ export class AuthService {
     init() {
         this.userPool = new CognitoUserPool(poolData);
         this.cognitoUser = this.userPool.getCurrentUser();
+        this.isLoggedInSubs = this.isLoggedIn();
     }
 
     public isLoggedIn(): boolean {
-        const $this = this;
-
         if (!!this.cognitoUser) {
-            return this.cognitoUser.getSession(function (err, session) {
-                $this.tokens = session;
+            return this.cognitoUser.getSession((err, session) => {
+                if (isNullOrUndefined(session)) {
+                    return false;
+                }
+                this.tokens = session;
+
+                this.parsedJwt = parseJwt(this.tokens.getIdToken().getJwtToken());
+                console.log(this.parsedJwt);
                 return session.isValid();
             });
         }
@@ -87,7 +123,8 @@ export class AuthService {
 
     callbackObj(observe) {
         return {
-            onSuccess: function (result) {
+            onSuccess: (result) => {
+                this.isLoggedInSubs = this.isLoggedIn();
                 observe.next(true);
                 console.log('access token + ' + result.getAccessToken().getJwtToken());
             },
@@ -100,8 +137,7 @@ export class AuthService {
             // },
 
             newPasswordRequired: (msg) => {
-                // TODO: Should to be done!!!
-                console.log('newPasswordRequired', msg);
+                observe.next('changePassword');
             }
         };
     }
@@ -123,12 +159,18 @@ export class AuthService {
         return Observable.create((observe) => {
             this.cognitoUser.authenticateUser(this.authenticationDetails, this.callbackObj(observe));
         });
+    }
 
+    changePassword(password) {
+        return Observable.create((observe) => {
+            this.cognitoUser.completeNewPasswordChallenge(password, null, this.callbackObj(observe));
+        });
     }
 
     signOut() {
         if (!!this.cognitoUser) {
             this.cognitoUser.signOut();
+            this.isLoggedInSubs = this.isLoggedIn();
         }
     }
 
@@ -137,8 +179,20 @@ export class AuthService {
     }
 
     errorHandler(err) {
-        if (err.statusCode === 400) {
-            this.dialog.open(DialogComponent, WRONG_CREDENTIALS);
+        if (!!err.code) {
+            switch (err.code) {
+                case 'NotAuthorizedException':
+                case 'UserNotFoundException':
+                    this.dialog.open(DialogComponent, WRONG_CREDENTIALS);
+                    break;
+
+                case 'InvalidPasswordException':
+                    this.dialog.open(DialogComponent, PASSWORD_POLICY(err.message));
+                    break;
+
+                default:
+                    console.error(err);
+            }
         } else {
             console.error(err);
         }

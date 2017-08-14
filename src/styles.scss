@@ -2,19 +2,26 @@
 @import "assets/aw-cryptocoins/cryptocoins.css";
 @import "assets/aw-cryptocoins/cryptocoins-colors.css";
 @import "assets/reset-css";
+@import "assets/variables";
+
+html {
+  height: 100%;
+}
 
 body {
   margin: 0;
   font-size: 18px;
+  height: 100%;
 }
 
-.clearfix {
-  &:before,
-  &:after {
-    content: " "; // 1
-    display: table; // 2
-  }
-  &:after {
-    clear: both;
-  }
+app-root {
+  height: 100%;
+  display: block;
+}
+
+.pos {
+  color: $positiveTextColor;
+}
+.neg {
+  color: $negativeTextColor;
 }

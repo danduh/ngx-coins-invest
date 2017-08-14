@@ -6,7 +6,7 @@
 // have to load a single css file for Angular Material in your app.
 @include mat-core();
 
-$compit-primary: mat-palette($mat-blue);
+$compit-primary: mat-palette($mat-green);
 $compit-accent: mat-palette($mat-blue, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -20,6 +20,8 @@ $compit-theme: mat-light-theme($compit-primary, $compit-accent, $compit-warn);
 // that you are using.
 @include angular-material-theme($compit-theme);
 
+$matToolbarRowHeight: 64px;
+
 .mat-cell {
   font-size: 18px;
 }
@@ -27,4 +29,14 @@ $compit-theme: mat-light-theme($compit-primary, $compit-accent, $compit-warn);
 .mat-header-cell {
   font-size: 18px;
   text-transform: uppercase;
+}
+
+.mat-sidenav-container {
+  height: calc(100% - #{$matToolbarRowHeight}) !important;
+}
+
+.mat-row{
+  &:nth-child(even) {
+    background: #EEEEEE
+  }
 }

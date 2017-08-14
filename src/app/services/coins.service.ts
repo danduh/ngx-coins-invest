@@ -28,7 +28,6 @@ export class CoinsService {
     }
 
     public getList(): Observable<CoinModel[]> {
-        console.log(environment);
         const options = this.getAuthHeader();
         return this.http.get(`${this.baseUrl}coins`, options)
             .map(this.postRequestSuccess.bind(this));
@@ -44,6 +43,12 @@ export class CoinsService {
     public addCoin(coin): Observable<CoinModel> {
         let options = this.getAuthHeader();
         return this.http.post(`${this.baseUrl}invested/${coin.id}`, coin, options)
+            .map(this.postRequestSuccess.bind(this));
+    }
+
+    public deleteInvest(investId) {
+        let options = this.getAuthHeader();
+        return this.http.delete(`${this.baseUrl}invested/${investId}`, options)
             .map(this.postRequestSuccess.bind(this));
     }
 

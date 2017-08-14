@@ -1,0 +1,14 @@
+<div class="footer-invest" *ngIf="totals | async">
+    <div class="footer-invest-inner invested">
+        <h3>{{(totals | async)?.open | priceFormat}}</h3>
+        <span>Invested</span>
+    </div>
+    <div class="footer-invest-inner profit {{(totals | async)?.profit > 0 ? 'pos': 'neg'}}">
+        <h3>{{(totals | async)?.profit | priceFormat}}</h3>
+        <span>Profit</span>
+    </div>
+    <div class="footer-invest-inner equity">
+        <h3>{{(totals | async)?.total | priceFormat}}</h3>
+        <span>Equity</span>
+    </div>
+</div>

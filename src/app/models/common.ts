@@ -36,3 +36,9 @@ export class InvestedCoinModel extends CoinModel {
 
     }
 }
+
+export class InvestTotalsModel {
+    open: number;
+    profit: number;
+    total: number;
+}

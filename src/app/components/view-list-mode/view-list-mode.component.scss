@@ -1,4 +1,9 @@
+@import "../../../assets/variables";
+
 .list-view {
+  overflow: auto;
+  height: calc(100vh - 140px);
+
   md-list-item {
     border-bottom: 1px solid #e0e0e0;
     &:nth-child(even) {
@@ -12,23 +17,81 @@
   }
   .mat-row {
     height: 75px;
+    md-cell {
+    }
   }
   .row-content {
     display: inline-block;
     padding-left: 10px;
     h3 {
-      font-size: 1.25em;
+      font-size: 1em;
       font-weight: 600;
+      padding: 7px 0;
     }
   }
-  /deep/ .mat-card-avatar {
-    width: 64px;
-    height: 64px;
+  .mat-card-avatar {
+    width: $coinLogoSize;
+    height: $coinLogoSize;
+    img {
+      width: 100%
+    }
   }
   md-icon {
     float: left;
-    width: 64px !important;
-    height: 64px !important;
+    width: $coinLogoSize !important;
+    height: $coinLogoSize !important;
     display: inline-block;
+  }
+}
+
+@media ($mat-xsmall) {
+  md-header-row {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  md-table.list-view {
+    .mat-row {
+      height: 100px;
+      flex-wrap: wrap;
+      display: flex;
+      justify-content: space-between;
+    }
+    .row-content {
+      width: 84%;
+      justify-content: space-around;
+      display: flex;
+      h3 {
+        display: inline-block;
+      }
+      span {
+        display: inline-block;
+        text-align: right;
+      }
+    }
+    md-cell, md-header-cell {
+      flex: none !important;
+      &:nth-child(1) {
+        width: 100%;
+      }
+      &.mat-cell {
+
+      }
+      &.no-mobile {
+        display: none;
+      }
+    }
+
+    .mat-card-avatar {
+      width: $coinLogoSizeMobile;
+      height: $coinLogoSizeMobile;
+      img {
+        width: 100%;
+      }
+    }
+    md-icon {
+      width: $coinLogoSizeMobile !important;
+      height: $coinLogoSizeMobile !important;
+    }
+
   }
 }

@@ -56,3 +56,14 @@ table {
 a {
   text-decoration: none;
 }
+
+.clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}

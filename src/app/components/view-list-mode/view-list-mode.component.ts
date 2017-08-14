@@ -3,6 +3,9 @@ import { Observable } from "rxjs/Observable";
 import { CoinModel, InvestedCoinModel } from "../../models/common";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { DataSource } from "@angular/cdk";
+import { InvestedFacade } from "app/states/invested-facade";
+import { CoinsService } from "../../services/coins.service";
+import { WindowService } from "../../services/window.service";
 
 @Component({
     selector: 'app-view-list-mode',
@@ -10,19 +13,37 @@ import { DataSource } from "@angular/cdk";
     styleUrls: ['./view-list-mode.component.scss']
 })
 export class ViewListModeComponent implements OnInit {
-    @Input('visibleCoins') visibleCoins: Observable<CoinModel>;
-    public displayedColumns = ['investId', 'quantity', 'openPrice', 'price_usd'];
+    // @Input('visibleCoins') visibleCoins: Observable<CoinModel>;
+    public displayedColumns = ['investId', 'quantity', 'openPrice', 'price_usd', 'plUsd', 'plPct'];
     public investedCoinsDatabase;
-    dataSource: SimpleCoinsDataSource | null;
+    public isMobile = false;
+    dataSource: InvestedCoinsDataSource | null;
 
-    constructor() {
+    constructor(private investFacade: InvestedFacade,
+                private windowService: WindowService,
+                private coinService: CoinsService) {
 
     }
 
     ngOnInit() {
-        this.investedCoinsDatabase = new InvestedCoinsDatabase(this.visibleCoins);
-        // this.dataSource = new InvestedCoinsDataSource(this.investedCoinsDatabase);
-        this.dataSource = new SimpleCoinsDataSource(this.visibleCoins);
+        this.windowService.width
+            .subscribe((size) => {
+                this.isMobile = size < 600;
+                if (!this.isMobile) this.displayedColumns.push('delete');
+            });
+        this.investFacade.subscribeToState()
+            .subscribe((data) => {
+                this.investedCoinsDatabase = new InvestedCoinsDatabase(data);
+                this.dataSource = new InvestedCoinsDataSource(this.investedCoinsDatabase);
+            });
+
+    }
+
+    deleteInvest(investId) {
+        this.coinService.deleteInvest(investId)
+            .subscribe(() => {
+                this.investFacade.loadInvestedCoins();
+            });
     }
 
 }
@@ -39,16 +60,10 @@ export class InvestedCoinsDatabase {
 
     constructor(data) {
         this.dataChange = new BehaviorSubject<InvestedCoinModel[]>(data);
-        // Fill up the database with 100 users.
         // for (let i = 0; i < 100; i++) { this.addUser(); }
     }
 
     /** Adds a new user to the database. */
-    setData() {
-        const copiedData = this.data.slice();
-        copiedData.push(this.createNewUser());
-        this.dataChange.next(copiedData);
-    }
 
     /** Builds and returns a new User. */
     private createNewUser() {
@@ -64,7 +79,6 @@ export class InvestedCoinsDataSource extends DataSource<any> {
 
     /** Connect function called by the table to retrieve one stream containing the data to render. */
     connect(): Observable<InvestedCoinModel[]> {
-
         return this._exampleDatabase.dataChange;
     }
 

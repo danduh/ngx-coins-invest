@@ -6,7 +6,8 @@
     </md-grid-list>
 </ng-container>
 <ng-container *ngIf="viewType==='list'">
-    <app-view-list-mode [visibleCoins]="visibleCoins">
+    <app-view-list-mode>
 
     </app-view-list-mode>
 </ng-container>
+<app-footer-invest [totals]="totals"></app-footer-invest>

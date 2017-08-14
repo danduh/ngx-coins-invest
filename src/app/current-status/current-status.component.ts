@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoinsService } from "../services/coins.service";
 import { Observable } from "rxjs/Observable";
-import { InvestedCoinModel } from "../models/common";
+import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
 import { ActivatedRoute } from "@angular/router";
 import { InvestedFacade } from "../states/invested-facade";
 
@@ -14,6 +14,7 @@ declare type ViewType = 'list' | 'card';
 })
 export class CurrentStatusComponent implements OnInit, OnDestroy {
     public visibleCoins: Observable<InvestedCoinModel[]>;
+    public totals: Observable<InvestTotalsModel>;
     private viewTypeSubscribe;
     private viewType: ViewType;
 
@@ -31,8 +32,7 @@ export class CurrentStatusComponent implements OnInit, OnDestroy {
         this.visibleCoins = this.coinService.getInvestedList();
 
         this.investedFacade.loadInvestedCoins();
-
-
+        this.totals = this.investedFacade.getTotals();
     }
 
     ngOnDestroy() {

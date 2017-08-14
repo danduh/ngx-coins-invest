@@ -1,4 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import {
+    Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter,
+    ChangeDetectorRef
+} from '@angular/core';
+import { OutOutletService } from "../../services/out-outler.service";
+import { isNullOrUndefined } from "util";
 
 @Component({
     selector: 'app-header',
@@ -7,13 +12,24 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-    @Input() title: string;
+    @Input() isLoggedIn: boolean;
     @Output('toggleMenu') toggleMenu = new EventEmitter();
 
-    constructor() {
+    public title: string;
+
+    constructor(private outletService: OutOutletService,
+                private ref: ChangeDetectorRef) {
+
     }
 
     ngOnInit() {
+        this.outletService.data
+            .subscribe((resp) => {
+                if (!isNullOrUndefined(resp) && resp.title) {
+                    this.title = resp.title;
+                    this.ref.detectChanges();
+                }
+            });
     }
 
 }

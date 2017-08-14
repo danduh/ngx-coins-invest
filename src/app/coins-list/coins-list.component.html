@@ -1,10 +1,21 @@
-<md-input-container class="example-full-width">
-    <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
-</md-input-container>
+<ng-container *ngIf="!!visibleCoins && visibleCoins.length>0; else loader">
+    <md-input-container class="example-full-width">
+        <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
+    </md-input-container>
 
-<md-grid-list cols="4" rowHeight="300px" gutterSize="10px">
-    <md-grid-tile *ngFor="let coin of visibleCoins | filter : searchTerm">
-        <app-coin-card [coin]="coin"></app-coin-card>
-    </md-grid-tile>
-</md-grid-list>
-<button (click)="showMoreCoins()">Show More</button>
+    <md-grid-list cols="1" rowHeight="150px" gutterSize="10px">
+        <md-grid-tile *ngFor="let coin of visibleCoins | filter : searchTerm">
+            <app-coin-card [coin]="coin"></app-coin-card>
+        </md-grid-tile>
+    </md-grid-list>
+    <footer>
+        <button md-raised-button color="primary" (click)="showMoreCoins()">Show More</button>
+    </footer>
+</ng-container>
+<ng-template #loader>
+    <md-progress-spinner
+            class="example-margin"
+            [color]="'primary'"
+            [mode]="'indeterminate'">
+    </md-progress-spinner>
+</ng-template>

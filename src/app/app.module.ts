@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
@@ -30,16 +30,41 @@ import { StoreModule } from '@ngrx/store';
 import { investedReducer } from "./states/invested-reducer";
 import { InvestedFacade } from "./states/invested-facade";
 import { MarketTickerService } from "./services/market-ticker.service";
+import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
+import { OutOutletService } from "./services/out-outler.service";
+import { WindowService } from "./services/window.service";
+
+const Titels = {}
 
 export const MainRoutes: Routes = [
-    {path: 'login', component: LoginComponent, data: {logout: false}},
-    {path: 'logout', component: LoginComponent, data: {logout: true}},
-    {path: 'coins', component: CoinsListComponent, canActivate: [AuthGuard]},
-    {path: 'manage', component: CoinsManagerComponent, canActivate: [AuthGuard]},
-    {path: 'portfolio', component: CurrentStatusComponent, canActivate: [AuthGuard]},
-    {path: 'portfolio/:viewType', component: CurrentStatusComponent, canActivate: [AuthGuard]},
-    {path: 'investto/:coinId', component: CoinsManagerComponent, canActivate: [AuthGuard]},
-    {path: '', component: CoinsListComponent, canActivate: [AuthGuard]}
+    {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
+    {path: 'logout', component: LoginComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
+    {
+        path: 'coins',
+        component: CoinsListComponent,
+        canActivate: [AuthGuard, OutOutletService],
+        data: {title: 'Select Coin'}
+    },
+    {
+        path: 'manage',
+        component: CoinsManagerComponent,
+        canActivate: [AuthGuard, OutOutletService],
+        data: {title: 'Invest To'}
+    },
+    {
+        path: 'portfolio',
+        component: CurrentStatusComponent,
+        canActivate: [AuthGuard, OutOutletService],
+        data: {title: 'Portfolio'}
+    },
+    {
+        path: 'portfolio/:viewType',
+        component: CurrentStatusComponent,
+        canActivate: [AuthGuard],
+        data: {title: 'Portfolio'}
+    },
+    {path: 'investto/:coinId', component: CoinsManagerComponent, canActivate: [AuthGuard], data: {title: 'Invest To'}},
+    {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
 ];
 
 @NgModule({
@@ -57,7 +82,8 @@ export const MainRoutes: Routes = [
         ViewCardModeComponent,
         SideMenuComponent,
         PermissionsDirective,
-        ListModeItemComponent
+        ListModeItemComponent,
+        FooterInvestComponent
     ],
     imports: [
         HttpClientModule,
@@ -78,7 +104,9 @@ export const MainRoutes: Routes = [
         CoinsService,
         TradeApiService,
         InvestedFacade,
-        MarketTickerService
+        MarketTickerService,
+        OutOutletService,
+        WindowService
     ],
     bootstrap: [AppComponent],
     exports: [

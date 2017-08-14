@@ -4,17 +4,23 @@ import { CoinsService } from "../services/coins.service";
 import { MarketTickerService } from "../services/market-ticker.service";
 import { Observable } from "rxjs/Observable";
 import { SET_INVESTED_COINS } from "./invested-reducer";
-import { InvestedCoinModel } from "../models/common";
+import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
+import { Subscription } from "rxjs/Subscription";
+import { isNullOrUndefined } from "util";
 
 @Injectable()
 export class InvestedFacade {
     $currentInvested;
+    ticksLoaderSubscriber: Subscription;
 
     constructor(private store: Store<any>,
                 private coinsService: CoinsService,
                 private tickerService: MarketTickerService) {
         this.$currentInvested = this.store.select('investedStore');
-        this.tickerService.getListByLabels([]);
+    }
+
+    subscribeToState() {
+        return this.$currentInvested;
     }
 
     loadInvestedCoins() {
@@ -33,25 +39,34 @@ export class InvestedFacade {
         return coinsList;
     }
 
+    getSymbolsInState() {
+        let labels;
+        this.$currentInvested.subscribe((list) => {
+            labels = list.map((c) => c.id);
+        });
+        return labels;
+    }
+
     setInvState(data) {
         let action = {
             type: SET_INVESTED_COINS,
             payload: data
         };
         this.store.dispatch(action);
+        let labels = this.getSymbolsInState();
+        this.tickerService.getListByLabels(labels)
+            .subscribe(this.mergeInvestedTicker.bind(this));
+
         this.initTickerLoader();
     }
 
     initTickerLoader() {
-        let labels;
-        this.$currentInvested.subscribe((list) => {
-            labels = list.map((c) => c.id);
-        });
-        this.loadTicker(labels.getUnique());
-    }
-
-    loadTicker(labels?) {
-        this.tickerService.getListByLabels(labels)
+        let labels = this.getSymbolsInState();
+        this.ticksLoaderSubscriber = Observable
+            .interval(10000)
+            .switchMap(() => {
+                return this.tickerService.getListByLabels(labels)
+            })
             .subscribe(this.mergeInvestedTicker.bind(this));
     }
 
@@ -65,8 +80,8 @@ export class InvestedFacade {
         inv.forEach((coin: InvestedCoinModel) => {
             let tick = ticks[coin.id];
             coin.price_usd = tick.price_usd;
-            coin.plUsd = (tick.price_usd * tick.quantity) - coin.amount;
-            coin.plPct = coin.plUsd / coin.amount;
+            coin.plUsd = (tick.price_usd * coin.quantity) - coin.amount;
+            coin.plPct = parseFloat((coin.plUsd / coin.amount * 100).toPrecision(2));
         });
         this.updateTickerState(inv);
     }
@@ -77,6 +92,35 @@ export class InvestedFacade {
             payload: data
         };
         this.store.dispatch(action);
+    }
+
+    getTotals(): Observable<InvestTotalsModel> {
+        return Observable.create((observer) => {
+
+            return this.subscribeToState()
+                .subscribe((list) => {
+                    if (isNullOrUndefined(list)) {
+                        observer.next(null);
+
+                    } else {
+                        let open = list.map((c) => c.amount)
+                            .reduce((a, b) => a + b);
+
+                        let profit = list.map((c) => c.plUsd)
+                            .reduce((a, b) => a + b);
+                        let total = open + profit;
+
+                        observer.next({open, profit, total});
+                    }
+                    // observer.complete();
+                });
+        });
+    }
+
+    unsubscribe() {
+        if (!!this.ticksLoaderSubscriber) {
+            this.ticksLoaderSubscriber.unsubscribe();
+        }
     }
 
 }

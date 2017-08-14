@@ -1,6 +1,7 @@
-<app-header [title]="'Coins'" (toggleMenu)="sidenav.toggle()"></app-header>
+<app-header [isLoggedIn]="(isLoggedIn|async)" (toggleMenu)="toggleMenu()"></app-header>
+<!--<h1>{{(isLoggedIn | async)==true}}f</h1>-->
 <md-sidenav-container>
-    <md-sidenav *appHasPerms="'isLoggedIn'" #sidenav mode="side" opened="true">
+    <md-sidenav #sidenav [mode]="sideNavMode" [opened]="(isLoggedIn|async) && sideNavMode == 'side'">
         <app-side-menu></app-side-menu>
     </md-sidenav>
     <router-outlet></router-outlet>
