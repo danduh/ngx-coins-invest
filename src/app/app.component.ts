@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         this.windowService.width
             .subscribe((width) => {
                 if (width) {
-                    if (width < 600) {
+                    if (width < 1000) {
                         this.sideNavMode = "over";
                         this.sideNav.close();
                     } else {

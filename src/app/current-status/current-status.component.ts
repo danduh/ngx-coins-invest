@@ -15,8 +15,8 @@ declare type ViewType = 'list' | 'card';
 export class CurrentStatusComponent implements OnInit, OnDestroy {
     public visibleCoins: Observable<InvestedCoinModel[]>;
     public totals: Observable<InvestTotalsModel>;
+    public viewType: ViewType;
     private viewTypeSubscribe;
-    private viewType: ViewType;
 
     constructor(private coinService: CoinsService,
                 private investedFacade: InvestedFacade,

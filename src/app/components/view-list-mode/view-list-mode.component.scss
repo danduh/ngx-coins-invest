@@ -17,7 +17,10 @@
   }
   .mat-row {
     height: 75px;
-    md-cell {
+  }
+  md-cell, md-header-cell {
+    &:nth-child(1) {
+      min-width: 175px;
     }
   }
   .row-content {

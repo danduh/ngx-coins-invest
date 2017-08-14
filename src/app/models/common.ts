@@ -7,6 +7,7 @@ export class CoinModel {
     id?: string;
     market_cap_usd?: number;
     price_usd: number;
+    createdAt?: number;
 
     constructor(coin) {
         const keys = Object.keys(coin);
@@ -41,4 +42,16 @@ export class InvestTotalsModel {
     open: number;
     profit: number;
     total: number;
+}
+
+export class AppUser {
+    username: string;
+    email: string;
+    groups: string[]; // ["investors", 'watchers']
+
+    constructor(parsedJwt) {
+        this.username = parsedJwt.username;
+        this.email = parsedJwt.email;
+        this.groups = !!parsedJwt['cognito:groups'] ? parsedJwt['cognito:groups'] : [];
+    }
 }

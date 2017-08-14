@@ -3,11 +3,10 @@
         <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
     </md-input-container>
 
-    <md-grid-list cols="1" rowHeight="150px" gutterSize="10px">
-        <md-grid-tile *ngFor="let coin of visibleCoins | filter : searchTerm">
-            <app-coin-card [coin]="coin"></app-coin-card>
-        </md-grid-tile>
-    </md-grid-list>
+    <section>
+        <app-coin-card [coin]="coin" *ngFor="let coin of visibleCoins | filter : searchTerm"></app-coin-card>
+    </section>
+
     <footer>
         <button md-raised-button color="primary" (click)="showMoreCoins()">Show More</button>
     </footer>

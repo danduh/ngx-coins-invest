@@ -10,6 +10,7 @@ import { MdDialog, MdDialogConfig } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { isNullOrUndefined } from "util";
+import { AppUser } from "../models/common";
 
 const poolData = {
     UserPoolId: 'us-east-1_QrRslpjCt', // Your user pool id here
@@ -47,6 +48,7 @@ export class AuthService {
     private userData;
     private cognitoUser: CognitoUser;
     private userPool;
+    private appUser: AppUser;
     private parsedJwt: any;
 
     _isLoggedInSubs: BehaviorSubject<boolean> = new BehaviorSubject(null);
@@ -79,13 +81,16 @@ export class AuthService {
                     return false;
                 }
                 this.tokens = session;
-
                 this.parsedJwt = parseJwt(this.tokens.getIdToken().getJwtToken());
-                console.log(this.parsedJwt);
+                this.appUser = new AppUser(this.parsedJwt);
                 return session.isValid();
             });
         }
         return false;
+    }
+
+    isUserInGroup(group: string) {
+        return this.appUser.groups.indexOf(group) > -1;
     }
 
     public getAuthToken() {

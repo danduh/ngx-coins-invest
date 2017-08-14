@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs/Observable";
-import { CoinModel, InvestedCoinModel } from "../../models/common";
+import { InvestedCoinModel } from "../../models/common";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { DataSource } from "@angular/cdk";
 import { InvestedFacade } from "app/states/invested-facade";
@@ -29,7 +29,9 @@ export class ViewListModeComponent implements OnInit {
         this.windowService.width
             .subscribe((size) => {
                 this.isMobile = size < 600;
-                if (!this.isMobile) this.displayedColumns.push('delete');
+                if (!this.isMobile && this.displayedColumns.indexOf('delete') === -1) {
+                    this.displayedColumns.push('delete');
+                }
             });
         this.investFacade.subscribeToState()
             .subscribe((data) => {
@@ -43,11 +45,12 @@ export class ViewListModeComponent implements OnInit {
         this.coinService.deleteInvest(investId)
             .subscribe(() => {
                 this.investFacade.loadInvestedCoins();
+            }, (err) => {
+                console.log(err);
             });
     }
 
 }
-
 
 export class InvestedCoinsDatabase {
     /** Stream that emits whenever the data has been modified. */
@@ -67,10 +70,9 @@ export class InvestedCoinsDatabase {
 
     /** Builds and returns a new User. */
     private createNewUser() {
-        return {logo: '', quantity: 9, name: 's', symbol: 's'}
+        return {logo: '', quantity: 9, name: 's', symbol: 's'};
     }
 }
-
 
 export class InvestedCoinsDataSource extends DataSource<any> {
     constructor(private _exampleDatabase: InvestedCoinsDatabase) {
@@ -87,7 +89,7 @@ export class InvestedCoinsDataSource extends DataSource<any> {
 }
 
 export class SimpleCoinsDataSource extends DataSource<any> {
-    coins
+    coins;
 
     constructor(data) {
         super();

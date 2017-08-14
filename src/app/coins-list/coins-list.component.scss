@@ -4,6 +4,20 @@ md-input-container {
   max-width: 300px;
 }
 
+section {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+app-coin-card {
+  width: 300px;
+  display: inline-block;
+  height: 140px;
+  margin: 0 40px;
+}
+
 footer {
   height: 75px;
   button {

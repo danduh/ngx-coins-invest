@@ -45,7 +45,7 @@
     <ng-container cdkColumnDef="delete">
         <md-header-cell *cdkHeaderCellDef> Delete / Edit</md-header-cell>
         <md-cell *cdkCellDef="let coin">
-            <button md-button color="danger" (click)="deleteInvest(coin.investId)">Delete</button>
+            <button md-raised-button color="warn" (click)="deleteInvest(coin.investId)">Delete</button>
             <!--<button (click)="goToDetailPage(coin.$key)">Edit</button>-->
         </md-cell>
     </ng-container>

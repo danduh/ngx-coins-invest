@@ -5,6 +5,7 @@ import { Http, Response, Headers } from '@angular/http';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
+import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
 
 @Injectable()
 export class CoinsService {
@@ -13,6 +14,8 @@ export class CoinsService {
     baseUrl = environment['baseApiUrl'];
 
     private cachedList: CoinModel[];
+    private authSnackBar: MdSnackBarRef<SimpleSnackBar>;
+
 
     private getAuthHeader(shouldAuth?: boolean): any {
         let headerObject = {'Content-Type': 'application/json'};
@@ -24,6 +27,7 @@ export class CoinsService {
 
     constructor(private router: Router,
                 private auth: AuthService,
+                private snackBar: MdSnackBar,
                 private http: Http) {
     }
 
@@ -46,7 +50,12 @@ export class CoinsService {
             .map(this.postRequestSuccess.bind(this));
     }
 
-    public deleteInvest(investId) {
+    public deleteInvest(investId): Observable<any> {
+        if (!this.auth.isUserInGroup('investors')) {
+            this.actionNotAllowed();
+            return Observable.throw('notAllowed');
+        }
+
         let options = this.getAuthHeader();
         return this.http.delete(`${this.baseUrl}invested/${investId}`, options)
             .map(this.postRequestSuccess.bind(this));
@@ -67,4 +76,9 @@ export class CoinsService {
         console.log(observer, response);
     }
 
+    private actionNotAllowed() {
+        this.authSnackBar = this.snackBar.open('Sorry, you not allowed', null, {
+            duration: 3000,
+        });
+    }
 }

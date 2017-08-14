@@ -46,12 +46,6 @@ export const MainRoutes: Routes = [
         data: {title: 'Select Coin'}
     },
     {
-        path: 'manage',
-        component: CoinsManagerComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Invest To'}
-    },
-    {
         path: 'portfolio',
         component: CurrentStatusComponent,
         canActivate: [AuthGuard, OutOutletService],
@@ -63,7 +57,12 @@ export const MainRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {title: 'Portfolio'}
     },
-    {path: 'investto/:coinId', component: CoinsManagerComponent, canActivate: [AuthGuard], data: {title: 'Invest To'}},
+    {
+        path: 'investto/:coinId',
+        component: CoinsManagerComponent,
+        canActivate: [AuthGuard],
+        data: {title: 'Invest To', groups: ['investors']}
+    },
     {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
 ];
 

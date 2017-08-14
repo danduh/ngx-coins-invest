@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         if (this.route.snapshot.data['logout']) {
             this.auth.signOut();
+        } else if (this.auth.isLoggedIn()) {
+            this.postLoginRedirect();
         }
     }
 
@@ -47,9 +49,13 @@ export class LoginComponent implements OnInit {
             this.password = null;
             this.newPassword = null;
         } else {
-            this.router.navigate(['/coins']);
+            this.postLoginRedirect();
         }
 
+    }
+
+    postLoginRedirect() {
+        this.router.navigate(['/portfolio']);
     }
 
     errorHandler(error) {

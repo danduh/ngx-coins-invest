@@ -1,20 +1,26 @@
 <div class="form">
-    <p>
-        <md-input-container class="example-full-width" *ngIf="!changePswd; else newPasswordInput">
-            <input mdInput type="text" placeholder="User Name" [(ngModel)]="username"/>
-        </md-input-container>
-        <ng-template #newPasswordInput>
-            <md-input-container class="example-full-width">
-                <input mdInput type="password" placeholder="New Password" [(ngModel)]="newPassword"/>
+    <form class="login-box" (ngSubmit)="login()">
+        <p>
+            <md-input-container class="example-full-width" *ngIf="!changePswd; else newPasswordInput">
+                <input mdInput type="text" placeholder="User Name" [(ngModel)]="username" name="username"/>
             </md-input-container>
-        </ng-template>
-        <md-input-container class="example-full-width">
-            <input mdInput type="password" placeholder="Confirm Password" [(ngModel)]="password"/>
-        </md-input-container>
-    </p>
-    <p>
-        <button md-raised-button color="primary" (click)="login()">Submit</button>
-    </p>
+            <ng-template #newPasswordInput>
+                <md-input-container class="example-full-width">
+                    <input mdInput type="password" placeholder="New Password"
+                           [(ngModel)]="newPassword"
+                           name="newPassword"/>
+                </md-input-container>
+            </ng-template>
+            <md-input-container class="example-full-width">
+                <input mdInput type="password" placeholder="{{changePswd?'confirm':''}} Password"
+                       name="password"
+                       [(ngModel)]="password"/>
+            </md-input-container>
+        </p>
+        <p>
+            <button md-raised-button color="primary" type="submit">Submit</button>
+        </p>
+    </form>
     <p>
         {{error}}
     </p>
