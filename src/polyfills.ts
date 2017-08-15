@@ -43,6 +43,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/bindCallback';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/pluck';
 import 'rxjs/add/operator/timeInterval';

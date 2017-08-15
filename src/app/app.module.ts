@@ -33,12 +33,26 @@ import { MarketTickerService } from "./services/market-ticker.service";
 import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
 import { OutOutletService } from "./services/out-outler.service";
 import { WindowService } from "./services/window.service";
+import { AccountComponent } from './account/account.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 const Titels = {}
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
     {path: 'logout', component: LoginComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
+    {
+        path: 'signin',
+        component: RegistrationComponent,
+        canActivate: [OutOutletService],
+        data: {logout: true, title: 'Sign In'}
+    },
+    {
+        path: 'account',
+        component: AccountComponent,
+        canActivate: [AuthGuard, OutOutletService],
+        data: {title: 'Account'}
+    },
     {
         path: 'coins',
         component: CoinsListComponent,
@@ -82,7 +96,9 @@ export const MainRoutes: Routes = [
         SideMenuComponent,
         PermissionsDirective,
         ListModeItemComponent,
-        FooterInvestComponent
+        FooterInvestComponent,
+        AccountComponent,
+        RegistrationComponent
     ],
     imports: [
         HttpClientModule,
@@ -110,6 +126,7 @@ export const MainRoutes: Routes = [
     bootstrap: [AppComponent],
     exports: [
         RouterModule,
+        FormsModule
         // PermissionsDirective
     ]
 })

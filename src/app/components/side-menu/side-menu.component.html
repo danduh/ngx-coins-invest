@@ -1,9 +1,9 @@
 <div class="side-menu">
     <md-list>
-        <a md-list-item *ngFor="let item of menuItems" [routerLink]="item.link">
+        <a md-list-item *ngFor="let item of menuItems" [routerLink]="item.link" [ngClass]="{'underline':item.split}">
             <!--<a [routerLink]="item.link" md-menu-item class="">-->
-                <md-icon md-list-icon>{{item.icon}}</md-icon>
-                <h4 md-line>{{item.label}}</h4>
+            <md-icon md-list-icon>{{item.icon}}</md-icon>
+            <h4 md-line>{{item.label}}</h4>
             <!--</a>-->
         </a>
     </md-list>

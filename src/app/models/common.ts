@@ -45,13 +45,29 @@ export class InvestTotalsModel {
 }
 
 export class AppUser {
-    username: string;
-    email: string;
-    groups: string[]; // ["investors", 'watchers']
+    username: string; // email
+    email?: string;
+    groups?: string[]; // ["investors", 'watchers']
+    password?: string;
+    phone_number?: string;
 
-    constructor(parsedJwt) {
-        this.username = parsedJwt.username;
+    constructor(parsedJwt, username) {
+        this.username = username;
         this.email = parsedJwt.email;
         this.groups = !!parsedJwt['cognito:groups'] ? parsedJwt['cognito:groups'] : [];
+    }
+
+    public getDataEmail() {
+        return {
+            Name: 'email',
+            Value: !!this.email ? this.email : this.username
+        };
+    }
+
+    public getDataPhoneNumber() {
+        return {
+            Name: 'phone_number',
+            Value: this.phone_number
+        };
     }
 }

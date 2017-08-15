@@ -1,8 +1,15 @@
+@import '~@angular/material/theming';
+//@import "../../../assets/material";
+
+
 .side-menu {
   width: 200px;
   background: #4c505d;
   height: 100%;
   a {
     color: white;
+    &.underline {
+      border-bottom: 1px solid mat-color($mat-green, 50);
+    }
   }
 }

@@ -7,6 +7,7 @@ import { MD_DIALOG_DATA } from "@angular/material";
     styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent implements AfterViewInit {
+    response
     constructor(@Optional() @Inject(MD_DIALOG_DATA) public config: any) {
 
     }

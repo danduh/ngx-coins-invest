@@ -3,7 +3,8 @@ import {
     CognitoUserPool,
     CognitoUser,
     AuthenticationDetails,
-    CognitoUserSession
+    CognitoUserSession,
+    CognitoUserAttribute
 } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogConfig } from "@angular/material";
@@ -41,6 +42,9 @@ export const parseJwt = (token) => {
     return JSON.parse(window.atob(base64));
 };
 
+const defaultCB = (res) => {
+    console.log(res)
+}
 
 @Injectable()
 export class AuthService {
@@ -48,8 +52,9 @@ export class AuthService {
     private userData;
     private cognitoUser: CognitoUser;
     private userPool;
-    private appUser: AppUser;
+    public appUser: AppUser;
     private parsedJwt: any;
+    private userPoolRegister: any;
 
     _isLoggedInSubs: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
@@ -70,6 +75,7 @@ export class AuthService {
 
     init() {
         this.userPool = new CognitoUserPool(poolData);
+        this.userPoolRegister = Observable.bindCallback(this.userPool.signUp.bind(this.userPool));
         this.cognitoUser = this.userPool.getCurrentUser();
         this.isLoggedInSubs = this.isLoggedIn();
     }
@@ -82,7 +88,7 @@ export class AuthService {
                 }
                 this.tokens = session;
                 this.parsedJwt = parseJwt(this.tokens.getIdToken().getJwtToken());
-                this.appUser = new AppUser(this.parsedJwt);
+                this.appUser = new AppUser(this.parsedJwt, this.cognitoUser.getUsername());
                 return session.isValid();
             });
         }
@@ -126,24 +132,41 @@ export class AuthService {
         }
     }
 
-    callbackObj(observe) {
+    callbackObj(observe?) {
         return {
-            onSuccess: (result) => {
-                this.isLoggedInSubs = this.isLoggedIn();
-                observe.next(true);
-                console.log('access token + ' + result.getAccessToken().getJwtToken());
-            },
+            mfaRequired: defaultCB,
+            customChallenge: defaultCB,
 
-            onFailure: this.errorHandler.bind(this),
+            onSuccess:
+                (result) => {
+                    this.isLoggedInSubs = this.isLoggedIn();
+                    this.cognitoUser = result.user;
+                    observe.next(true);
+                    console.log('access token + ' + result.getAccessToken().getJwtToken());
+                    observe.complete(true);
+                },
+
+            onFailure: (error) => {
+                this.errorHandler(this);
+                observe.throw(error);
+
+            },
 
             // mfaRequired: function (codeDeliveryDetails) {
             //     let verificationCode = prompt('Please input verification code', '');
             //     $this.cognitoUser.sendMFACode(verificationCode, $this.callbackObj(observe));
             // },
 
-            newPasswordRequired: (msg) => {
-                observe.next('changePassword');
-            }
+            newPasswordRequired:
+                (msg) => {
+                    observe.next('changePassword');
+                },
+
+            inputVerificationCode:
+                () => {
+                    let verificationCode = prompt('Check you email for a verification code and enter it here: ', '');
+                    this.cognitoUser.verifyAttribute('email', verificationCode, this.callbackObj());
+                }
         };
     }
 
@@ -181,6 +204,36 @@ export class AuthService {
 
     saveToken(token: string) {
         localStorage.setItem('access_token', token);
+    }
+
+    register(newUserData: AppUser, password: string) {
+        let attributeList = [];
+
+        const dataEmail = newUserData.getDataEmail();
+        const attributeEmail = new CognitoUserAttribute(dataEmail);
+        attributeList.push(attributeEmail);
+        return Observable.create((observe) => {
+            this.userPool.signUp(newUserData.username, password, attributeList, null, (err, resp) => {
+                if (!!resp)
+                    this.cognitoUser = resp.user;
+                observe.next(resp);
+                observe.complete();
+            })
+            // return this.userPoolRegister(newUserData.username, password, attributeList, null, this.callbackObj(observe));
+        });
+    }
+
+    confirmEmail(code) {
+        return Observable.create((observe) => {
+            return this.cognitoUser.confirmRegistration(code, null, function (err, result) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+                console.log('call result: ' + result);
+                observe.complete();
+            });
+        });
     }
 
     errorHandler(err) {

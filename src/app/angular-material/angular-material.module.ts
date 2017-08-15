@@ -8,6 +8,7 @@ import {
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
 import { CdkTableModule } from "@angular/cdk";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [DialogComponent],
@@ -34,6 +35,7 @@ import { CdkTableModule } from "@angular/cdk";
         MdSlideToggleModule,
         MdSidenavModule,
         MdProgressSpinnerModule,
+        FormsModule,
     ],
     exports: [
         CommonModule,

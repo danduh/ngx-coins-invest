@@ -1,5 +1,27 @@
 <h1 *ngIf="config.title" md-dialog-title>{{config.title}}</h1>
-<div md-dialog-content>{{config.message}}</div>
-<div md-dialog-actions>
-    <button *ngFor="let opt of config.options" md-button [md-dialog-close]="opt.value">{{opt.label}}</button>
-</div>
+<ng-template *ngIf="!config.input; else modalInput">
+    <div md-dialog-content>
+        {{config.message}}
+    </div>
+
+    <div md-dialog-actions>
+        <button *ngFor="let opt of config.options" md-button [md-dialog-close]="opt.value">{{opt.label}}</button>
+    </div>
+
+</ng-template>
+<ng-template #modalInput>
+    <div md-dialog-content>
+        <p class="msg">
+            {{config.message}}
+        </p>
+        <p>
+            <md-input-container class="app-full-width">
+                <input mdInput type="text" [(ngModel)]="response" name="response" placeholder="Confirmation Code"/>
+            </md-input-container>
+        </p>
+    </div>
+
+    <div md-dialog-actions>
+        <button md-button [md-dialog-close]="response">Submit</button>
+    </div>
+</ng-template>
