@@ -20,8 +20,6 @@ export class CoinsService {
     private getAuthHeader(shouldAuth?: boolean): any {
         let headerObject = {'Content-Type': 'application/json'};
         headerObject['Authorization'] = this.auth.getAuthToken();
-        console.log(headerObject);
-        let _t = new Headers(headerObject);
         return {headers: new Headers(headerObject)};
     }
 

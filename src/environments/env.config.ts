@@ -15,7 +15,7 @@ export const allConfig = {
         name: 'local'
     },
     dev: {
-        baseApiUrl: 'https://rqoxmx1q80.execute-api.us-east-1.amazonaws.com/dev/',
+        baseApiUrl: 'https://api-dev.danduh.me/v1/',
         marketTickerUrl: 'https://api.coinmarketcap.com/v1/ticker/',
         name: 'local'
     }
