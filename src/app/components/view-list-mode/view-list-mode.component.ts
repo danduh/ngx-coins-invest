@@ -37,6 +37,7 @@ export class ViewListModeComponent implements OnInit {
             .subscribe((data) => {
                 this.investedCoinsDatabase = new InvestedCoinsDatabase(data);
                 this.dataSource = new InvestedCoinsDataSource(this.investedCoinsDatabase);
+                console.log(this.dataSource)
             });
 
     }

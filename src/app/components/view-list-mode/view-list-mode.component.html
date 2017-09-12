@@ -5,18 +5,18 @@
         <md-cell *cdkCellDef="let coin">
             <md-icon md-list-icon>
                 <div md-card-avatar class="example-header-image">
-                    <img [src]="coin.logo">
+                    <img [src]="coin.coinMeta.logo">
                 </div>
             </md-icon>
             <div class="row-content">
-                <h3>{{coin.name}}</h3><span>{{coin.last_updated * 1000| date}}</span>
+                <h3>{{coin.coinMeta.name}}</h3><span>{{coin.createdAt * 1000| date}}</span>
             </div>
         </md-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="quantity">
-        <md-header-cell *cdkHeaderCellDef> Units</md-header-cell>
-        <md-cell *cdkCellDef="let coin"> {{coin.quantity.toPrecision(4)}}</md-cell>
+        <md-header-cell *cdkHeaderCellDef> Amount</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.amount.toPrecision(4)}}</md-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="openPrice">
@@ -26,7 +26,7 @@
 
     <ng-container cdkColumnDef="price_usd">
         <md-header-cell *cdkHeaderCellDef> Current</md-header-cell>
-        <md-cell *cdkCellDef="let coin"> {{coin.price_usd}}</md-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.price_usd | priceFormat}}</md-cell>
     </ng-container>
 
     <!-- Profit/Lowfit in USD-->

@@ -4,7 +4,7 @@ export class CoinModel {
     quantity: number;
     value?: number;
     logo?: string;
-    id?: string;
+    coinId?: string;
     market_cap_usd?: number;
     price_usd: number;
     createdAt?: number;
@@ -22,15 +22,17 @@ export class CoinModel {
 }
 
 export class InvestedCoinModel extends CoinModel {
+    coinId?: string;
     investId?: string;
     createdAt?: number;
     updatedAt?: number;
+    open_value?: number;
     description?: string;
-    quantity: number;
+    amount: number;
+    coinMeta: CoinModel;
     openPrice?: number;
     plUsd?: number;
     plPct?: number;
-    amount?: number;
 
     constructor(coin: CoinModel) {
         super(coin);

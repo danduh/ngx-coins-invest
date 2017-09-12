@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CoinModel } from '../models/common';
+import {CoinModel, InvestedCoinModel} from '../models/common';
 import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import { AuthService } from './auth.service';
@@ -59,7 +59,7 @@ export class CoinsService {
             .map(this.postRequestSuccess.bind(this));
     }
 
-    public getInvestedList(): Observable<CoinModel[]> {
+    public getInvestedList(): Observable<InvestedCoinModel[]> {
         let options = this.getAuthHeader();
         return this.http.get(`${this.baseUrl}invested`, options)
             .map(this.postRequestSuccess.bind(this));

@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { Store, Action } from "@ngrx/store";
-import { CoinsService } from "../services/coins.service";
-import { MarketTickerService } from "../services/market-ticker.service";
-import { Observable } from "rxjs/Observable";
-import { SET_INVESTED_COINS } from "./invested-reducer";
-import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
-import { Subscription } from "rxjs/Subscription";
-import { isNullOrUndefined } from "util";
+import {Injectable} from "@angular/core";
+import {Store, Action} from "@ngrx/store";
+import {CoinsService} from "../services/coins.service";
+import {MarketTickerService} from "../services/market-ticker.service";
+import {Observable} from "rxjs/Observable";
+import {SET_INVESTED_COINS} from "./invested-reducer";
+import {InvestedCoinModel, InvestTotalsModel} from "../models/common";
+import {Subscription} from "rxjs/Subscription";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class InvestedFacade {
@@ -42,7 +42,7 @@ export class InvestedFacade {
     getSymbolsInState() {
         let labels;
         this.$currentInvested.subscribe((list) => {
-            labels = list.map((c) => c.id);
+            labels = list.map((c) => c.coinId);
         });
         return labels;
     }
@@ -78,10 +78,11 @@ export class InvestedFacade {
 
         let inv = this.getCurrentState();
         inv.forEach((coin: InvestedCoinModel) => {
-            let tick = ticks[coin.id];
+            let tick = ticks[coin.coinId];
             coin.price_usd = tick.price_usd;
-            coin.plUsd = (tick.price_usd * coin.quantity) - coin.amount;
-            coin.plPct = parseFloat((coin.plUsd / coin.amount * 100).toPrecision(2));
+            coin.open_value = (coin.openPrice * coin.amount);
+            coin.plUsd = (tick.price_usd * coin.amount) - coin.open_value;
+            coin.plPct = parseFloat((coin.plUsd / coin.open_value * 100).toPrecision(2));
         });
         this.updateTickerState(inv);
     }
@@ -103,7 +104,7 @@ export class InvestedFacade {
                         observer.next(null);
 
                     } else {
-                        let open = list.map((c) => c.amount)
+                        let open = list.map((c) => c.open_value)
                             .reduce((a, b) => a + b);
 
                         let profit = list.map((c) => c.plUsd)
