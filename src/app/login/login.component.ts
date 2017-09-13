@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseClass } from "../classes/base.class";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BaseClass} from "../classes/base.class";
 
 @Component({
     selector: 'app-login',
@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit {
     }
 
     postLoginRedirect() {
-        this.router.navigate(['/portfolio']);
+        this.router.navigate(['/portfolio'])
+            .then((resp) => console.log(resp));
     }
 
     errorHandler(error) {

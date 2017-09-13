@@ -107,31 +107,6 @@ export class AuthService {
         }
     }
 
-    getUser() {
-        const $this = this;
-
-        this.cognitoUser = this.userPool.getCurrentUser();
-
-        if (this.cognitoUser != null) {
-
-            this.cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    this.errorHandler(err);
-                    return;
-                }
-
-                $this.cognitoUser.getUserAttributes(function (err, attributes) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(attributes);
-                    }
-                });
-
-            });
-        }
-    }
-
     callbackObj(observe?) {
         return {
             mfaRequired: defaultCB,
@@ -140,7 +115,7 @@ export class AuthService {
             onSuccess:
                 (result) => {
                     this.isLoggedInSubs = this.isLoggedIn();
-                    this.cognitoUser = result.user;
+                    // this.cognitoUser = result.user;
                     observe.next(true);
                     console.log('access token + ' + result.getAccessToken().getJwtToken());
                     observe.complete(true);
@@ -151,11 +126,6 @@ export class AuthService {
                 observe.throw(error);
 
             },
-
-            // mfaRequired: function (codeDeliveryDetails) {
-            //     let verificationCode = prompt('Please input verification code', '');
-            //     $this.cognitoUser.sendMFACode(verificationCode, $this.callbackObj(observe));
-            // },
 
             newPasswordRequired:
                 (msg) => {
