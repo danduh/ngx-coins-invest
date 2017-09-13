@@ -9,3 +9,10 @@ install:
 
 script:
   - yarn delivery:prod
+
+
+# whitelist
+branches:
+  only:
+  - master
+  - develop
