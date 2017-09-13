@@ -42,7 +42,7 @@ export class InvestedFacade {
     getSymbolsInState() {
         let labels;
         this.$currentInvested.subscribe((list) => {
-            labels = list.map((c) => c.coinId);
+            labels = list.map((c) => c.coinMeta.symbol);
         });
         return labels;
     }
@@ -54,7 +54,7 @@ export class InvestedFacade {
         };
         this.store.dispatch(action);
         let labels = this.getSymbolsInState();
-        this.tickerService.getListByLabels(labels)
+        this.tickerService.getMultiSymbols(labels)
             .subscribe(this.mergeInvestedTicker.bind(this));
 
         this.initTickerLoader();
@@ -65,23 +65,18 @@ export class InvestedFacade {
         this.ticksLoaderSubscriber = Observable
             .interval(10000)
             .switchMap(() => {
-                return this.tickerService.getListByLabels(labels)
+                return this.tickerService.getMultiSymbols(labels);
             })
             .subscribe(this.mergeInvestedTicker.bind(this));
     }
 
     mergeInvestedTicker(ticker) {
-        let ticks = {};
-        ticker.forEach((coin) => {
-            ticks[coin.id] = coin;
-        });
-
         let inv = this.getCurrentState();
         inv.forEach((coin: InvestedCoinModel) => {
-            let tick = ticks[coin.coinId];
-            coin.price_usd = tick.price_usd;
+            let tick = ticker[coin.coinMeta.symbol];
+            coin.price_usd = tick.USD;
             coin.open_value = (coin.openPrice * coin.amount);
-            coin.plUsd = (tick.price_usd * coin.amount) - coin.open_value;
+            coin.plUsd = (tick.USD * coin.amount) - coin.open_value;
             coin.plPct = parseFloat((coin.plUsd / coin.open_value * 100).toPrecision(2));
         });
         this.updateTickerState(inv);
