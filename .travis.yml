@@ -8,18 +8,15 @@ install:
   - yarn install
 
 script:
+    #Fake Build
+  - yarn build:prod
+
     #Master
   - if [ $TRAVIS_BRANCH == "master" ]; then
-      yarn delivery:prod;
+      yarn uploadTo:prod;
     fi
 
     #Develop
   - if [ $TRAVIS_BRANCH == "develop" ]; then
-      yarn delivery:prod;
+      yarn uploadTo:prod;
     fi
-
-# whitelist
-branches:
-  only:
-  - master
-  - develop
