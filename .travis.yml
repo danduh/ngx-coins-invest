@@ -4,12 +4,18 @@ node_js:
   - "8.3"
 
 install:
-  - npm install -g yarn
-  - yarn install
+  - npm install
 
 script:
-  - yarn delivery:prod
+    #Master
+  - if [ $TRAVIS_BRANCH == "master" ]; then
+      npm run delivery:prod;
+    fi
 
+    #Develop
+  - if [ $TRAVIS_BRANCH == "develop" ]; then
+      npm run delivery:prod;
+    fi
 
 # whitelist
 branches:
