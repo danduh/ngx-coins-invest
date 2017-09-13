@@ -1,42 +1,39 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
 
-import { AppComponent } from './app.component';
-import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { AngularMaterialModule } from './angular-material/angular-material.module';
-import { HeaderComponent } from './components/header/header.component';
-import { AuthService } from './services/auth.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CoinsListComponent } from './coins-list/coins-list.component';
-import { CoinsService } from './services/coins.service';
-import { CoinsManagerComponent } from './coins-manager/coins-manager.component';
-import { TradeApiService } from './services/trade-api.service';
-import { PriceFormatPipe } from './pipes/price-format.pipe';
-import { FilterPipe } from './pipes/filter.pipe';
-import { CurrentStatusComponent } from './current-status/current-status.component';
-import { AuthGuard } from "./services/auth-guard";
-import { HttpClientModule } from "@angular/common/http";
-import { ChartsService } from "./services/charts/charts.service";
-import { CoinCardComponent } from './components/coin-card/coin-card.component';
-import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
-import { ViewCardModeComponent } from './components/view-card-mode/view-card-mode.component';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { PermissionsDirective } from "./directives/permissions.directive";
-import { ListModeItemComponent } from './components/list-mode-item/list-mode-item.component';
-import { StoreModule } from '@ngrx/store';
-import { investedReducer } from "./states/invested-reducer";
-import { InvestedFacade } from "./states/invested-facade";
-import { MarketTickerService } from "./services/market-ticker.service";
-import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
-import { OutOutletService } from "./services/out-outler.service";
-import { WindowService } from "./services/window.service";
-import { AccountComponent } from './account/account.component';
-import { RegistrationComponent } from './registration/registration.component';
-
-const Titels = {}
+import {AppComponent} from './app.component';
+import {RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
+import {LoginComponent} from './login/login.component';
+import {AngularMaterialModule} from './angular-material/angular-material.module';
+import {HeaderComponent} from './components/header/header.component';
+import {AuthService} from './services/auth.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CoinsListComponent} from './coins-list/coins-list.component';
+import {CoinsService} from './services/coins.service';
+import {CoinsManagerComponent} from './coins-manager/coins-manager.component';
+import {PriceFormatPipe} from './pipes/price-format.pipe';
+import {FilterPipe} from './pipes/filter.pipe';
+import {CurrentStatusComponent} from './current-status/current-status.component';
+import {AuthGuard} from "./services/auth-guard";
+import {HttpClientModule} from "@angular/common/http";
+import {ChartsService} from "./services/charts/charts.service";
+import {CoinCardComponent} from './components/coin-card/coin-card.component';
+import {ViewListModeComponent} from './components/view-list-mode/view-list-mode.component';
+import {ViewCardModeComponent} from './components/view-card-mode/view-card-mode.component';
+import {SideMenuComponent} from './components/side-menu/side-menu.component';
+import {PermissionsDirective} from "./directives/permissions.directive";
+import {ListModeItemComponent} from './components/list-mode-item/list-mode-item.component';
+import {StoreModule} from '@ngrx/store';
+import {investedReducer} from "./states/invested-reducer";
+import {InvestedFacade} from "./states/invested-facade";
+import {MarketTickerService} from "./services/market-ticker.service";
+import {FooterInvestComponent} from './components/footer-invest/footer-invest.component';
+import {OutOutletService} from "./services/out-outler.service";
+import {WindowService} from "./services/window.service";
+import {AccountComponent} from './account/account.component';
+import {RegistrationComponent} from './registration/registration.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -68,7 +65,7 @@ export const MainRoutes: Routes = [
     {
         path: 'portfolio/:viewType',
         component: CurrentStatusComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, OutOutletService],
         data: {title: 'Portfolio'}
     },
     {
@@ -117,7 +114,6 @@ export const MainRoutes: Routes = [
         AuthGuard,
         AuthService,
         CoinsService,
-        TradeApiService,
         InvestedFacade,
         MarketTickerService,
         OutOutletService,
