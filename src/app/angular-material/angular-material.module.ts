@@ -11,7 +11,9 @@ import { CdkTableModule } from "@angular/cdk";
 import { FormsModule } from "@angular/forms";
 
 @NgModule({
-    declarations: [DialogComponent],
+    declarations: [
+        DialogComponent
+    ],
     imports: [
         CommonModule,
         CdkTableModule,
@@ -59,9 +61,10 @@ import { FormsModule } from "@angular/forms";
         MdSelectModule,
         MdButtonModule,
         MdSidenavModule,
-        DialogComponent,
+        // DialogComponent,
         MdProgressSpinnerModule,
     ],
+    // entryComponents: [DialogComponent],
     bootstrap: [
         DialogComponent
     ]

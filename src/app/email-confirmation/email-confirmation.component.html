@@ -15,10 +15,14 @@
                 id="confirmRegistration" type="submit"
                 class="btn btn-info btn-block">Confirm
         </button>
-        <p>Can't find your code? <a [routerLink]="['/home/resendCode']"> <i class="fa fa-fw fa-group"></i> Resend
-            Code</a>
-            <a [routerLink]="['/home/register']"> <i class="fa fa-fw fa-group"></i> Register</a> <a
-                [routerLink]="['/home/login']"> <i class="fa fa-fw fa-user"></i> Login</a>
+
+        <p>Can't find your code?
+            <a [routerLink]="['/home/resendCode']">
+                <i class="fa fa-fw fa-group"></i> ResendCode
+            </a>
+            <a [routerLink]="['/register']"> <i class="fa fa-fw fa-group"></i> Register</a> <a
+                [routerLink]="['/login']"> <i class="fa fa-fw fa-user"></i> Login</a>
         </p>
     </form>
+    <dialog>{{errorMessage}}</dialog>
 </div>

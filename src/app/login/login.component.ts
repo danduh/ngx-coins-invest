@@ -1,7 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BaseClass} from "../classes/base.class";
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BaseClass } from "../classes/base.class";
+import { MdDialog } from "@angular/material";
+import { DialogComponent } from "../components/dialog/dialog.component";
+import { UserLoginService } from "../services/user-login.service";
+import { LoggedInCallback } from "../services/cognito-utility.service";
 
 @Component({
     selector: 'app-login',
@@ -15,32 +19,90 @@ export class LoginComponent implements OnInit {
     public error: string = null;
     public changePswd = false;
 
-    constructor(private auth: AuthService,
+    constructor(public dialog: MdDialog,
+                private auth: AuthService,
                 private route: ActivatedRoute,
+                public userService: UserLoginService,
                 private router: Router) {
 
     }
 
     ngOnInit() {
-        if (this.route.snapshot.data['logout']) {
-            this.auth.signOut();
-        } else if (this.auth.isLoggedIn()) {
-            this.postLoginRedirect();
+        this.error = null;
+        console.log("Checking if the user is already authenticated. If so, then redirect to the secure site");
+        // this.userService.isAuthenticated(this);
+        this.userService.rxIsAuthenticated()
+            .subscribe((response) => {
+                this.authenticationCallback(null, response);
+            }, (err) => {
+                this.authenticationCallback(err, false);
+            });
+    }
+
+    cognitoCallback(message: string, result: any) {
+        if (message != null) { // error
+            this.error = message;
+            console.log("result: " + this.error);
+            if (this.error === 'User is not confirmed.') {
+                console.log("redirecting");
+                this.router.navigate(['/home/confirmRegistration', this.username]);
+            } else if (this.error === 'User needs to set password.') {
+                console.log("redirecting to set new password");
+                this.router.navigate(['/home/newPassword']);
+            }
+        } else { //  success
+            this.router.navigate(['/portfolio'])
+                .then(
+                    function () {
+                        console.log('navigate success');
+                    },
+                    function () {
+                        console.log('navigate failure');
+                    }
+                );
+        }
+    }
+
+    authenticationCallback(message: string, result: any) {
+        if (message != null) { // error
+            this.error = message;
+            console.log("result: " + this.error);
+            if (this.error === 'User is not confirmed.') {
+                console.log("redirecting");
+                this.router.navigate(['/home/confirmRegistration', this.username]);
+            } else if (this.error === 'User needs to set password.') {
+                console.log("redirecting to set new password");
+                this.router.navigate(['/home/newPassword']);
+            }
+        } else { //  success
+            this.router.navigate(['/portfolio'])
+                .then(
+                    function () {
+                        console.log('navigate success');
+                    },
+                    function () {
+                        console.log('navigate failure');
+                    }
+                );
+        }
+    }
+
+    isLoggedIn(message: string, isLoggedIn: boolean) {
+        if (isLoggedIn) {
+            this.router.navigate(['/portfolio']);
         }
     }
 
     login() {
+        if (this.username == null || this.password == null) {
+            this.error = "All fields are required";
+            return;
+        }
+
+        this.userService.authenticate(this.username, this.password, this);
+
         this.error = null;
 
-        if (this.changePswd) {
-            if (this.password === this.newPassword) {
-                this.auth.changePassword(this.password)
-                    .subscribe(this.postLogin.bind(this), this.errorHandler.bind(this));
-            }
-        } else {
-            this.auth.signIn(this.username, this.password)
-                .subscribe(this.postLogin.bind(this), this.errorHandler.bind(this));
-        }
     }
 
     postLogin(data) {
@@ -63,4 +125,46 @@ export class LoginComponent implements OnInit {
         this.error = error.data.error_description;
     }
 
+    showErrorMsg(msg) {
+        let dialogRef = this.dialog.open(DialogComponent, {
+            width: 'auto',
+            data: {
+                input: false,
+                message: msg,
+                options: [
+                    {
+                        value: true,
+                        label: 'OK'
+                    }
+                ]
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+        });
+    }
+
+}
+
+
+@Component({
+    selector: 'app-logout',
+    template: ''
+})
+export class LogoutComponent implements LoggedInCallback {
+
+    constructor(public router: Router,
+                public userService: UserLoginService) {
+        this.userService.isAuthenticated(this)
+    }
+
+    isLoggedIn(message: string, isLoggedIn: boolean) {
+        if (isLoggedIn) {
+            this.userService.logout();
+            this.router.navigate(['/login']);
+        }
+
+        this.router.navigate(['/login']);
+    }
 }

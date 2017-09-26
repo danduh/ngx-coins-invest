@@ -1,5 +1,6 @@
 <h1 *ngIf="config.title" md-dialog-title>{{config.title}}</h1>
-<ng-template *ngIf="!config.input; else modalInput">
+
+<div *ngIf="config.input===false; else modalInput">
     <div md-dialog-content>
         {{config.message}}
     </div>
@@ -8,7 +9,7 @@
         <button *ngFor="let opt of config.options" md-button [md-dialog-close]="opt.value">{{opt.label}}</button>
     </div>
 
-</ng-template>
+</div>
 <ng-template #modalInput>
     <div md-dialog-content>
         <p class="msg">

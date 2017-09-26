@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, Optional } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, Optional } from '@angular/core';
 import { MD_DIALOG_DATA } from "@angular/material";
 
 @Component({
@@ -6,13 +6,14 @@ import { MD_DIALOG_DATA } from "@angular/material";
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss']
 })
-export class DialogComponent implements AfterViewInit {
-    response
-    constructor(@Optional() @Inject(MD_DIALOG_DATA) public config: any) {
+export class DialogComponent implements OnInit {
+    response;
 
+    constructor(@Optional() @Inject(MD_DIALOG_DATA) public config: any) {
+        // this.config = {};
     }
 
-    ngAfterViewInit() {
-        console.log(this.config);
+    ngOnInit() {
+        console.log(this.config.input);
     }
 }

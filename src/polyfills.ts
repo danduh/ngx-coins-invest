@@ -40,6 +40,7 @@ import 'zone.js/dist/zone';
 
 // import 'rxjs/add/observable/flatMap';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';

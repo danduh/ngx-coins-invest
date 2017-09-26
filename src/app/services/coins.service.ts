@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {CoinModel, InvestedCoinModel} from '../models/common';
+import { CoinModel, InvestedCoinModel } from '../models/common';
 import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
 import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
+import { CognitoUtil } from "./cognito-utility.service";
 
 @Injectable()
 export class CoinsService {
@@ -17,12 +18,12 @@ export class CoinsService {
 
     private getAuthHeader(shouldAuth?: boolean): any {
         let headerObject = {'Content-Type': 'application/json'};
-        headerObject['Authorization'] = this.auth.getAuthToken();
+        headerObject['Authorization'] = this.cognitoUtil.getAuthToken();
         return {headers: new Headers(headerObject)};
     }
 
     constructor(private router: Router,
-                private auth: AuthService,
+                public cognitoUtil: CognitoUtil,
                 private snackBar: MdSnackBar,
                 private http: Http) {
     }
@@ -47,10 +48,10 @@ export class CoinsService {
     }
 
     public deleteInvest(investId): Observable<any> {
-        if (!this.auth.isUserInGroup('investors')) {
-            this.actionNotAllowed();
-            return Observable.throw('notAllowed');
-        }
+        // if (!this.auth.isUserInGroup('investors')) {
+        //     this.actionNotAllowed();
+        //     return Observable.throw('notAllowed');
+        // }
 
         let options = this.getAuthHeader();
         return this.http.delete(`${this.baseUrl}invested/${investId}`, options)

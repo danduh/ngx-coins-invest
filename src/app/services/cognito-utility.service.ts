@@ -35,7 +35,6 @@ export interface Callback {
 export class CognitoUtil {
 
     public static _REGION = cognitoCongf.region;
-
     public static _IDENTITY_POOL_ID = cognitoCongf.identityPoolId;
     public static _USER_POOL_ID = cognitoCongf.userPoolId;
     public static _CLIENT_ID = cognitoCongf.clientId;
@@ -46,6 +45,7 @@ export class CognitoUtil {
     };
 
     public cognitoCreds: AWS.CognitoIdentityCredentials;
+    public jwtToken;
 
     getUserPool() {
         if (cognitoCongf.cognito_idp_endpoint) {
@@ -56,6 +56,10 @@ export class CognitoUtil {
 
     getCurrentUser() {
         return this.getUserPool().getCurrentUser();
+    }
+
+    getAuthToken() {
+        return this.jwtToken;
     }
 
     // AWS Stores Credentials in many ways, and with TypeScript this means that
@@ -76,6 +80,7 @@ export class CognitoUtil {
     // to avoid unnecessary calls to setCognitoCreds.
 
     buildCognitoCreds(idTokenJwt: string) {
+        this.jwtToken = idTokenJwt;
         let url = 'cognito-idp.' + CognitoUtil._REGION.toLowerCase() + '.amazonaws.com/' + CognitoUtil._USER_POOL_ID;
         if (cognitoCongf.cognito_idp_endpoint) {
             url = cognitoCongf.cognito_idp_endpoint + '/' + CognitoUtil._USER_POOL_ID;

@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, LogoutComponent } from './login/login.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';
@@ -38,10 +38,12 @@ import { AccountService } from "./services/account.service";
 import { UserRegistrationService } from "./services/user-registration.ervice";
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 import { CognitoUtil } from "./services/cognito-utility.service";
+import { UserLoginService } from "./services/user-login.service";
+import { ProtfoliosComponent } from './protfolios/protfolios.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
-    {path: 'logout', component: LoginComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
+    {path: 'logout', component: LogoutComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
     {
         path: 'register',
         component: RegistrationComponent,
@@ -74,15 +76,9 @@ export const MainRoutes: Routes = [
     },
     {
         path: 'portfolio',
-        component: CurrentStatusComponent,
+        component: ProtfoliosComponent,
         canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Portfolio'}
-    },
-    {
-        path: 'portfolio/:viewType',
-        component: CurrentStatusComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Portfolio'}
+        data: {title: 'Select Portfolio'}
     },
     {
         path: 'investto/:coinId',
@@ -97,6 +93,7 @@ export const MainRoutes: Routes = [
     declarations: [
         AppComponent,
         LoginComponent,
+        LogoutComponent,
         HeaderComponent,
         CoinsListComponent,
         CoinsManagerComponent,
@@ -112,7 +109,8 @@ export const MainRoutes: Routes = [
         FooterInvestComponent,
         AccountComponent,
         RegistrationComponent,
-        EmailConfirmationComponent
+        EmailConfirmationComponent,
+        ProtfoliosComponent
     ],
     imports: [
         HttpClientModule,
@@ -126,6 +124,7 @@ export const MainRoutes: Routes = [
         StoreModule.forRoot({investedStore: investedReducer})
     ],
     providers: [
+        UserLoginService,
         CognitoUtil,
         UserRegistrationService,
         AccountService,

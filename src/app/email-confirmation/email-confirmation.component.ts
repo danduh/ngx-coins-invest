@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserRegistrationService } from "../services/user-registration.ervice";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroup } from "@angular/forms";
+import { DialogComponent } from "../components/dialog/dialog.component";
+import { MdDialog } from "@angular/material";
 
 @Component({
     selector: 'app-email-confirmation',
@@ -17,6 +19,7 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
 
     constructor(public regService: UserRegistrationService,
                 public router: Router,
+                public dialog: MdDialog,
                 public route: ActivatedRoute) {
     }
 
@@ -48,13 +51,34 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
             // error
             this.errorMessage = message;
             console.log('message: ' + this.errorMessage);
+            this.showErrorMsg(message);
         } else {
             // success
             // move to the next step
+
             console.log('Moving to securehome');
             // this.configs.curUser = result.user;
             this.router.navigate(['/securehome']);
         }
     }
 
+    showErrorMsg(msg) {
+        let dialogRef = this.dialog.open(DialogComponent, {
+            width: 'auto',
+            data: {
+                input: false,
+                message: msg,
+                options: [
+                    {
+                        value: true,
+                        label: 'OK'
+                    }
+                ]
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+        });
+    }
 }

@@ -1,5 +1,6 @@
 import { Directive, Input, ViewContainerRef, TemplateRef, OnInit } from '@angular/core';
 import { AuthService } from "../services/auth.service";
+import { UserLoginService } from "../services/user-login.service";
 
 @Directive({
     selector: '[appHasPerms]'
@@ -18,16 +19,21 @@ export class PermissionsDirective implements OnInit {
     }
 
     constructor(private templateRef: TemplateRef<any>,
-                private authService: AuthService,
+                private userService: UserLoginService,
                 private viewContainerRef: ViewContainerRef) {
     }
 
     ngOnInit() {
-        console.log(this.appHasPerms);
-        console.log(this.authService.isLoggedIn());
+        if (this.appHasPerms === 'isLoggedIn') {
+            this.userService.isAuthenticated(this);
+        } else {
+            this.viewContainerRef.clear();
+        }
+    }
 
-        if (this.appHasPerms === 'isLoggedIn' && this.authService.isLoggedIn()) {
-            this.viewContainerRef.createEmbeddedView(this.templateRef);
+    isLoggedIn(message: string, isLoggedIn: boolean) {
+        if (isLoggedIn) {
+            this.userService.isAuthenticated(this);
         } else {
             this.viewContainerRef.clear();
         }

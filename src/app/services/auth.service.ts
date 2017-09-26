@@ -96,10 +96,6 @@ export class AuthService {
         return false;
     }
 
-    isUserInGroup(group: string) {
-        return this.appUser.groups.indexOf(group) > -1;
-    }
-
     public getAuthToken() {
         if (!!this.tokens && this.isLoggedIn()) {
             return this.tokens.getIdToken().getJwtToken();
