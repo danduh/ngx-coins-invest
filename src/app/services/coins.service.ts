@@ -9,8 +9,6 @@ import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
 
 @Injectable()
 export class CoinsService {
-    // baseUrl = 'https://i10kcmw72h.execute-api.us-east-1.amazonaws.com/dev/';
-    //
     baseUrl = environment['baseApiUrl'];
 
     private cachedList: CoinModel[];

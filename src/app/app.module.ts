@@ -1,48 +1,64 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
-import {AppComponent} from './app.component';
-import {RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {AngularMaterialModule} from './angular-material/angular-material.module';
-import {HeaderComponent} from './components/header/header.component';
-import {AuthService} from './services/auth.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {CoinsListComponent} from './coins-list/coins-list.component';
-import {CoinsService} from './services/coins.service';
-import {CoinsManagerComponent} from './coins-manager/coins-manager.component';
-import {PriceFormatPipe} from './pipes/price-format.pipe';
-import {FilterPipe} from './pipes/filter.pipe';
-import {CurrentStatusComponent} from './current-status/current-status.component';
-import {AuthGuard} from "./services/auth-guard";
-import {HttpClientModule} from "@angular/common/http";
-import {ChartsService} from "./services/charts/charts.service";
-import {CoinCardComponent} from './components/coin-card/coin-card.component';
-import {ViewListModeComponent} from './components/view-list-mode/view-list-mode.component';
-import {ViewCardModeComponent} from './components/view-card-mode/view-card-mode.component';
-import {SideMenuComponent} from './components/side-menu/side-menu.component';
-import {PermissionsDirective} from "./directives/permissions.directive";
-import {ListModeItemComponent} from './components/list-mode-item/list-mode-item.component';
-import {StoreModule} from '@ngrx/store';
-import {investedReducer} from "./states/invested-reducer";
-import {InvestedFacade} from "./states/invested-facade";
-import {MarketTickerService} from "./services/market-ticker.service";
-import {FooterInvestComponent} from './components/footer-invest/footer-invest.component';
-import {OutOutletService} from "./services/out-outler.service";
-import {WindowService} from "./services/window.service";
-import {AccountComponent} from './account/account.component';
-import {RegistrationComponent} from './registration/registration.component';
+import { AppComponent } from './app.component';
+import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { HeaderComponent } from './components/header/header.component';
+import { AuthService } from './services/auth.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoinsListComponent } from './coins-list/coins-list.component';
+import { CoinsService } from './services/coins.service';
+import { CoinsManagerComponent } from './coins-manager/coins-manager.component';
+import { PriceFormatPipe } from './pipes/price-format.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { CurrentStatusComponent } from './current-status/current-status.component';
+import { AuthGuard } from "./services/auth-guard";
+import { HttpClientModule } from "@angular/common/http";
+import { ChartsService } from "./services/charts/charts.service";
+import { CoinCardComponent } from './components/coin-card/coin-card.component';
+import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
+import { ViewCardModeComponent } from './components/view-card-mode/view-card-mode.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { PermissionsDirective } from "./directives/permissions.directive";
+import { ListModeItemComponent } from './components/list-mode-item/list-mode-item.component';
+import { StoreModule } from '@ngrx/store';
+import { investedReducer } from "./states/invested-reducer";
+import { InvestedFacade } from "./states/invested-facade";
+import { MarketTickerService } from "./services/market-ticker.service";
+import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
+import { OutOutletService } from "./services/out-outler.service";
+import { WindowService } from "./services/window.service";
+import { AccountComponent } from './account/account.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { AccountService } from "./services/account.service";
+import { UserRegistrationService } from "./services/user-registration.ervice";
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { CognitoUtil } from "./services/cognito-utility.service";
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
     {path: 'logout', component: LoginComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
     {
-        path: 'signin',
+        path: 'register',
         component: RegistrationComponent,
         canActivate: [OutOutletService],
-        data: {logout: true, title: 'Sign In'}
+        data: {logout: true, title: 'Sign Up'},
+    },
+    {
+        path: 'email-confirm',
+        component: EmailConfirmationComponent,
+        canActivate: [OutOutletService],
+        data: {logout: true, title: 'Email Confirmation'},
+    },
+    {
+        path: 'email-confirm/:username',
+        component: EmailConfirmationComponent,
+        canActivate: [OutOutletService],
+        data: {logout: true, title: 'Email Confirmation'},
     },
     {
         path: 'account',
@@ -95,7 +111,8 @@ export const MainRoutes: Routes = [
         ListModeItemComponent,
         FooterInvestComponent,
         AccountComponent,
-        RegistrationComponent
+        RegistrationComponent,
+        EmailConfirmationComponent
     ],
     imports: [
         HttpClientModule,
@@ -109,7 +126,9 @@ export const MainRoutes: Routes = [
         StoreModule.forRoot({investedStore: investedReducer})
     ],
     providers: [
-        // {provide: AuthService, useClass: AuthServiceStub},
+        CognitoUtil,
+        UserRegistrationService,
+        AccountService,
         ChartsService,
         AuthGuard,
         AuthService,

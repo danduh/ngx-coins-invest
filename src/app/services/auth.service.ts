@@ -43,8 +43,8 @@ export const parseJwt = (token) => {
 };
 
 const defaultCB = (res) => {
-    console.log(res)
-}
+    console.log(res);
+};
 
 @Injectable()
 export class AuthService {
@@ -55,6 +55,7 @@ export class AuthService {
     public appUser: AppUser;
     private parsedJwt: any;
     private userPoolRegister: any;
+    private tempUser: any = {email: null, password: null};
 
     _isLoggedInSubs: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
@@ -112,24 +113,25 @@ export class AuthService {
             mfaRequired: defaultCB,
             customChallenge: defaultCB,
 
-            onSuccess:
-                (result) => {
-                    this.isLoggedInSubs = this.isLoggedIn();
-                    // this.cognitoUser = result.user;
-                    observe.next(true);
-                    console.log('access token + ' + result.getAccessToken().getJwtToken());
-                    observe.complete(true);
-                },
+            onSuccess: (result) => {
+                this.isLoggedInSubs = this.isLoggedIn();
+                // this.cognitoUser = result.user;
+                observe.next();
+                console.log('access token + ' + result.getAccessToken().getJwtToken());
+                observe.complete();
+            },
 
             onFailure: (error) => {
                 this.errorHandler(this);
                 observe.throw(error);
+                observe.complete();
 
             },
 
             newPasswordRequired:
                 (msg) => {
                     observe.next('changePassword');
+                    observe.complete();
                 },
 
             inputVerificationCode:
@@ -172,38 +174,43 @@ export class AuthService {
         }
     }
 
-    saveToken(token: string) {
-        localStorage.setItem('access_token', token);
-    }
-
     register(newUserData: AppUser, password: string) {
         let attributeList = [];
-
         const dataEmail = newUserData.getDataEmail();
+        this.tempUser.password = password;
+        this.tempUser.email = newUserData.username;
+
         const attributeEmail = new CognitoUserAttribute(dataEmail);
         attributeList.push(attributeEmail);
         return Observable.create((observe) => {
             this.userPool.signUp(newUserData.username, password, attributeList, null, (err, resp) => {
-                if (!!resp)
+                if (!!resp) {
                     this.cognitoUser = resp.user;
+                }
                 observe.next(resp);
                 observe.complete();
-            })
+            });
             // return this.userPoolRegister(newUserData.username, password, attributeList, null, this.callbackObj(observe));
         });
     }
 
     confirmEmail(code) {
         return Observable.create((observe) => {
-            return this.cognitoUser.confirmRegistration(code, null, function (err, result) {
+            return this.cognitoUser.confirmRegistration(code, null, (err, result) => {
                 if (err) {
                     alert(err);
+                    observe.off(err);
                     return;
                 }
-                console.log('call result: ' + result);
-                observe.complete();
+
+                this.signIn(this.tempUser.email, this.tempUser.password)
+                    .subscribe((res) => {
+                        observe.next(this.cognitoUser.getUsername());
+
+                    });
             });
-        });
+        })
+
     }
 
     errorHandler(err) {
