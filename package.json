@@ -11,13 +11,13 @@
     "build": "ng build",
     "precach": "sw-precache --verbose --config=sw-precache-config.js",
     "******BUILD_TASKS": "*************************BUILDS***********************",
-    "build:dev": "ng build --prod --e=dev && yarn precach",
-    "build:prod": "ng build --prod --e=prod && yarn precach",
+    "build:dev": "ng build --prod --e=dev && npm run precach",
+    "build:prod": "ng build --prod --e=prod && npm run precach",
     "******UPLOAD_TASKS": "************************UPLOADS************************",
     "uploadTo:prod": "aws-fed-deployment --dpl-config config/deploy.prod.config.json",
     "uploadTo:dev": "aws-fed-deployment --dpl-config config/deploy.dev.config.json",
     "******DELIVERY_TASKS": "**********************DELIVERY*************************",
-    "delivery:prod": "yarn build:prod && yarn uploadTo:prod"
+    "delivery:prod": "npm run build:prod && npm run uploadTo:prod"
   },
   "private": true,
   "dependencies": {

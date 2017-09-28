@@ -3,7 +3,6 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs/observable';
 import { CognitoUtil } from "./cognito-utility.service";
 
-
 @Injectable()
 export class CognitoAuthInterceptor implements HttpInterceptor {
     constructor(private cognitoUtil: CognitoUtil) {

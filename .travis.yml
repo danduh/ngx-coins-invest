@@ -4,19 +4,18 @@ node_js:
   - "8.3"
 
 install:
-  - npm install -g yarn
-  - yarn install
+  - npm i
 
 script:
     #Fake Build
-  - yarn build:prod
+  - npm run build:prod
 
     #Master
   - if [ $TRAVIS_BRANCH == "master" ]; then
-      yarn uploadTo:prod;
+      npm run uploadTo:prod;
     fi
 
     #Develop
-  - if [ $TRAVIS_BRANCH == "develop" ]; then
-      yarn uploadTo:prod;
-    fi
+#  - if [ $TRAVIS_BRANCH == "develop" ]; then
+#      npm run uploadTo:prod;
+#    fi
