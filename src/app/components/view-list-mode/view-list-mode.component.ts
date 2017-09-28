@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { InvestedCoinModel } from "../../models/common";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { DataSource } from "@angular/cdk";
+import { DataSource } from "@angular/cdk/table";
 import { InvestedFacade } from "app/states/invested-facade";
 import { CoinsService } from "../../services/coins.service";
 import { WindowService } from "../../services/window.service";

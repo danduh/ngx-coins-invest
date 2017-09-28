@@ -7,7 +7,7 @@ import {
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
-import { CdkTableModule } from "@angular/cdk";
+import { CdkTableModule } from "@angular/cdk/table";
 import { FormsModule } from "@angular/forms";
 
 @NgModule({
