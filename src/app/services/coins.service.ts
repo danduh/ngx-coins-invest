@@ -16,11 +16,11 @@ export class CoinsService {
     private authSnackBar: MdSnackBarRef<SimpleSnackBar>;
 
 
-    private getAuthHeader(shouldAuth?: boolean): any {
-        let headerObject = {'Content-Type': 'application/json'};
-        headerObject['Authorization'] = this.cognitoUtil.getAuthToken();
-        return {headers: new Headers(headerObject)};
-    }
+    // private getAuthHeader(shouldAuth?: boolean): any {
+    //     let headerObject = {'Content-Type': 'application/json'};
+    //     // headerObject['Authorization'] = this.cognitoUtil.getAuthToken();
+    //     return {headers: new Headers(headerObject)};
+    // }
 
     constructor(private router: Router,
                 public cognitoUtil: CognitoUtil,
@@ -29,21 +29,21 @@ export class CoinsService {
     }
 
     public getList(): Observable<CoinModel[]> {
-        const options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins`, options)
+        // const options = this.getAuthHeader();
+        return this.http.get(`${this.baseUrl}coins`)
             .map(this.postRequestSuccess.bind(this));
     }
 
     public getOneCoin(coinId) {
-        let options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins/${coinId}`, options)
+        // let options = this.getAuthHeader();
+        return this.http.get(`${this.baseUrl}coins/${coinId}`)
             .map(this.postRequestSuccess.bind(this))
             .map((coins) => coins[0]);
     }
 
     public addCoin(coin): Observable<CoinModel> {
-        let options = this.getAuthHeader();
-        return this.http.post(`${this.baseUrl}invested/${coin.id}`, coin, options)
+        // let options = this.getAuthHeader();
+        return this.http.post(`${this.baseUrl}invested/${coin.id}`, coin)
             .map(this.postRequestSuccess.bind(this));
     }
 
@@ -53,14 +53,13 @@ export class CoinsService {
         //     return Observable.throw('notAllowed');
         // }
 
-        let options = this.getAuthHeader();
-        return this.http.delete(`${this.baseUrl}invested/${investId}`, options)
+        // let options = this.getAuthHeader();
+        return this.http.delete(`${this.baseUrl}invested/${investId}`)
             .map(this.postRequestSuccess.bind(this));
     }
 
     public getInvestedList(): Observable<InvestedCoinModel[]> {
-        let options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}invested`, options)
+        return this.http.get(`${this.baseUrl}invested`)
             .map(this.postRequestSuccess.bind(this));
     }
 

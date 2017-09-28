@@ -6,6 +6,7 @@ import { MdDialog } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { UserLoginService } from "../services/user-login.service";
 import { LoggedInCallback } from "../services/cognito-utility.service";
+import { AccountService } from "../services/account.service";
 
 @Component({
     selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
                 private auth: AuthService,
                 private route: ActivatedRoute,
                 public userService: UserLoginService,
+                private accountService: AccountService,
                 private router: Router) {
 
     }
@@ -51,15 +53,18 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/home/newPassword']);
             }
         } else { //  success
-            this.router.navigate(['/portfolio'])
-                .then(
-                    function () {
-                        console.log('navigate success');
-                    },
-                    function () {
-                        console.log('navigate failure');
-                    }
-                );
+            this.accountService.getOrCreate()
+                .subscribe((response) => {
+                    this.router.navigate(['/portfolio'])
+                        .then(
+                            function () {
+                                console.log('navigate success');
+                            },
+                            function () {
+                                console.log('navigate failure');
+                            }
+                        );
+                });
         }
     }
 

@@ -23,8 +23,7 @@ export class RegistrationComponent implements CognitoCallback {
 
     constructor(public userRegistration: UserRegistrationService,
                 private router: Router,
-                private accountService: AccountService,
-                private dialog: MdDialog) {
+                private accountService: AccountService) {
         this.onInit();
     }
 

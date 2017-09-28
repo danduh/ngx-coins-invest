@@ -10,6 +10,7 @@ import {
 import * as AWS from "aws-sdk/global";
 import * as awsservice from "aws-sdk/lib/service";
 import * as CognitoIdentity from "aws-sdk/clients/cognitoidentity";
+import { Observable } from "rxjs/Observable";
 
 const cognitoCongf = environment['aws'];
 
@@ -58,9 +59,28 @@ export class CognitoUtil {
         return this.getUserPool().getCurrentUser();
     }
 
-    getAuthToken() {
-        return this.jwtToken;
-    }
+    rxGetAuthToken(): Observable<string> {
+
+        return Observable.create((observer) => {
+
+            if (this.getCurrentUser() != null) {
+                this.getCurrentUser().getSession(function (err, session) {
+                    if (err) {
+                        console.log("CognitoUtil: Can't set the credentials:" + err);
+                        observer.error(null);
+                    } else {
+                        if (session.isValid()) {
+                            observer.next(session.getAccessToken().getJwtToken());
+                        }
+                    }
+                    observer.complete();
+                });
+            } else {
+                observer.error(null);
+                observer.complete();
+            }
+        });
+    };
 
     // AWS Stores Credentials in many ways, and with TypeScript this means that
     // getting the base credentials we authenticated with from the AWS globals gets really murky,

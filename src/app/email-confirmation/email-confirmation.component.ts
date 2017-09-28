@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroup } from "@angular/forms";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { MdDialog } from "@angular/material";
+import { AccountService } from "../services/account.service";
 
 @Component({
     selector: 'app-email-confirmation',
@@ -20,7 +21,8 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
     constructor(public regService: UserRegistrationService,
                 public router: Router,
                 public dialog: MdDialog,
-                public route: ActivatedRoute) {
+                public route: ActivatedRoute,
+                private accountService: AccountService) {
     }
 
     ngOnInit() {
@@ -53,12 +55,8 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
             console.log('message: ' + this.errorMessage);
             this.showErrorMsg(message);
         } else {
-            // success
-            // move to the next step
-
-            console.log('Moving to securehome');
-            // this.configs.curUser = result.user;
-            this.router.navigate(['/securehome']);
+            console.log('Moving to create Account');
+            this.router.navigate(['/login']);
         }
     }
 

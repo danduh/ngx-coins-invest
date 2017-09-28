@@ -17,7 +17,7 @@ import { PriceFormatPipe } from './pipes/price-format.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { CurrentStatusComponent } from './current-status/current-status.component';
 import { AuthGuard } from "./services/auth-guard";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ChartsService } from "./services/charts/charts.service";
 import { CoinCardComponent } from './components/coin-card/coin-card.component';
 import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
@@ -39,7 +39,9 @@ import { UserRegistrationService } from "./services/user-registration.ervice";
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 import { CognitoUtil } from "./services/cognito-utility.service";
 import { UserLoginService } from "./services/user-login.service";
-import { ProtfoliosComponent } from './protfolios/protfolios.component';
+import { ProtfoliosComponent } from './portfolios/portfolios.component';
+import { PortfolioService } from "app/services/portfolio.service";
+import { CognitoAuthInterceptor } from "./services/utils";
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -124,6 +126,12 @@ export const MainRoutes: Routes = [
         StoreModule.forRoot({investedStore: investedReducer})
     ],
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: CognitoAuthInterceptor,
+            multi: true
+        },
+        PortfolioService,
         UserLoginService,
         CognitoUtil,
         UserRegistrationService,
