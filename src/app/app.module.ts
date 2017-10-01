@@ -8,7 +8,6 @@ import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { LoginComponent, LogoutComponent } from './login/login.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
-import { AuthService } from './services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoinsListComponent } from './coins-list/coins-list.component';
 import { CoinsService } from './services/coins.service';
@@ -39,9 +38,12 @@ import { UserRegistrationService } from "./services/user-registration.ervice";
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 import { CognitoUtil } from "./services/cognito-utility.service";
 import { UserLoginService } from "./services/user-login.service";
-import { ProtfoliosComponent } from './portfolios/portfolios.component';
+import { PortfoliosComponent } from './portfolios/portfolios.component';
 import { PortfolioService } from "app/services/portfolio.service";
 import { CognitoAuthInterceptor } from "./services/utils";
+import { PortfolioCardComponent } from './components/portfolio-card/portfolio-card.component';
+import { PortfolioInvestmentsComponent } from './portfolio-invetments/portfolio-invetments.component';
+import { GraphInCardComponent } from './components/graph-in-card/graph-in-card.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -78,9 +80,15 @@ export const MainRoutes: Routes = [
     },
     {
         path: 'portfolio',
-        component: ProtfoliosComponent,
+        component: PortfoliosComponent,
         canActivate: [AuthGuard, OutOutletService],
         data: {title: 'Select Portfolio'}
+    },
+    {
+        path: 'portfolio/:portfolioId',
+        component: PortfolioInvestmentsComponent,
+        canActivate: [AuthGuard, OutOutletService],
+        data: {title: 'Portfolio Investments'}
     },
     {
         path: 'investto/:coinId',
@@ -112,7 +120,10 @@ export const MainRoutes: Routes = [
         AccountComponent,
         RegistrationComponent,
         EmailConfirmationComponent,
-        ProtfoliosComponent
+        PortfoliosComponent,
+        PortfolioCardComponent,
+        PortfolioInvestmentsComponent,
+        GraphInCardComponent
     ],
     imports: [
         HttpClientModule,
@@ -138,7 +149,6 @@ export const MainRoutes: Routes = [
         AccountService,
         ChartsService,
         AuthGuard,
-        AuthService,
         CoinsService,
         InvestedFacade,
         MarketTickerService,

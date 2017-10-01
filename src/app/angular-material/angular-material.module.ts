@@ -3,7 +3,7 @@ import {
     MdSelectModule, MdAutocompleteModule, MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule,
     MdTooltipModule, MdSlideToggleModule, MdGridListModule, MdCardModule, MdTabsModule, MdToolbarModule, MdListModule,
     MdMenuModule, MdIconModule, MdSnackBarModule, MdDialogModule, MdSidenavModule, MdTableModule,
-    MdProgressSpinnerModule
+    MdProgressSpinnerModule, MdExpansionModule
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
@@ -15,6 +15,7 @@ import { FormsModule } from "@angular/forms";
         DialogComponent
     ],
     imports: [
+        MdExpansionModule,
         CommonModule,
         CdkTableModule,
         MdTableModule,
@@ -40,6 +41,7 @@ import { FormsModule } from "@angular/forms";
         FormsModule,
     ],
     exports: [
+        MdExpansionModule,
         CommonModule,
         CdkTableModule,
         MdTableModule,

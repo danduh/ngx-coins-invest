@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseClass } from "../classes/base.class";
 import { MdDialog } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { UserLoginService } from "../services/user-login.service";
@@ -21,7 +19,6 @@ export class LoginComponent implements OnInit {
     public changePswd = false;
 
     constructor(public dialog: MdDialog,
-                private auth: AuthService,
                 private route: ActivatedRoute,
                 public userService: UserLoginService,
                 private accountService: AccountService,

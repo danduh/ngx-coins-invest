@@ -25,4 +25,8 @@ export class PortfolioService {
     getAllPortfolios(): Observable<PortfolioModel[]> {
         return this.http.get<PortfolioModel[]>(`${this.baseUrl}portfolios`);
     }
+
+    createPortfolio(portfolio: PortfolioModel) {
+        return this.http.post<PortfolioModel>(`${this.baseUrl}portfolios`, portfolio);
+    }
 }

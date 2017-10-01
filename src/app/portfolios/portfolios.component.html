@@ -1,4 +1,32 @@
-<p>
-    protfolios works!
-    {{portfolios|async}}
-</p>
+<div class="portfolios-component">
+    <md-expansion-panel [expanded]="expanded">
+        <md-expansion-panel-header>
+            <md-panel-title>
+                Create new portfolio
+            </md-panel-title>
+            <md-panel-description>
+                give it name and start monitor your investments
+            </md-panel-description>
+        </md-expansion-panel-header>
+        <form (ngSubmit)="onCreate()" [formGroup]="portfolioForm">
+            <md-form-field>
+                <input mdInput formControlName="name" placeholder="Name it">
+            </md-form-field>
+            <md-form-field>
+                <input mdInput formControlName="comment" placeholder="Comment">
+            </md-form-field>
+            <button md-raised-button [color]="'primary'" type="submit">Create</button>
+        </form>
+    </md-expansion-panel>
+
+    <div class="cards-view" *ngIf="portfolios | async; let portfoliosItems">
+        <div *ngIf="portfoliosItems.length === 0; else portfolioCardsSelect">
+            <h1>Looks like you don't have any...</h1>
+        </div>
+        <ng-template #portfolioCardsSelect>
+            <app-portfolio-card *ngFor="let portfolio of portfoliosItems" [portfolio]="portfolio"></app-portfolio-card>
+        </ng-template>
+
+    </div>
+
+</div>

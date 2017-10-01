@@ -1,4 +1,4 @@
-<app-header [isLoggedIn]="(isLoggedIn|async)" (toggleMenu)="toggleMenu()"></app-header>
+<app-header (toggleMenu)="toggleMenu()"></app-header>
 <!--<h1>{{(isLoggedIn | async)==true}}f</h1>-->
 <md-sidenav-container>
     <md-sidenav #sidenav [mode]="sideNavMode" [opened]="(isLoggedIn|async) && sideNavMode == 'side'">

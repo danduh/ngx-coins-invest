@@ -1,0 +1,22 @@
+<div class="portfolio-card-host" (click)="goToPortfolio()">
+    <md-card class="portfolio-card">
+        <md-card-header>
+            <div md-card-avatar class="example-header-image">
+                <picture>
+                    <img src="assets/brand/favicon.png" alt="MDN">
+                </picture>
+            </div>
+            <md-card-title>{{portfolio.name}}</md-card-title>
+            <!--<md-card-subtitle>{{portfolio.comment}}</md-card-subtitle>-->
+        </md-card-header>
+
+        <md-card-content>
+            <!-- TODO: GRAPH Should be here-->
+            <app-graph-in-card></app-graph-in-card>
+        </md-card-content>
+
+        <md-card-actions>
+            <button md-button>Invest</button>
+        </md-card-actions>
+    </md-card>
+</div>

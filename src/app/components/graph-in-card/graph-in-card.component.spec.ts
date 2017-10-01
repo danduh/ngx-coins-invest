@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortfoliosComponent } from './portfolios.component';
+import { GraphInCardComponent } from './graph-in-card.component';
 
-describe('PortfoliosComponent', () => {
-  let component: PortfoliosComponent;
-  let fixture: ComponentFixture<PortfoliosComponent>;
+describe('GraphInCardComponent', () => {
+  let component: GraphInCardComponent;
+  let fixture: ComponentFixture<GraphInCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PortfoliosComponent ]
+      declarations: [ GraphInCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PortfoliosComponent);
+    fixture = TestBed.createComponent(GraphInCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

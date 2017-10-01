@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from "./services/auth.service";
 import { MdSidenav } from "@angular/material";
 import { WindowService } from "./services/window.service";
 import { Observable } from "rxjs/Observable";
@@ -12,17 +11,13 @@ import { Observable } from "rxjs/Observable";
 export class AppComponent implements OnInit {
     @ViewChild('sidenav') sideNav: MdSidenav;
 
-    public isLoggedIn: Observable<boolean>;
     public title: string;
     public sideNavMode = 'side';
 
-    constructor(private auth: AuthService,
-                private windowService: WindowService) {
+    constructor(private windowService: WindowService) {
     }
 
     ngOnInit() {
-        this.isLoggedIn = this.auth.isLoggedInSubs;
-
         this.windowService.width
             .subscribe((width) => {
                 if (width) {

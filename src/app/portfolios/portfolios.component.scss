@@ -1,0 +1,18 @@
+.portfolios-component {
+    text-align: center;
+    width: 100%;
+    md-expansion-panel {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .cards-view {
+        display: flex;
+        justify-content: flex-start;
+        padding: 10px;
+        app-portfolio-card {
+            display: block;
+            padding: 10px;
+        }
+    }
+}

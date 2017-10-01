@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUser } from "../models/common";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "../services/auth.service";
-import { MdDialog, MdDialogConfig } from "@angular/material";
-import { DialogComponent } from "../components/dialog/dialog.component";
 import { AccountService } from "../services/account.service";
 import { Router } from "@angular/router";
 import { RegistrationUser, UserRegistrationService } from "../services/user-registration.ervice";

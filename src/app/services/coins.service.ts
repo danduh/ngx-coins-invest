@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
 import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
 import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";

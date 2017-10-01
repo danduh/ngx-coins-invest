@@ -12,7 +12,6 @@ import { isNullOrUndefined } from "util";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-    @Input() isLoggedIn: boolean;
     @Output('toggleMenu') toggleMenu = new EventEmitter();
 
     public title: string;

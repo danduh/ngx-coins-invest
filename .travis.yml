@@ -8,6 +8,7 @@ install:
 
 script:
     #Fake Build
+  - npm i
   - npm run build:prod
 
     #Master
