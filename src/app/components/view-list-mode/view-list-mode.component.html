@@ -26,7 +26,7 @@
 
     <ng-container cdkColumnDef="price_usd">
         <md-header-cell *cdkHeaderCellDef> Current</md-header-cell>
-        <md-cell *cdkCellDef="let coin"> {{coin.price_usd | priceFormat}}</md-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.price | priceFormat}}</md-cell>
     </ng-container>
 
     <!-- Profit/Lowfit in USD-->

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdSidenav } from "@angular/material";
 import { WindowService } from "./services/window.service";
 import { Observable } from "rxjs/Observable";
+import { ConfigService } from "./services/config.service";
 
 @Component({
     selector: 'app-root',

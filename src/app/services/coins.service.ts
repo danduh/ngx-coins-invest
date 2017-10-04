@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
 import { Router } from '@angular/router';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
 import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
 import { CognitoUtil } from "./cognito-utility.service";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 @Injectable()
 export class CoinsService {
@@ -24,13 +25,14 @@ export class CoinsService {
     constructor(private router: Router,
                 public cognitoUtil: CognitoUtil,
                 private snackBar: MdSnackBar,
-                private http: Http) {
+                private http: HttpClient) {
     }
 
-    public getList(): Observable<CoinModel[]> {
-        // const options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins`)
-            .map(this.postRequestSuccess.bind(this));
+    public getList(curr = 'USD'): Observable<CoinModel[]> {
+        let params: HttpParams = new HttpParams()
+            .set('baseCurrency', curr).set('dataType', 'pricemultifull');
+
+        return this.http.get<CoinModel[]>(`${this.baseUrl}coins`, {params}).share();
     }
 
     public getOneCoin(coinId) {

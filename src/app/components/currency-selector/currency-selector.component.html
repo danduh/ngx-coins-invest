@@ -1,0 +1,7 @@
+<form>
+    <md-select placeholder="Compare to:" [(ngModel)]="selectedValue" name="curr" (change)="onSelect.emit($event)">
+        <md-option *ngFor="let curr of currencies" [value]="curr">
+            {{curr}}
+        </md-option>
+    </md-select>
+</form>

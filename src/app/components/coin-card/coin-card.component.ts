@@ -13,6 +13,7 @@ export class CoinCardComponent implements OnInit {
     }
 
     ngOnInit() {
+
     }
 
 }

@@ -1,13 +1,12 @@
 <md-card class="coin-card">
     <md-card-header>
-        <div md-card-avatar class="example-header-image">
+        <div md-card-avatar class="header-image">
             <img [src]="coin.logo">
         </div>
-
         <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
 
         <md-card-subtitle>
-            {{coin.price_usd|priceFormat}} -
+            {{coin.price|currency:coin.baseCurrency:true}} -
             <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
                 ({{coin.percent_change_24h}}%)
                 </span>

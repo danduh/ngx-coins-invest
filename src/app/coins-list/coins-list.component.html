@@ -1,20 +1,16 @@
-<ng-container *ngIf="!!visibleCoins && visibleCoins.length>0; else loader">
-    <md-input-container class="example-full-width">
-        <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
-    </md-input-container>
+<app-currency-selector [currencies]="currencies"
+                       (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>
+<md-input-container class="example-full-width">
+    <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
+</md-input-container>
 
-    <section>
-        <app-coin-card [coin]="coin" *ngFor="let coin of visibleCoins | filter : searchTerm"></app-coin-card>
-    </section>
-
-    <footer>
-        <button md-raised-button color="primary" (click)="showMoreCoins()">Show More</button>
-    </footer>
-</ng-container>
+<section>
+    <app-coin-card [coin]="coin" *ngFor="let coin of coins | async; trackBy: coinName "></app-coin-card>
+</section>
 <ng-template #loader>
     <md-progress-spinner
-            class="example-margin"
-            [color]="'primary'"
-            [mode]="'indeterminate'">
+        class="example-margin"
+        [color]="'primary'"
+        [mode]="'indeterminate'">
     </md-progress-spinner>
 </ng-template>

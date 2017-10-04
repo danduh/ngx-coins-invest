@@ -5,9 +5,10 @@ export class CoinModel {
     value?: number;
     logo?: string;
     coinId?: string;
-    market_cap_usd?: number;
-    price_usd: number;
+    market_cap?: number;
+    price: number;
     createdAt?: number;
+    baseCurrency?: string;
 
     constructor(coin) {
         const keys = Object.keys(coin);

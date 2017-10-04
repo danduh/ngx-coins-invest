@@ -5,6 +5,11 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { ChartsService } from "../services/charts/charts.service";
 import { InvestedFacade } from "../states/invested-facade";
+import { MarketTickerService } from "../services/market-ticker.service";
+import { ConfigService } from "../services/config.service";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { quadtree } from "d3-quadtree";
 
 @Component({
     selector: 'app-coins-list',
@@ -13,25 +18,38 @@ import { InvestedFacade } from "../states/invested-facade";
 })
 export class CoinsListComponent implements OnInit, OnDestroy {
     private subscriber: Subscription;
-    public coins: CoinModel[] = [];
-    public visibleCoins: CoinModel[] = [];
+    public coins: Observable<CoinModel[]>;
     public totalValue: any;
     public inputSelector = new FormControl();
-    public coinsToShow = 12;
+    public currencies: string[];
     searchTerm = '';
     private searchValueSubscription: Subscription;
+    private _baseCurrency = new BehaviorSubject<string>('USD');
 
+    set baseCurrency(value) {
+        this._baseCurrency.next(value);
+    }
+
+    get baseCurrency() {
+        return this._baseCurrency.getValue();
+    }
 
     constructor(private coinsService: CoinsService,
+                private configService: ConfigService,
                 private investedFacade: InvestedFacade,
                 private charts: ChartsService) {
     }
 
     ngOnInit() {
-        this.coinsService.getList()
-            .subscribe((coins) => {
-                this.coins = coins;
-                this.showMoreCoins();
+        this.configService.get()
+            .subscribe((config) => {
+                this.currencies = config.currency;
+            });
+
+        this.coins = this._baseCurrency
+            .debounceTime(400)
+            .distinctUntilChanged().switchMap((curr) => {
+                return this.coinsService.getList(curr);
             });
 
         if (!this.searchValueSubscription) {
@@ -44,12 +62,12 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         }
     }
 
-    showMoreCoins() {
-        this.visibleCoins = [...this.visibleCoins, ...this.coins.slice(this.visibleCoins.length, this.visibleCoins.length + this.coinsToShow)];
-        if (this.coins.length <= this.visibleCoins.length) {
-            this.coinsToShow = 0;
-            return;
-        }
+    coinName(indes, coin) {
+        return coin.name;
+    }
+
+    onCurrencyChange(curr) {
+        this.baseCurrency = curr;
     }
 
     ngOnDestroy() {

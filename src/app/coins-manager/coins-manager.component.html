@@ -7,7 +7,7 @@
             <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
 
             <md-card-subtitle>
-                {{coin.price_usd|priceFormat}} -
+                {{coin.price|priceFormat}} -
                 <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
                     ({{coin.percent_change_24h}}%)
                 </span>

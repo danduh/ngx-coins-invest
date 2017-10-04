@@ -74,7 +74,7 @@ export class InvestedFacade {
         let inv = this.getCurrentState();
         inv.forEach((coin: InvestedCoinModel) => {
             let tick = ticker[coin.coinMeta.symbol];
-            coin.price_usd = tick.USD;
+            coin.price = tick.USD;
             coin.open_value = (coin.openPrice * coin.amount);
             coin.plUsd = (tick.USD * coin.amount) - coin.open_value;
             coin.plPct = parseFloat((coin.plUsd / coin.open_value * 100).toPrecision(2));

@@ -44,6 +44,9 @@ import { CognitoAuthInterceptor } from "./services/utils";
 import { PortfolioCardComponent } from './components/portfolio-card/portfolio-card.component';
 import { PortfolioInvestmentsComponent } from './portfolio-invetments/portfolio-invetments.component';
 import { GraphInCardComponent } from './components/graph-in-card/graph-in-card.component';
+import { IconsModule } from "./shared/svg-icons/icons.module";
+import { ConfigService } from "./services/config.service";
+import { CurrencySelectorComponent } from './components/currency-selector/currency-selector.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -123,7 +126,8 @@ export const MainRoutes: Routes = [
         PortfoliosComponent,
         PortfolioCardComponent,
         PortfolioInvestmentsComponent,
-        GraphInCardComponent
+        GraphInCardComponent,
+        CurrencySelectorComponent
     ],
     imports: [
         HttpClientModule,
@@ -132,6 +136,7 @@ export const MainRoutes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
+        IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
         StoreModule.forRoot({investedStore: investedReducer})
@@ -142,6 +147,7 @@ export const MainRoutes: Routes = [
             useClass: CognitoAuthInterceptor,
             multi: true
         },
+        ConfigService,
         PortfolioService,
         UserLoginService,
         CognitoUtil,
