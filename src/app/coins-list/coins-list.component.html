@@ -3,10 +3,53 @@
 <md-input-container class="example-full-width">
     <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
 </md-input-container>
+<md-table #table [dataSource]="coinsListDataSource">
+    <ng-container mdColumnDef="logo">
+        <md-header-cell *mdHeaderCellDef></md-header-cell>
+        <md-cell *mdCellDef="let row">
+            <img [src]="row.logo" alt="logo"/>
+        </md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="name">
+        <md-header-cell *mdHeaderCellDef> name</md-header-cell>
+        <md-cell *mdCellDef="let row"> {{row.name}}</md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="price">
+        <md-header-cell *mdHeaderCellDef> price</md-header-cell>
+        <md-cell *mdCellDef="let row">
+            {{row.price|currency:row.baseCurrency:true}}
+        </md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="percent_change_24h">
+        <md-header-cell *mdHeaderCellDef> change</md-header-cell>
+        <md-cell *mdCellDef="let row">
+            <span [ngClass]="{'positive':row.percent_change_24h > 0, 'negative':row.percent_change_24h < 0}">
+                {{row.percent_change_24h}}%
+            </span>
+        </md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="market_cap">
+        <md-header-cell *mdHeaderCellDef> Market Cap</md-header-cell>
+        <md-cell *mdCellDef="let row">
+            {{row.market_cap|currency:'USD':true}}
+        </md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="volume_24h">
+        <md-header-cell *mdHeaderCellDef> 24H Value</md-header-cell>
+        <md-cell *mdCellDef="let row">
+            {{row.volume_24h|priceFormat}}
+        </md-cell>
+    </ng-container>
+    <ng-container mdColumnDef="volume_24h_to">
+        <md-header-cell *mdHeaderCellDef> 24H Value ()</md-header-cell>
+        <md-cell *mdCellDef="let row">
+            {{row.volume_24h_to|currency:'USD':true}}
+        </md-cell>
+    </ng-container>
+    <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row (click)="onSelect(row)" *mdRowDef="let row; columns:displayedColumns"></md-row>
+</md-table>
 
-<section>
-    <app-coin-card [coin]="coin" *ngFor="let coin of coins | async; trackBy: coinName "></app-coin-card>
-</section>
 <ng-template #loader>
     <md-progress-spinner
         class="example-margin"

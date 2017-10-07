@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 const timeFunction = (range) => {
     let date = new Date();
@@ -17,19 +17,47 @@ interface CurrencyChart {
     volume_usd: ChartPoint;
 }
 
+export interface CoinChartPoint {
+    date: number;
+    high: number;
+    low: number;
+    open: number;
+    close: number;
+    volume: number;
+    quoteVolume: number;
+    weightedAverage: number;
+}
+
 @Injectable()
 export class ChartsService {
-    baseUrl = 'https://graphs.coinmarketcap.com/currencies/';
+    baseUrl = 'https://poloniex.com/public';
 
     constructor(private $http: HttpClient) {
     }
 
-    loadChart(coinId: string, range: ChartPoint) {
+    // https://poloniex.com/public?command=returnChartData&currencyPair=BTC_XMR&start=1506888159&end=9999999999&period=300
+    private setParams(coinId: string, baseCurrency: string, range) {
         let [from, to] = timeRange.get(range);
-        this.$http.get<CurrencyChart>(`${this.baseUrl}${coinId}/${from}/${to}`)
+        let params: HttpParams = new HttpParams()
+            .set('command', 'returnChartData')
+            .set('currencyPair', 'BTC_XMR')
+            .set('start', from)
+            .set('end', to)
+            .set('period', '300');
+        return params;
+    }
+
+    loadChart(coinId: string, baseCurrency: string, range) {
+        let params = this.setParams(coinId, baseCurrency, range);
+        const headers = new HttpHeaders()
+            .set('Content-Type', 'application/json; charset=utf-8')
+            .set('host', 'poloniex.com')
+            .set('origin', 'poloniex.com')
+            .set('accept', '*/*');
+
+        this.$http.get<CoinChartPoint[]>(`${this.baseUrl}`, {headers, params})
             .subscribe((data) => {
                 console.log(data);
-                console.log(data.market_cap_by_available_supply);
             });
     }
 

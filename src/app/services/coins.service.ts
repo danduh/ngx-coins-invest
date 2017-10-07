@@ -35,10 +35,11 @@ export class CoinsService {
         return this.http.get<CoinModel[]>(`${this.baseUrl}coins`, {params}).share();
     }
 
-    public getOneCoin(coinId) {
-        // let options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins/${coinId}`)
-            .map(this.postRequestSuccess.bind(this))
+    public getOneCoin(coinId, curr = 'USD') {
+        let params: HttpParams = new HttpParams()
+            .set('baseCurrency', curr).set('dataType', 'pricemultifull');
+
+        return this.http.get(`${this.baseUrl}coins/${coinId}`, {params})
             .map((coins) => coins[0]);
     }
 

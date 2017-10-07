@@ -47,6 +47,7 @@ import { GraphInCardComponent } from './components/graph-in-card/graph-in-card.c
 import { IconsModule } from "./shared/svg-icons/icons.module";
 import { ConfigService } from "./services/config.service";
 import { CurrencySelectorComponent } from './components/currency-selector/currency-selector.component';
+import { LoaderService } from "./shared/loader.service";
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -159,7 +160,8 @@ export const MainRoutes: Routes = [
         InvestedFacade,
         MarketTickerService,
         OutOutletService,
-        WindowService
+        WindowService,
+        LoaderService
     ],
     bootstrap: [AppComponent],
     exports: [

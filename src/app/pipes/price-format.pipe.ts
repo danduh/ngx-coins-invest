@@ -8,7 +8,7 @@ export class PriceFormatPipe implements PipeTransform {
     transform(value: any, args?: any): any {
         try {
             if (!!value && !isNaN(value)) {
-                return '$ ' + Number(Number(value).toFixed(2)).toLocaleString();
+                return Number(Number(value).toFixed(2)).toLocaleString();
             } else {
                 return null;
             }

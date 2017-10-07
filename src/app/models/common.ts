@@ -6,6 +6,9 @@ export class CoinModel {
     logo?: string;
     coinId?: string;
     market_cap?: number;
+    percent_change_24h?: number;
+    volume_24h?: number;
+    volume_24h_to?: number;
     price: number;
     createdAt?: number;
     baseCurrency?: string;

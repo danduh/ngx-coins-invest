@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MdSidenav } from "@angular/material";
 import { WindowService } from "./services/window.service";
-import { Observable } from "rxjs/Observable";
-import { ConfigService } from "./services/config.service";
+import { LoaderService } from "./shared/loader.service";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('sidenav') sideNav: MdSidenav;
 
     public title: string;
     public sideNavMode = 'side';
+    public loaderState: string = null;
 
-    constructor(private windowService: WindowService) {
+    constructor(private windowService: WindowService,
+                private loaderService: LoaderService) {
     }
 
     ngOnInit() {
@@ -30,6 +31,14 @@ export class AppComponent implements OnInit {
                     }
                 }
             });
+
+    }
+
+    ngAfterViewInit() {
+        // this.loaderService.loaderState
+        //     .subscribe((state) => {
+        //         this.loaderState = state;
+        //     });
     }
 
     toggleMenu() {

@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChartsService } from "../../services/charts/charts.service";
+import { CoinModel } from "../../models/common";
 
 @Component({
     selector: 'app-coin-card',
@@ -7,13 +9,12 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinCardComponent implements OnInit {
-    @Input('coin') coin;
+    @Input('coin') coin: CoinModel;
 
-    constructor() {
+    constructor(private chartService: ChartsService) {
     }
 
     ngOnInit() {
-
     }
 
 }
