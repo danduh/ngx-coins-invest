@@ -2,9 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
-import { RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent, LogoutComponent } from './login/login.component';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { HeaderComponent } from './components/header/header.component';
@@ -95,7 +95,7 @@ export const MainRoutes: Routes = [
         data: {title: 'Portfolio Investments'}
     },
     {
-        path: 'investto/:coinId',
+        path: 'investto/:coinId/:baseCurrency',
         component: CoinsManagerComponent,
         canActivate: [AuthGuard],
         data: {title: 'Invest To', groups: ['investors']}
@@ -131,6 +131,7 @@ export const MainRoutes: Routes = [
         CurrencySelectorComponent
     ],
     imports: [
+        ChartsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         BrowserModule,

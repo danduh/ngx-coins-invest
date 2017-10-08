@@ -21,8 +21,8 @@
 }
 
 .mat-card-avatar {
-    width: 128px;
-    height: 128px;
+    width: 64px;
+    height: 64px;
     img {
         width: 100%;
     }
@@ -65,4 +65,11 @@ div.form {
 
 .example-full-width {
     width: 100%;
+}
+
+.graph {
+    width: 800px;
+    height: 300px;
+    display: block;
+    margin: 0 auto;
 }

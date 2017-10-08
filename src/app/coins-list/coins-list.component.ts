@@ -12,6 +12,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { quadtree } from "d3-quadtree";
 import { DataSource } from "@angular/cdk/collections";
 import { LoaderService } from "../shared/loader.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-coins-list',
@@ -41,6 +42,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     }
 
     constructor(private coinsService: CoinsService,
+                private router: Router,
                 private configService: ConfigService,
                 private loaderService: LoaderService) {
     }
@@ -66,8 +68,8 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         }
     }
 
-    onSelect(row) {
-        console.log(row)
+    onSelect(coin: CoinModel) {
+        this.router.navigate(['investto', coin.name, coin.baseCurrency]);
     }
 
     coinName(indes, coin) {
