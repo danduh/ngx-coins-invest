@@ -50,10 +50,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.coinsListDataSource = new CoinsListDataSource(this.coinsListDatabase);
 
-        this.configService.get()
-            .subscribe((config) => {
-                this.currencies = config.currency;
-            });
         this.coinsListDatabase.coins = this._baseCurrency
             .switchMap((curr) => {
                 return this.coinsService.getList(curr);

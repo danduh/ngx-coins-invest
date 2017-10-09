@@ -33,13 +33,14 @@ export class InvestedCoinModel extends CoinModel {
     open_value?: number;
     description?: string;
     amount: number;
-    coinMeta: CoinModel;
+    metaData: CoinModel;
     openPrice?: number;
     plUsd?: number;
     plPct?: number;
 
     constructor(coin: CoinModel) {
         super(coin);
+        this.metaData = new CoinModel(coin);
 
     }
 }

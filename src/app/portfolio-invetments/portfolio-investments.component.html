@@ -1,3 +1,67 @@
-<p>
-  portfolio-invetments works!
-</p>
+<md-table #table [dataSource]="investmentsListDataSource" class="list-view">
+    <!-- ID Column -->
+    <ng-container cdkColumnDef="logo">
+        <md-header-cell *cdkHeaderCellDef>Crypto Coin</md-header-cell>
+        <md-cell *cdkCellDef="let coin">
+            <md-icon md-list-icon>
+                <div md-card-avatar class="example-header-image">
+                    <img [src]="coin.metaData.logo">
+                </div>
+            </md-icon>
+            <div class="row-content">
+                <h3>{{coin.metaData.name}}</h3><span>{{coin.createdAt * 1000| date}}</span>
+            </div>
+        </md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="amount">
+        <md-header-cell *cdkHeaderCellDef> Amount</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.amount.toPrecision(4)}}</md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="openPrice">
+        <md-header-cell *cdkHeaderCellDef> Open</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.openPrice | priceFormat}}</md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="price">
+        <md-header-cell *cdkHeaderCellDef> Current</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.price | priceFormat}}</md-cell>
+    </ng-container>
+
+    <!-- Profit/Lowfit in USD-->
+    <ng-container cdkColumnDef="pls">
+        <md-header-cell *cdkHeaderCellDef> P/L($)</md-header-cell>
+        <md-cell *cdkCellDef="let coin" [ngClass]="coin.plUsd>0 ? 'pos':'neg'"> {{coin.plUsd |priceFormat}}</md-cell>
+    </ng-container>
+
+    <!-- Profit/Lowfit in PCT %-->
+    <ng-container cdkColumnDef="plPct">
+        <md-header-cell *cdkHeaderCellDef> P/L(%)</md-header-cell>
+        <md-cell *cdkCellDef="let coin" [ngClass]="coin.plPct>0 ? 'pos':'neg'"> {{coin.plPct}}%</md-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container cdkColumnDef="delete">
+        <md-header-cell *cdkHeaderCellDef> Delete / Edit</md-header-cell>
+        <md-cell *cdkCellDef="let coin">
+            <button md-raised-button color="warn" (click)="deleteInvest(coin.investId)">Delete</button>
+            <!--<button (click)="goToDetailPage(coin.$key)">Edit</button>-->
+        </md-cell>
+    </ng-container>
+
+    <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+</md-table>
+
+<!--<md-list>-->
+<!--<md-list-item *ngFor="let coin of visibleCoins | async">-->
+<!--<md-icon md-list-icon>-->
+<!--<div md-card-avatar class="example-header-image">-->
+<!--<img [src]="coin.logo">-->
+<!--</div>-->
+<!--</md-icon>-->
+<!--<h4 md-line>{{coin.name}}</h4>-->
+<!--<p md-line> {{coin.last_updated | date}} </p>-->
+<!--</md-list-item>-->
+<!--</md-list>-->

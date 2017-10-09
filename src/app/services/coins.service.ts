@@ -79,7 +79,7 @@ export class CoinsService {
 
     public addCoin(coin): Observable<CoinModel> {
         // let options = this.getAuthHeader();
-        return this.http.post(`${this.baseUrl}invested/${coin.id}`, coin)
+        return this.http.post(`${this.baseUrl}invested`, coin)
             .map(this.postRequestSuccess.bind(this));
     }
 

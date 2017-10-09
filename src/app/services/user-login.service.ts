@@ -1,5 +1,4 @@
-import { environment } from '../../environments/environment';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import * as AWS from 'aws-sdk/global';
 import * as STS from 'aws-sdk/clients/sts';
@@ -19,7 +18,7 @@ export class UserLoginService {
         this._isLoggedInSubs.next(value);
     }
 
-    constructor(public cognitoUtil: CognitoUtil) {
+    constructor(@Inject(CognitoUtil) public cognitoUtil: CognitoUtil) {
     }
 
     authenticate(username: string, password: string, callback: CognitoCallback) {
@@ -38,7 +37,7 @@ export class UserLoginService {
 
         console.log('UserLoginService: Params set...Authenticating the user');
         let cognitoUser = new CognitoUser(userData);
-        console.log('UserLoginService: config is ' + AWS.config);
+
         const self = this;
         cognitoUser.authenticateUser(authenticationDetails, {
             newPasswordRequired: function (userAttributes, requiredAttributes) {

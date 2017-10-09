@@ -1,18 +1,27 @@
-<div class="form" *ngIf="!!coin">
+<div class="coins-manager" *ngIf="!!coin">
     <md-card class="example-card">
         <md-card-header>
-            <div md-card-avatar class="example-header-image">
-                <img [src]="coin.logo">
-            </div>
-            <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
+            <div class="card-header-left">
+                <div md-card-avatar class="example-header-image">
+                    <img [src]="coin.logo">
+                </div>
+                <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
 
-            <md-card-subtitle>
-                {{coin.price|priceFormat}} -
-                <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
+                <md-card-subtitle>
+                    {{coin.price|priceFormat}} -
+                    <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
                     ({{coin.percent_change_24h}}%)
                 </span>
-            </md-card-subtitle>
-            <md-card-subtitle>BTC {{coin.price_btc}}</md-card-subtitle>
+                </md-card-subtitle>
+                <md-card-subtitle>BTC {{coin.price_btc}}</md-card-subtitle>
+            </div>
+            <div class="card-header-right">
+                <md-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio">
+                    <md-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
+                        {{portfolio.name}}
+                    </md-option>
+                </md-select>
+            </div>
         </md-card-header>
 
         <md-card-content>
@@ -22,6 +31,7 @@
             <md-input-container class="">
                 <input mdInput type="number" placeholder="Price" [(ngModel)]="coinToBuy.openPrice"/>
             </md-input-container>
+            <app-currency-selector (onSelect)="coinToBuy.openCurrency = $event.value"></app-currency-selector>
             <md-input-container class="example-full-width">
                 <input mdInput type="text" placeholder="Note" [(ngModel)]="coinToBuy.description"/>
             </md-input-container>

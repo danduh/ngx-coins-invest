@@ -32,7 +32,7 @@ export class UserRegistrationService {
         };
         let dataNickname = {
             Name: 'nickname',
-            Value: user.name
+            Value: user.email
         };
         attributeList.push(new CognitoUserAttribute(dataEmail));
         attributeList.push(new CognitoUserAttribute(dataNickname));
@@ -54,7 +54,6 @@ export class UserRegistrationService {
             Username: username,
             Pool: this.cognitoUtil.getUserPool()
         };
-
         let cognitoUser = new CognitoUser(userData);
 
         cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {

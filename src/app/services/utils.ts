@@ -3,7 +3,7 @@ import {
     HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse,
     HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { CognitoUtil } from "./cognito-utility.service";
 import { LoaderService } from "../shared/loader.service";
 

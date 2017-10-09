@@ -1,12 +1,12 @@
-import {Injectable} from "@angular/core";
-import {Store, Action} from "@ngrx/store";
-import {CoinsService} from "../services/coins.service";
-import {MarketTickerService} from "../services/market-ticker.service";
-import {Observable} from "rxjs/Observable";
-import {SET_INVESTED_COINS} from "./invested-reducer";
-import {InvestedCoinModel, InvestTotalsModel} from "../models/common";
-import {Subscription} from "rxjs/Subscription";
-import {isNullOrUndefined} from "util";
+import { Injectable } from "@angular/core";
+import { Store, Action } from "@ngrx/store";
+import { CoinsService } from "../services/coins.service";
+import { MarketTickerService } from "../services/market-ticker.service";
+import { Observable } from "rxjs/Observable";
+import { SET_INVESTED_COINS } from "./invested-reducer";
+import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
+import { Subscription } from "rxjs/Subscription";
+import { isNullOrUndefined } from "util";
 
 @Injectable()
 export class InvestedFacade {
@@ -42,7 +42,7 @@ export class InvestedFacade {
     getSymbolsInState() {
         let labels;
         this.$currentInvested.subscribe((list) => {
-            labels = list.map((c) => c.coinMeta.symbol);
+            labels = list.map((c) => c.metaData.symbol);
         });
         return labels;
     }
@@ -73,7 +73,7 @@ export class InvestedFacade {
     mergeInvestedTicker(ticker) {
         let inv = this.getCurrentState();
         inv.forEach((coin: InvestedCoinModel) => {
-            let tick = ticker[coin.coinMeta.symbol];
+            let tick = ticker[coin.metaData.symbol];
             coin.price = tick.USD;
             coin.open_value = (coin.openPrice * coin.amount);
             coin.plUsd = (tick.USD * coin.amount) - coin.open_value;

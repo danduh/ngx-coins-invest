@@ -1,5 +1,4 @@
-<app-currency-selector [currencies]="currencies"
-                       (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>
+<app-currency-selector (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>
 <md-input-container class="example-full-width">
     <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
 </md-input-container>

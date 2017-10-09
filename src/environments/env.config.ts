@@ -30,7 +30,7 @@ export const allConfig = {
         marketTickerUrl: 'https://min-api.cryptocompare.com/data/',
         name: 'local',
         aws: {
-            userPoolId: 'us-east-1_QrRslpj Ct', // Your user pool id here
+            userPoolId: 'us-east-1_QrRslpj1Ct', // Your user pool id here
             clientId: '5ld1g5pf3pj7thfkf886ggsqfd', // Your client id here
             identityPoolId: 'QrRslpjCt',
             region: "us-east-1",

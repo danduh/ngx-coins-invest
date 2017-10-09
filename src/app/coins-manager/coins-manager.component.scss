@@ -1,6 +1,12 @@
-.coin-card {
+.coins-manager {
     md-card-header {
         position: relative;
+        div.card-header-left {
+            width: 60%;
+        }
+        div.card-header-right {
+            width: 40%;
+        }
         .coin-add-link {
             position: absolute;
             right: 0;
@@ -15,14 +21,16 @@
         }
     }
 
-    width: 400px;
-    margin: 2px;
+    width: 500px;
+    margin: 2px auto;
 
 }
 
 .mat-card-avatar {
     width: 64px;
     height: 64px;
+    float: left;
+    padding-left: 10px;
     img {
         width: 100%;
     }

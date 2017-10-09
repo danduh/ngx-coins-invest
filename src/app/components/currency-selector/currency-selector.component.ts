@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ConfigService } from "../../services/config.service";
 
 @Component({
     selector: 'app-currency-selector',
@@ -6,13 +7,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
     styleUrls: ['./currency-selector.component.scss']
 })
 export class CurrencySelectorComponent implements OnInit {
-    @Input() currencies: string[];
+    public currencies: string[];
     @Output() onSelect = new EventEmitter();
 
-    constructor() {
+    constructor(private configService: ConfigService) {
     }
 
     ngOnInit() {
+        this.configService.get()
+            .subscribe((config) => {
+                this.currencies = config.currency;
+            });
+
     }
 
 

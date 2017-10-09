@@ -3,6 +3,8 @@ import { CoinModel, InvestedCoinModel } from '../models/common';
 import { CoinsService } from '../services/coins.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'app-coins-manager',
@@ -23,9 +25,11 @@ export class CoinsManagerComponent implements OnInit {
     public lineChartType = 'line';
     public lineChartData: any[];
     public lineChartLabels: any[];
-
+    public portfolios: Observable<PortfolioModel[]>;
+    public selectedPortfolio: PortfolioModel;
 
     constructor(private coinService: CoinsService,
+                private portfolioService: PortfolioService,
                 private route: ActivatedRoute,
                 private router: Router) {
 
@@ -38,7 +42,9 @@ export class CoinsManagerComponent implements OnInit {
 
     ngOnInit() {
         this.getCoinData();
+        this.portfolios = this.portfolioService.getAllPortfolios();
     }
+
 
     getCoinData() {
         if (!!this.coinDataSubs) {
@@ -56,16 +62,18 @@ export class CoinsManagerComponent implements OnInit {
             .subscribe((graphData) => {
                 this.lineChartData = graphData.parsedData;
                 this.lineChartLabels = graphData.xAxisLabels;
-                this.coinDataSubs.unsubscribe();
+                this.coinGraphSubs.unsubscribe();
             });
     }
 
     submit() {
         this.coinToBuy.amount = this.coinToBuy.openPrice * this.coinToBuy.quantity;
-        this.coinService.addCoin(this.coinToBuy)
-            .subscribe((response) => {
-                this.router.navigate(['/portfolio']);
+
+        this.portfolioService.createInvestment(this.coinToBuy, this.selectedPortfolio.id)
+            .subscribe((resp) => {
+                console.log(resp);
             });
+
     }
 
     updateValue(ev) {
