@@ -1,15 +1,15 @@
-<form class="app-form" [formGroup]="profileForm" (ngSubmit)="onSave()">
-    <md-input-container class="app-full-width">
-        <input type="text" mdInput placeholder="Give some name to your account"
-               formControlName="accountName">
-    </md-input-container>
-    <md-input-container class="app-full-width">
-        <input type="text" mdInput placeholder="First name"
-               formControlName="firstName">
-    </md-input-container>
-    <md-input-container class="app-full-width">
-        <input type="text" mdInput placeholder="Last Name"
-               formControlName="lastName">
-    </md-input-container>
-    <button md-raised-button color="primary" type="submit">Save</button>
-</form>
+<nav mat-tab-nav-bar>
+    <a mat-tab-link
+       [routerLink]="'profile'"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+        Profile
+    </a>
+    <a mat-tab-link
+       [routerLink]="'change-password'"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+        Change Password
+    </a>
+</nav>
+<router-outlet></router-outlet>

@@ -42,7 +42,7 @@ export class CognitoUtil {
 
     public static _POOL_DATA: any = {
         UserPoolId: CognitoUtil._USER_POOL_ID,
-        ClientId: CognitoUtil._CLIENT_ID
+        ClientId: CognitoUtil._CLIENT_ID,
     };
 
     public cognitoCreds: AWS.CognitoIdentityCredentials;

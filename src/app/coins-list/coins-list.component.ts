@@ -13,6 +13,7 @@ import { quadtree } from "d3-quadtree";
 import { DataSource } from "@angular/cdk/collections";
 import { LoaderService } from "../shared/loader.service";
 import { Router } from "@angular/router";
+import { PoloniexWssService } from '../services/external-api/poloniex-wss.service';
 
 @Component({
     selector: 'app-coins-list',
@@ -43,11 +44,15 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
     constructor(private coinsService: CoinsService,
                 private router: Router,
+                private tickerService: MarketTickerService,
                 private configService: ConfigService,
+                private poloniexWssService: PoloniexWssService,
                 private loaderService: LoaderService) {
+
     }
 
     ngOnInit() {
+        this.poloniexWssService.tiks.next('BTC_XMR');
         this.coinsListDataSource = new CoinsListDataSource(this.coinsListDatabase);
 
         this.coinsListDatabase.coins = this._baseCurrency

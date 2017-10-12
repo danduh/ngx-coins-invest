@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import * as AWS from 'aws-sdk/global';
 import * as STS from 'aws-sdk/clients/sts';
 import { CognitoCallback, CognitoUtil, LoggedInCallback } from './cognito-utility.service';

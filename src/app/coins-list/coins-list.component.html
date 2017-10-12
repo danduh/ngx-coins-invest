@@ -1,7 +1,9 @@
-<app-currency-selector (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>
-<md-input-container class="example-full-width">
-    <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
-</md-input-container>
+<section class="component-header">
+    <app-currency-selector (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>
+    <md-input-container class="example-full-width">
+        <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
+    </md-input-container>
+</section>
 <md-table #table [dataSource]="coinsListDataSource">
     <ng-container mdColumnDef="logo">
         <md-header-cell *mdHeaderCellDef></md-header-cell>
@@ -30,7 +32,7 @@
     <ng-container mdColumnDef="market_cap">
         <md-header-cell *mdHeaderCellDef> Market Cap</md-header-cell>
         <md-cell *mdCellDef="let row">
-            {{row.market_cap|currency:'USD':true}}
+            {{row.market_cap|currency:row.baseCurrency:true}}
         </md-cell>
     </ng-container>
     <ng-container mdColumnDef="volume_24h">

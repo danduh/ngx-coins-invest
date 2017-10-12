@@ -31,7 +31,6 @@ import { MarketTickerService } from "./services/market-ticker.service";
 import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
 import { OutOutletService } from "./services/out-outler.service";
 import { WindowService } from "./services/window.service";
-import { AccountComponent } from './account/account.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AccountService } from "./services/account.service";
 import { UserRegistrationService } from "./services/user-registration.ervice";
@@ -48,6 +47,9 @@ import { IconsModule } from "./shared/svg-icons/icons.module";
 import { ConfigService } from "./services/config.service";
 import { CurrencySelectorComponent } from './components/currency-selector/currency-selector.component';
 import { LoaderService } from "./shared/loader.service";
+import { PoloniexWssService } from './services/external-api/poloniex-wss.service';
+import { ProfileComponent } from './account/components/profile/profile.component';
+import { ChangePasswordComponent } from './account/components/change-password/change-password.component';
 
 export const MainRoutes: Routes = [
     {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
@@ -70,12 +72,7 @@ export const MainRoutes: Routes = [
         canActivate: [OutOutletService],
         data: {logout: true, title: 'Email Confirmation'},
     },
-    {
-        path: 'account',
-        component: AccountComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Account'}
-    },
+    {path: 'account', loadChildren: './account/account.module#AccountModule'},
     {
         path: 'coins',
         component: CoinsListComponent,
@@ -121,14 +118,13 @@ export const MainRoutes: Routes = [
         PermissionsDirective,
         ListModeItemComponent,
         FooterInvestComponent,
-        AccountComponent,
         RegistrationComponent,
         EmailConfirmationComponent,
         PortfoliosComponent,
         PortfolioCardComponent,
         PortfolioInvestmentsComponent,
         GraphInCardComponent,
-        CurrencySelectorComponent
+        CurrencySelectorComponent,
     ],
     imports: [
         ChartsModule,
@@ -149,6 +145,7 @@ export const MainRoutes: Routes = [
             useClass: CognitoAuthInterceptor,
             multi: true
         },
+        PoloniexWssService,
         ConfigService,
         PortfolioService,
         UserLoginService,
@@ -167,7 +164,8 @@ export const MainRoutes: Routes = [
     bootstrap: [AppComponent],
     exports: [
         RouterModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule,
         // PermissionsDirective
     ]
 })

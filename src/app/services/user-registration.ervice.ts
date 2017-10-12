@@ -37,14 +37,15 @@ export class UserRegistrationService {
         attributeList.push(new CognitoUserAttribute(dataEmail));
         attributeList.push(new CognitoUserAttribute(dataNickname));
 
-        this.cognitoUtil.getUserPool().signUp(user.email, user.password, attributeList, null, function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                console.log("UserRegistrationService: registered user is " + result);
-                callback.cognitoCallback(null, result);
-            }
-        });
+        this.cognitoUtil.getUserPool()
+            .signUp(user.email, user.password, attributeList, null, function (err, result) {
+                if (err) {
+                    callback.cognitoCallback(err.message, null);
+                } else {
+                    console.log("UserRegistrationService: registered user is " + result);
+                    callback.cognitoCallback(null, result);
+                }
+            });
 
     }
 
