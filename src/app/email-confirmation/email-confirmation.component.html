@@ -17,11 +17,12 @@
         </button>
 
         <p>Can't find your code?
-            <a [routerLink]="['/home/resendCode']">
-                <i class="fa fa-fw fa-group"></i> ResendCode
+            <a (click)="resendCode()">
+                <!--<md-icon svgIcon="thumbs-up"></md-icon> -->
+                ResendCode
             </a>
-            <a [routerLink]="['/register']"> <i class="fa fa-fw fa-group"></i> Register</a> <a
-                [routerLink]="['/login']"> <i class="fa fa-fw fa-user"></i> Login</a>
+            <a [routerLink]="['/g/register']"> <i class="fa fa-fw fa-group"></i> Register</a> <a
+                [routerLink]="['/g/login']"> <i class="fa fa-fw fa-user"></i> Login</a>
         </p>
     </form>
     <dialog>{{errorMessage}}</dialog>

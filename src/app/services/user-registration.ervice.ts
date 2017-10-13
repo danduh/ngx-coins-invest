@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { CognitoCallback, CognitoUtil } from "./cognito-utility.service";
 import { CognitoUserAttribute, AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk";
+import { Observable } from 'rxjs/Observable';
 
 export class RegistrationUser {
     name: string;
@@ -49,20 +50,22 @@ export class UserRegistrationService {
 
     }
 
-    confirmRegistration(username: string, confirmationCode: string, callback: CognitoCallback): void {
+    rxConfirmRegistration(username: string, confirmationCode: string): Observable<any> {
+        return Observable.create((observer) => {
+            let userData = {
+                Username: username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
+            let cognitoUser = new CognitoUser(userData);
 
-        let userData = {
-            Username: username,
-            Pool: this.cognitoUtil.getUserPool()
-        };
-        let cognitoUser = new CognitoUser(userData);
-
-        cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                callback.cognitoCallback(null, result);
-            }
+            cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
+                if (err) {
+                    observer.error(err);
+                } else {
+                    observer.next(result);
+                }
+                observer.complete();
+            });
         });
     }
 
@@ -126,5 +129,27 @@ export class UserRegistrationService {
             }
         });
     }
+
+    rxResendCode(username: string): Observable<any> {
+        return Observable.create((observer) => {
+
+            let userData = {
+                Username: username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
+
+            let cognitoUser = new CognitoUser(userData);
+
+            cognitoUser.resendConfirmationCode((err, result) => {
+                if (!!err) {
+                    observer.error(err);
+                } else {
+                    observer.next(result);
+                }
+                observer.complete();
+            });
+        });
+    }
+
 }
 

@@ -52,7 +52,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.poloniexWssService.tiks.next('BTC_XMR');
+        // this.poloniexWssService.tiks.next('BTC_XMR');
         this.coinsListDataSource = new CoinsListDataSource(this.coinsListDatabase);
 
         this.coinsListDatabase.coins = this._baseCurrency

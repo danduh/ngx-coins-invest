@@ -18,6 +18,7 @@ export const AccountRoutes: Routes = [
         },
 
         children: [
+            {path: '', redirectTo: 'profile', pathMatch: 'full'},
             {
                 path: 'change-password',
                 component: ChangePasswordComponent,

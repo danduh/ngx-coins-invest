@@ -45,19 +45,22 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
 
     onConfirmRegistration() {
         this.errorMessage = null;
-        this.regService.confirmRegistration(this.emailConfirmForm.value.email, this.emailConfirmForm.value.confirmationCode, this);
+        this.regService.rxConfirmRegistration(this.emailConfirmForm.value.email, this.emailConfirmForm.value.confirmationCode)
+            .subscribe((resp) => {
+                this.router.navigate(['/g/login']);
+            }, (err) => {
+                this.errorMessage = err.message;
+                this.showErrorMsg(this.errorMessage);
+            });
     }
 
-    cognitoCallback(message: string, result: any) {
-        if (message != null) { //
-            // error
-            this.errorMessage = message;
-            console.log('message: ' + this.errorMessage);
-            this.showErrorMsg(message);
-        } else {
-            console.log('Moving to create Account');
-            this.router.navigate(['/login']);
-        }
+    resendCode() {
+        this.regService.rxResendCode(this.emailConfirmForm.value.email)
+            .subscribe((res) => {
+                console.log(res);
+            }, (res) => {
+                console.log(res);
+            });
     }
 
     showErrorMsg(msg) {

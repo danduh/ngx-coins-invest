@@ -1,8 +1,1 @@
-<app-header (toggleMenu)="toggleMenu()"></app-header>
-<md-progress-bar [color]="'primary'" [mode]="loaderState"></md-progress-bar>
-<md-sidenav-container>
-    <md-sidenav #sidenav [mode]="sideNavMode" [opened]="sideNavMode == 'side'">
-        <app-side-menu></app-side-menu>
-    </md-sidenav>
-    <router-outlet></router-outlet>
-</md-sidenav-container>
+<router-outlet></router-outlet>

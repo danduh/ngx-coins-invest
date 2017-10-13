@@ -2,5 +2,5 @@
     <button md-icon-button (click)="toggleMenu.emit()">
         <md-icon>more_vert</md-icon>
     </button>
-    <h3>{{title}}</h3>
+    <h3>{{(title|async)}}</h3>
 </md-toolbar>

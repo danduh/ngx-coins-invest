@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoCallback, CognitoUtil, LoggedInCallback } from './cognito-utility.service';
+
 import * as AWS from 'aws-sdk/global';
 import * as STS from 'aws-sdk/clients/sts';
-import { CognitoCallback, CognitoUtil, LoggedInCallback } from './cognito-utility.service';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
@@ -19,62 +21,6 @@ export class UserLoginService {
     }
 
     constructor(@Inject(CognitoUtil) public cognitoUtil: CognitoUtil) {
-    }
-
-    authenticate(username: string, password: string, callback: CognitoCallback) {
-        console.log('UserLoginService: starting the authentication');
-
-        let authenticationData = {
-            Username: username,
-            Password: password,
-        };
-        let authenticationDetails = new AuthenticationDetails(authenticationData);
-
-        let userData = {
-            Username: username,
-            Pool: this.cognitoUtil.getUserPool()
-        };
-
-        console.log('UserLoginService: Params set...Authenticating the user');
-        let cognitoUser = new CognitoUser(userData);
-
-        const self = this;
-        cognitoUser.authenticateUser(authenticationDetails, {
-            newPasswordRequired: function (userAttributes, requiredAttributes) {
-                callback.cognitoCallback(`User needs to set password.`, null);
-            },
-            onSuccess: (result) => {
-
-                console.log('In authenticateUser onSuccess callback');
-
-                let creds = self.cognitoUtil.buildCognitoCreds(result.getIdToken().getJwtToken());
-
-                AWS.config.credentials = creds;
-
-                // So, when CognitoIdentity authenticates a user, it doesn't actually hand us the IdentityID,
-                // used by many of our other handlers. This is handled by some sly underhanded calls to AWS Cognito
-                // API's by the SDK itself, automatically when the first AWS SDK request is made that requires our
-                // security credentials. The identity is then injected directly into the credentials object.
-                // If the first SDK call we make wants to use our IdentityID, we have a
-                // chicken and egg problem on our hands. We resolve this problem by 'priming' the AWS SDK by calling a
-                // very innocuous API call that forces this behavior.
-                let clientParams: any = {};
-                // if (environment.sts_endpoint) {
-                //     clientParams.endpoint = environment.sts_endpoint;
-                // }
-                let sts = new STS(clientParams);
-                // self.isLoggedInSubs = true;
-
-                sts.getCallerIdentity(function (err, data) {
-                    console.log('UserLoginService: Successfully set the AWS credentials');
-                    callback.cognitoCallback(null, result);
-                });
-            },
-            onFailure: function (err) {
-                self.isLoggedInSubs = false;
-                callback.cognitoCallback(err.message, null);
-            },
-        });
     }
 
     forgotPassword(username: string, callback: CognitoCallback) {
@@ -143,6 +89,56 @@ export class UserLoginService {
             console.log('UserLoginService: can\'t retrieve the current user ');
             callback.isLoggedIn('Can\' t retrieve the CurrentUser ', false);
         }
+    }
+
+    rxAuthenticate(username: string, password: string) {
+        return Observable.create((observer) => {
+
+            let authenticationData = {
+                Username: username,
+                Password: password,
+            };
+            let authenticationDetails = new AuthenticationDetails(authenticationData);
+
+            let userData = {
+                Username: username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
+
+            let cognitoUser = new CognitoUser(userData);
+
+            const self = this;
+            cognitoUser.authenticateUser(authenticationDetails, {
+                newPasswordRequired: (userAttributes, requiredAttributes) => {
+                    observer.next('newPasswordRequired');
+                    observer.complete();
+                },
+                onSuccess: (result) => {
+                    let creds = self.cognitoUtil.buildCognitoCreds(result.getIdToken().getJwtToken());
+                    AWS.config.credentials = creds;
+                    let clientParams: any = {};
+                    let sts = new STS(clientParams);
+                    sts.getCallerIdentity((err, data) => {
+                        observer.next('onSuccess');
+                        observer.complete();
+                    });
+                },
+                mfaRequired: () => {
+                    observer.next('mfaRequired');
+                    observer.complete();
+
+                },
+                customChallenge: () => {
+                    observer.next('customChallenge');
+                    observer.complete();
+
+                },
+                onFailure: (err) => {
+                    observer.error(err);
+                    observer.complete();
+                }
+            });
+        });
     }
 
     rxIsAuthenticated(): Observable<boolean> {

@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MdSidenav } from "@angular/material";
 import { WindowService } from "./services/window.service";
 import { LoaderService } from "./shared/loader.service";
+import { UserLoginService } from './services/user-login.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'app-root',
@@ -9,29 +11,17 @@ import { LoaderService } from "./shared/loader.service";
     styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    @ViewChild('sidenav') sideNav: MdSidenav;
-
     public title: string;
-    public sideNavMode = 'side';
     public loaderState: string = null;
+    public isLoggedIn: Observable<boolean>;
 
-    constructor(private windowService: WindowService,
+    constructor(private userService: UserLoginService,
                 private loaderService: LoaderService) {
     }
 
-    ngOnInit() {
-        this.windowService.width
-            .subscribe((width) => {
-                if (width) {
-                    if (width < 1000) {
-                        this.sideNavMode = "over";
-                        this.sideNav.close();
-                    } else {
-                        this.sideNavMode = "side";
-                    }
-                }
-            });
 
+    ngOnInit() {
+        this.isLoggedIn = this.userService.rxIsAuthenticated();
     }
 
     ngAfterViewInit() {
@@ -39,10 +29,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         //     .subscribe((state) => {
         //         this.loaderState = state;
         //     });
-    }
-
-    toggleMenu() {
-        this.sideNav.toggle();
     }
 }
 

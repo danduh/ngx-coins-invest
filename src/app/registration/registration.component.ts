@@ -64,7 +64,7 @@ export class RegistrationComponent implements CognitoCallback {
             // success
             // move to the next step
             console.log("redirecting");
-            this.router.navigate(['/email-confirm', result.user.username]);
+            this.router.navigate(['/g/email-confirm', result.user.username]);
         }
     }
 }

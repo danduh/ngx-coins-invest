@@ -50,54 +50,71 @@ import { LoaderService } from "./shared/loader.service";
 import { PoloniexWssService } from './services/external-api/poloniex-wss.service';
 import { ProfileComponent } from './account/components/profile/profile.component';
 import { ChangePasswordComponent } from './account/components/change-password/change-password.component';
+import { GuestComponent } from './guest/guest.component';
+import { MainComponent } from './main/main.component';
 
 export const MainRoutes: Routes = [
-    {path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
-    {path: 'logout', component: LogoutComponent, canActivate: [OutOutletService], data: {logout: true, title: 'Login'}},
+    {path: '', redirectTo: '/g/login', pathMatch: 'full'},
     {
-        path: 'register',
-        component: RegistrationComponent,
-        canActivate: [OutOutletService],
-        data: {logout: true, title: 'Sign Up'},
+        path: 'g',
+        component: GuestComponent,
+        children: [{path: 'login', component: LoginComponent, data: {logout: false, title: 'Login'}},
+            {
+                path: 'logout',
+                component: LogoutComponent,
+                canActivate: [OutOutletService],
+                data: {logout: true, title: 'Login'}
+            },
+            {
+                path: 'register',
+                component: RegistrationComponent,
+                canActivate: [OutOutletService],
+                data: {logout: true, title: 'Sign Up'},
+            },
+            {
+                path: 'email-confirm',
+                component: EmailConfirmationComponent,
+                canActivate: [OutOutletService],
+                data: {logout: true, title: 'Email Confirmation'},
+            },
+            {
+                path: 'email-confirm/:username',
+                component: EmailConfirmationComponent,
+                canActivate: [OutOutletService],
+                data: {logout: true, title: 'Email Confirmation'},
+            },
+        ]
     },
     {
-        path: 'email-confirm',
-        component: EmailConfirmationComponent,
-        canActivate: [OutOutletService],
-        data: {logout: true, title: 'Email Confirmation'},
+        path: 'app', component: MainComponent, children: [
+        {path: 'account', loadChildren: './account/account.module#AccountModule'},
+        {
+            path: 'coins',
+            component: CoinsListComponent,
+            canActivate: [AuthGuard, OutOutletService],
+            data: {title: 'Select Coin'}
+        },
+        {
+            path: 'portfolio',
+            component: PortfoliosComponent,
+            canActivate: [AuthGuard, OutOutletService],
+            data: {title: 'Select Portfolio'}
+        },
+        {
+            path: 'portfolio/:portfolioId',
+            component: PortfolioInvestmentsComponent,
+            canActivate: [AuthGuard, OutOutletService],
+            data: {title: 'Portfolio Investments'}
+        },
+        {
+            path: 'investto/:coinId/:baseCurrency',
+            component: CoinsManagerComponent,
+            canActivate: [AuthGuard],
+            data: {title: 'Invest To', groups: ['investors']}
+        },
+        {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
+    ]
     },
-    {
-        path: 'email-confirm/:username',
-        component: EmailConfirmationComponent,
-        canActivate: [OutOutletService],
-        data: {logout: true, title: 'Email Confirmation'},
-    },
-    {path: 'account', loadChildren: './account/account.module#AccountModule'},
-    {
-        path: 'coins',
-        component: CoinsListComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Select Coin'}
-    },
-    {
-        path: 'portfolio',
-        component: PortfoliosComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Select Portfolio'}
-    },
-    {
-        path: 'portfolio/:portfolioId',
-        component: PortfolioInvestmentsComponent,
-        canActivate: [AuthGuard, OutOutletService],
-        data: {title: 'Portfolio Investments'}
-    },
-    {
-        path: 'investto/:coinId/:baseCurrency',
-        component: CoinsManagerComponent,
-        canActivate: [AuthGuard],
-        data: {title: 'Invest To', groups: ['investors']}
-    },
-    {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
 ];
 
 @NgModule({
@@ -125,6 +142,8 @@ export const MainRoutes: Routes = [
         PortfolioInvestmentsComponent,
         GraphInCardComponent,
         CurrencySelectorComponent,
+        GuestComponent,
+        MainComponent,
     ],
     imports: [
         ChartsModule,

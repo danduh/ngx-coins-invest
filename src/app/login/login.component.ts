@@ -32,9 +32,17 @@ export class LoginComponent implements OnInit {
         // this.userService.isAuthenticated(this);
         this.userService.rxIsAuthenticated()
             .subscribe((response) => {
-                this.authenticationCallback(null, response);
+                this.router.navigate(['/app/portfolio'])
+                    .then(
+                        function () {
+                            console.log('navigate success');
+                        },
+                        function () {
+                            console.log('navigate failure');
+                        }
+                    );
             }, (err) => {
-                this.authenticationCallback(err, false);
+                console.log(err);
             });
     }
 
@@ -52,7 +60,7 @@ export class LoginComponent implements OnInit {
         } else { //  success
             this.accountService.getOrCreate()
                 .subscribe((response) => {
-                    this.router.navigate(['/portfolio'])
+                    this.router.navigate(['/app/portfolio'])
                         .then(
                             function () {
                                 console.log('navigate success');
@@ -77,7 +85,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/home/newPassword']);
             }
         } else { //  success
-            this.router.navigate(['/portfolio'])
+            this.router.navigate(['/app/portfolio'])
                 .then(
                     function () {
                         console.log('navigate success');
@@ -101,10 +109,29 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.userService.authenticate(this.username, this.password, this);
+        this.userService.rxAuthenticate(this.username, this.password)
+            .subscribe((res) => {
+                console.log(res);
+            }, this.authErrorHandler.bind(this));
 
         this.error = null;
 
+    }
+
+    authErrorHandler(err) {
+
+        switch (err.code) {
+            case 'UserNotFoundException':
+                this.error = err.message;
+                break;
+            case 'UserNotConfirmedException':
+                this.error = err.message;
+                break;
+            default:
+                console.log('SomethingWrong');
+                console.log(this.error);
+                break;
+        }
     }
 
     postLogin(data) {
@@ -119,7 +146,7 @@ export class LoginComponent implements OnInit {
     }
 
     postLoginRedirect() {
-        this.router.navigate(['/portfolio'])
+        this.router.navigate(['/app/portfolio'])
             .then((resp) => console.log(resp));
     }
 
@@ -164,9 +191,9 @@ export class LogoutComponent implements LoggedInCallback {
     isLoggedIn(message: string, isLoggedIn: boolean) {
         if (isLoggedIn) {
             this.userService.logout();
-            this.router.navigate(['/login']);
+            this.router.navigate(['/g/login']);
         }
 
-        this.router.navigate(['/login']);
+        this.router.navigate(['g//login']);
     }
 }

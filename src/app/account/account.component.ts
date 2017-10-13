@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { AccountService, ProfileModel } from "../services/account.service";
 import { ErrorHandlerClass } from "../components/extendable/error-handler.class";
 
 @Component({
@@ -9,6 +7,11 @@ import { ErrorHandlerClass } from "../components/extendable/error-handler.class"
     styleUrls: ['./account.component.scss']
 })
 export class AccountComponent extends ErrorHandlerClass implements OnInit {
+    public navTabs = [
+        {path: 'profile', name: 'Profile'},
+        {path: 'change-password', name: 'Change Password'}
+    ];
+
     constructor() {
         super();
     }
