@@ -110,12 +110,23 @@ export class LoginComponent implements OnInit {
         }
 
         this.userService.rxAuthenticate(this.username, this.password)
-            .subscribe((res) => {
-                console.log(res);
-            }, this.authErrorHandler.bind(this));
+            .subscribe(
+                this.authSuccessHandler.bind(this),
+                this.authErrorHandler.bind(this)
+            );
 
         this.error = null;
 
+    }
+
+    authSuccessHandler(result) {
+        switch (result) {
+            case 'onSuccess':
+                this.postLoginRedirect();
+                break;
+            default:
+                console.log(result);
+        }
     }
 
     authErrorHandler(err) {

@@ -30,13 +30,19 @@ export class CognitoAuthInterceptor implements HttpInterceptor {
                         this.loaderService.loaderState = 'indeterminate';
                         return event;
                     })
-                    .catch((err: any, caught) => {
-                        if (err instanceof HttpErrorResponse) {
-                            if (err.status === 403) {
-                                console.info('err.error =', err.error, ';');
-                            }
-                            return Observable.throw(err);
+                    .catch((err: HttpErrorResponse, caught) => {
+                        if (err.error instanceof Error) {
+                            console.log("Client-side error occured.");
+                        } else {
+
+                            console.log("Server-side error occured.");
                         }
+
+                        let errMsg;
+                        if (err.status === 404) {
+                            errMsg = JSON.parse(err.error);
+                        }
+                        return Observable.throw(errMsg);
                     });
             });
 
