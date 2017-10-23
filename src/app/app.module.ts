@@ -14,12 +14,10 @@ import { CoinsService } from './services/coins.service';
 import { CoinsManagerComponent } from './coins-manager/coins-manager.component';
 import { PriceFormatPipe } from './pipes/price-format.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
-import { CurrentStatusComponent } from './current-status/current-status.component';
 import { AuthGuard } from "./services/auth-guard";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ChartsService } from "./services/charts/charts.service";
 import { CoinCardComponent } from './components/coin-card/coin-card.component';
-import { ViewListModeComponent } from './components/view-list-mode/view-list-mode.component';
 import { ViewCardModeComponent } from './components/view-card-mode/view-card-mode.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { PermissionsDirective } from "./directives/permissions.directive";
@@ -48,8 +46,6 @@ import { ConfigService } from "./services/config.service";
 import { CurrencySelectorComponent } from './components/currency-selector/currency-selector.component';
 import { LoaderService } from "./shared/loader.service";
 import { PoloniexWssService } from './services/external-api/poloniex-wss.service';
-import { ProfileComponent } from './account/components/profile/profile.component';
-import { ChangePasswordComponent } from './account/components/change-password/change-password.component';
 import { GuestComponent } from './guest/guest.component';
 import { MainComponent } from './main/main.component';
 
@@ -127,9 +123,7 @@ export const MainRoutes: Routes = [
         CoinsManagerComponent,
         PriceFormatPipe,
         FilterPipe,
-        CurrentStatusComponent,
         CoinCardComponent,
-        ViewListModeComponent,
         ViewCardModeComponent,
         SideMenuComponent,
         PermissionsDirective,
