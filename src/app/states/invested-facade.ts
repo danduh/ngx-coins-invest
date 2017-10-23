@@ -75,9 +75,6 @@ export class InvestedFacade {
         inv.forEach((coin: InvestedCoinModel) => {
             let tick = ticker[coin.metaData.symbol];
             coin.price = tick.USD;
-            coin.open_value = (coin.openPrice * coin.amount);
-            coin.plUsd = (tick.USD * coin.amount) - coin.open_value;
-            coin.plPct = parseFloat((coin.plUsd / coin.open_value * 100).toPrecision(2));
         });
         this.updateTickerState(inv);
     }
@@ -102,7 +99,7 @@ export class InvestedFacade {
                         let open = list.map((c) => c.open_value)
                             .reduce((a, b) => a + b);
 
-                        let profit = list.map((c) => c.plUsd)
+                        let profit = list.map((c) => c.changeInOpenCurrency)
                             .reduce((a, b) => a + b);
                         let total = open + profit;
 

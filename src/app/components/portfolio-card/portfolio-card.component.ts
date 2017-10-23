@@ -17,6 +17,6 @@ export class PortfolioCardComponent implements OnInit {
     }
 
     public goToPortfolio() {
-        this.router.navigate([`/portfolio/${this.portfolio.id}`]);
+        this.router.navigate([`/app/portfolio/${this.portfolio.id}`]);
     }
 }

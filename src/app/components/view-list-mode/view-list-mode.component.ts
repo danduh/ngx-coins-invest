@@ -14,7 +14,7 @@ import { WindowService } from "../../services/window.service";
 })
 export class ViewListModeComponent implements OnInit {
     // @Input('visibleCoins') visibleCoins: Observable<CoinModel>;
-    public displayedColumns = ['investId', 'quantity', 'openPrice', 'price', 'plUsd', 'plPct'];
+    public displayedColumns = ['investId', 'quantity', 'openPrice', 'price', 'changeInOpenCurrency', 'changePct'];
     public investedCoinsDatabase;
     public isMobile = false;
     dataSource: InvestedCoinsDataSource | null;

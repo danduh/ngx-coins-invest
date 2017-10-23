@@ -8,8 +8,8 @@ import { ErrorHandlerClass } from "../components/extendable/error-handler.class"
 })
 export class AccountComponent extends ErrorHandlerClass implements OnInit {
     public navTabs = [
-        {path: 'profile', name: 'Profile'},
-        {path: 'change-password', name: 'Change Password'}
+        {path: 'profile', title: 'Profile'},
+        {path: 'change-password', title: 'Change Password'}
     ];
 
     constructor() {

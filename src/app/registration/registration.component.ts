@@ -4,14 +4,13 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AccountService } from "../services/account.service";
 import { Router } from "@angular/router";
 import { RegistrationUser, UserRegistrationService } from "../services/user-registration.ervice";
-import { CognitoCallback } from "../services/cognito-utility.service";
 
 @Component({
     selector: 'app-registration',
     templateUrl: './registration.component.html',
     styleUrls: ['./registration.component.scss']
 })
-export class RegistrationComponent implements CognitoCallback {
+export class RegistrationComponent {
     newUser: AppUser;
     fromNewUser: FormGroup;
     registrationUser: RegistrationUser;
@@ -53,18 +52,20 @@ export class RegistrationComponent implements CognitoCallback {
 
         this.registrationUser.password = this.fromNewUser.get('password').value;
         this.registrationUser.email = this.fromNewUser.get('username').value;
-        this.userRegistration.register(this.registrationUser, this);
+        this.userRegistration.rxRegister(this.registrationUser)
+            .subscribe(
+                this.postRegistration.bind(this),
+                this.errorRegistration.bind(this)
+            );
     }
 
-    cognitoCallback(message: string, result: any) {
-        if (message != null) {
-            this.errorMessage = message;
-            console.log("result: " + this.errorMessage);
-        } else {
-            // success
-            // move to the next step
-            console.log("redirecting");
-            this.router.navigate(['/g/email-confirm', result.user.username]);
-        }
+    postRegistration(result) {
+        console.log("redirecting");
+        this.router.navigate(['/g/email-confirm', result.user.username]);
+    }
+
+    errorRegistration(err) {
+        this.errorMessage = err.message;
+        console.log("result: " + this.errorMessage);
     }
 }

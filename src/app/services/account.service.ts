@@ -7,11 +7,8 @@ import { Observable } from "rxjs/Observable";
 
 export class AccountModel {
     public id: number = null;
-    public name?: string = null;
     public createdAt?: string = null;
-}
 
-export class UserModel {
     private _fullName: string;
     get fullName() {
         return `${this.firstName} ${this.lastName}`;
@@ -21,40 +18,16 @@ export class UserModel {
         console.error('You should not set user\'s this.fullName');
     }
 
-    id: number;
     userSub: string;
     email: string;
     firstName: string;
     lastName: string;
 }
 
-export class ProfileModel extends AccountModel {
-    accountName: string;
-    user: UserModel;
-}
-
 
 @Injectable()
 export class AccountService {
     baseUrl = environment['baseApiUrl'];
-
-    static AccUserIntoProfile(account) {
-        const profile: ProfileModel = {
-            id: account.id,
-            user: account['Users'][0],
-            accountName: account.name
-        };
-        return profile;
-    }
-
-    static ProfileIntoAccountDBModel(profile: ProfileModel) {
-        const account = profile;
-        account['Users'] = [profile.user];
-        account.name = account.accountName;
-        delete account.user;
-        delete account.accountName;
-        return account;
-    }
 
     constructor(private http: HttpClient) {
 
@@ -65,21 +38,17 @@ export class AccountService {
 
     }
 
-    public getOrCreate(): Observable<ProfileModel> {
+    public getOrCreate(): Observable<AccountModel> {
         let params = new HttpParams().set('getOrCreate', 'true');
-        return this.http.get<ProfileModel>(`${this.baseUrl}accounts`, {params})
-            .map(AccountService.AccUserIntoProfile.bind(this));
+        return this.http.get<AccountModel>(`${this.baseUrl}accounts`, {params});
     }
 
     public getAccount(): Observable<any> {
-        return this.http.get<ProfileModel>(`${this.baseUrl}accounts`)
-            .map(AccountService.AccUserIntoProfile.bind(this));
+        return this.http.get<AccountModel>(`${this.baseUrl}accounts`);
     }
 
-    public updateAccount(profile: ProfileModel) {
-        const account = AccountService.ProfileIntoAccountDBModel(profile);
-        return this.http.put<ProfileModel>(`${this.baseUrl}accounts/${profile.id}`, profile)
-            .map(AccountService.AccUserIntoProfile.bind(this));
+    public updateAccount(profile: AccountModel) {
+        return this.http.put<AccountModel>(`${this.baseUrl}accounts/${profile.id}`, profile);
     }
 
     private postRequestSuccess(response: Response) {

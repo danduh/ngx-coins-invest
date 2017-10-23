@@ -26,7 +26,9 @@ export const allConfig = {
         },
     },
     local: {
+        // baseApiUrl: 'https://8ajwtnzmn5.execute-api.us-east-1.amazonaws.com/stage/',
         baseApiUrl: 'http://localhost:8090/',
+        // baseApiUrl: 'http://api.danduh.me/stage/',
         marketTickerUrl: 'https://min-api.cryptocompare.com/data/',
         name: 'local',
         aws: {

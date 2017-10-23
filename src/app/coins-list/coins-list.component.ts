@@ -70,7 +70,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(coin: CoinModel) {
-        this.router.navigate(['investto', coin.name, coin.baseCurrency]);
+        this.router.navigate(['app/investto', coin.name, coin.baseCurrency]);
     }
 
     coinName(indes, coin) {

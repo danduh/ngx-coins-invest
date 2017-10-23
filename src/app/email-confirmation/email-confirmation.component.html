@@ -1,9 +1,17 @@
 <div class="form">
-    <form class="app-form" method="POST" action="#" role="form" [formGroup]="emailConfirmForm" #formDir="ngForm">
+    <form class="app-form" action="#" role="form"
+          #formDir="ngForm"
+          [formGroup]="emailConfirmForm"
+          (ngSubmit)="onConfirmRegistration()">
         <md-input-container class="app-full-width">
             <input mdInput id="email" type="email" maxlength="50" class="form-control"
                    placeholder="Email (username)"
                    formControlName="email"/>
+        </md-input-container>
+        <md-input-container class="app-full-width">
+            <input mdInput id="password" type="password" maxlength="50" class="form-control"
+                   placeholder="Password"
+                   formControlName="password"/>
         </md-input-container>
         <md-input-container class="app-full-width">
             <input mdInput id="confirmationCode"
@@ -11,7 +19,7 @@
                    type="text" maxlength="50" class="form-control"
                    formControlName="confirmationCode"/>
         </md-input-container>
-        <button md-raised-button (click)="onConfirmRegistration()"
+        <button md-raised-button
                 id="confirmRegistration" type="submit"
                 class="btn btn-info btn-block">Confirm
         </button>

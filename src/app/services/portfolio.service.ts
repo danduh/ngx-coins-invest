@@ -35,6 +35,10 @@ export class PortfolioService {
         return this.http.post<PortfolioModel>(`${this.baseUrl}portfolios/${portfolioId}/investments`, invest);
     }
 
+    removeInvestment(portfolioId: number, investId: number) {
+        return this.http.delete<InvestedCoinModel[]>(`${this.baseUrl}portfolios/${portfolioId}/investments/${investId}`);
+    }
+
     getPortfolioInvestments(portfolioId) {
         return this.http.get<InvestedCoinModel[]>(`${this.baseUrl}portfolios/${portfolioId}/investments`);
     }

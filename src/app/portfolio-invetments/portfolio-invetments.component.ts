@@ -14,13 +14,22 @@ export class PortfolioInvestmentsComponent implements OnInit {
     investmentsListDatabase = new InvestmentsListDatabase();
     investmentsListDataSource: InvestmentsListDataSource | null;
     portfolioId: number;
-    displayedColumns: string[] = ['logo', 'amount', 'price', 'openPrice'];
+    // displayedColumns: string[] = ['logo', 'amount', 'price', 'openPrice'];
+    displayedColumns: string[] = ['logo', 'openCurrency', 'amount', 'openPrice', 'delete'];
 
     constructor(private portfolioService: PortfolioService,
                 private route: ActivatedRoute) {
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
         });
+    }
+
+    deleteInvest(investId) {
+        // this.investmentsListDatabase.investments =
+        this.portfolioService.removeInvestment(this.portfolioId, investId)
+            .subscribe((resp) => {
+                console.log(resp);
+            });
     }
 
     ngOnInit() {

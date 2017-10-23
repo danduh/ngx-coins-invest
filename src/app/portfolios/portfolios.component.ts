@@ -29,7 +29,7 @@ export class PortfoliosComponent extends ErrorHandlerClass implements OnInit {
     ngOnInit() {
         this.portfolios = this.portfolioService.getAllPortfolios()
             .catch((err, cou) => {
-                if (err.error = 'noAccountFound') {
+                if (!!err && err.error === 'noAccountFound') {
                     this.router.navigate(['/app/account']);
                 }
                 return Observable.of([]);

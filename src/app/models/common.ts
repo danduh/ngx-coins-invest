@@ -26,17 +26,22 @@ export class CoinModel {
 }
 
 export class InvestedCoinModel extends CoinModel {
-    coinId?: string;
-    investId?: string;
-    createdAt?: number;
-    updatedAt?: number;
-    open_value?: number;
+    coinId?: string; // BTC
+    investId?: string; // id sequelized
+    createdAt?: number; // sequelized
+    updatedAt?: number; // sequelized
     description?: string;
-    amount: number;
+    amount: number; // how many was bought
     metaData: CoinModel;
-    openPrice?: number;
-    plUsd?: number;
-    plPct?: number;
+    openPrice?: number; // price was bought
+    openCurrency?: string; // USD ETH EUR
+    changeInOpenCurrency?: number; // (counted)
+    changePct?: number; // change in % (counted)
+
+    _openValue?: number; // openPrice * amount (counted)
+    get openValue() {
+        return this.amount * this.openPrice;
+    }
 
     constructor(coin: CoinModel) {
         super(coin);

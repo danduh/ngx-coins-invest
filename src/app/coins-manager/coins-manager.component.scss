@@ -20,7 +20,12 @@
             }
         }
     }
-
+    .portfolio-select {
+        width: 45%;
+    }
+    /deep/ .mat-select-trigger {
+        width: 200px;
+    }
     width: 500px;
     margin: 2px auto;
 

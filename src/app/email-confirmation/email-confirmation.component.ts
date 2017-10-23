@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserRegistrationService } from "../services/user-registration.ervice";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { MdDialog } from "@angular/material";
 import { AccountService } from "../services/account.service";
+import { UserLoginService } from '../services/user-login.service';
 
 @Component({
     selector: 'app-email-confirmation',
@@ -22,6 +23,7 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
                 public router: Router,
                 public dialog: MdDialog,
                 public route: ActivatedRoute,
+                private userLoginService: UserLoginService,
                 private accountService: AccountService) {
     }
 
@@ -32,8 +34,9 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
         });
 
         this.emailConfirmForm = new FormGroup({
-            'email': new FormControl(this.email),
-            'confirmationCode': new FormControl()
+            email: new FormControl(this.email, [Validators.required]),
+            password: new FormControl(null, [Validators.required]),
+            confirmationCode: new FormControl(null, [Validators.required])
         });
 
         this.errorMessage = null;
@@ -46,7 +49,16 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
     onConfirmRegistration() {
         this.errorMessage = null;
         this.regService.rxConfirmRegistration(this.emailConfirmForm.value.email, this.emailConfirmForm.value.confirmationCode)
+            .mergeMap((resp) => {
+                console.log('MERGE_1');
+                return this.userLoginService.rxAuthenticate(this.emailConfirmForm.value.email, this.emailConfirmForm.value.password);
+            })
+            .mergeMap((resp) => {
+                console.log('MERGE_2');
+                return this.accountService.createAccountUser(this.emailConfirmForm.value);
+            })
             .subscribe((resp) => {
+                console.log('MERGE_3');
                 this.router.navigate(['/g/login']);
             }, (err) => {
                 this.errorMessage = err.message;

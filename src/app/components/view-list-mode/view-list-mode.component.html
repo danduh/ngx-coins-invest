@@ -32,13 +32,14 @@
     <!-- Profit/Lowfit in USD-->
     <ng-container cdkColumnDef="plUsd">
         <md-header-cell *cdkHeaderCellDef> P/L($)</md-header-cell>
-        <md-cell *cdkCellDef="let coin" [ngClass]="coin.plUsd>0 ? 'pos':'neg'"> {{coin.plUsd |priceFormat}}</md-cell>
+        <md-cell *cdkCellDef="let coin" [ngClass]="coin.changeInOpenCurrency>0 ? 'pos':'neg'">
+            {{coin.changeInOpenCurrency |priceFormat}}</md-cell>
     </ng-container>
 
     <!-- Profit/Lowfit in PCT %-->
     <ng-container cdkColumnDef="plPct">
         <md-header-cell *cdkHeaderCellDef> P/L(%)</md-header-cell>
-        <md-cell *cdkCellDef="let coin" [ngClass]="coin.plPct>0 ? 'pos':'neg'"> {{coin.plPct}}%</md-cell>
+        <md-cell *cdkCellDef="let coin" [ngClass]="coin.changePct>0 ? 'pos':'neg'"> {{coin.changePct}}%</md-cell>
     </ng-container>
 
     <!-- Color Column -->

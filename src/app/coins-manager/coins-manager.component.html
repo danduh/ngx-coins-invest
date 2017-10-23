@@ -15,24 +15,23 @@
                 </md-card-subtitle>
                 <md-card-subtitle>BTC {{coin.price_btc}}</md-card-subtitle>
             </div>
-            <div class="card-header-right">
-                <md-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio">
-                    <md-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
-                        {{portfolio.name}}
-                    </md-option>
-                </md-select>
-            </div>
         </md-card-header>
 
         <md-card-content>
-            <md-input-container class="">
-                <input mdInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.quantity"/>
+            <md-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio" class="portfolio-select">
+                <md-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
+                    {{portfolio.name}}
+                </md-option>
+            </md-select>
+            <app-currency-selector (onSelect)="coinToBuy.openCurrency = $event.value"></app-currency-selector>
+
+            <md-input-container>
+                <input mdInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.amount"/>
             </md-input-container>
-            <md-input-container class="">
+            <md-input-container>
                 <input mdInput type="number" placeholder="Price" [(ngModel)]="coinToBuy.openPrice"/>
             </md-input-container>
-            <app-currency-selector (onSelect)="coinToBuy.openCurrency = $event.value"></app-currency-selector>
-            <md-input-container class="example-full-width">
+            <md-input-container>
                 <input mdInput type="text" placeholder="Note" [(ngModel)]="coinToBuy.description"/>
             </md-input-container>
         </md-card-content>

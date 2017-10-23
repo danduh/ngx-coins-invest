@@ -70,7 +70,7 @@ export class CognitoUtil {
                         observer.error(null);
                     } else {
                         if (session.isValid()) {
-                            observer.next(session.getAccessToken().getJwtToken());
+                            observer.next(session.getIdToken().getJwtToken());
                         }
                     }
                     observer.complete();
@@ -136,7 +136,8 @@ export class CognitoUtil {
                     callback.callbackWithParam(null);
                 } else {
                     if (session.isValid()) {
-                        callback.callbackWithParam(session.getAccessToken().getJwtToken());
+                        debugger
+                        callback.callbackWithParam(session.getIdToken().getJwtToken());
                     }
                 }
             });
