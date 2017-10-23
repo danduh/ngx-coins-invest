@@ -23,8 +23,6 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { PermissionsDirective } from "./directives/permissions.directive";
 import { ListModeItemComponent } from './components/list-mode-item/list-mode-item.component';
 import { StoreModule } from '@ngrx/store';
-import { investedReducer } from "./states/invested-reducer";
-import { InvestedFacade } from "./states/invested-facade";
 import { MarketTickerService } from "./services/market-ticker.service";
 import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
 import { OutOutletService } from "./services/out-outler.service";
@@ -150,7 +148,6 @@ export const MainRoutes: Routes = [
         IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
-        StoreModule.forRoot({investedStore: investedReducer})
     ],
     providers: [
         {
@@ -168,7 +165,6 @@ export const MainRoutes: Routes = [
         ChartsService,
         AuthGuard,
         CoinsService,
-        InvestedFacade,
         MarketTickerService,
         OutOutletService,
         WindowService,
