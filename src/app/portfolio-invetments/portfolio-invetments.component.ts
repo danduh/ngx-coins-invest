@@ -4,6 +4,7 @@ import { Observable } from "rxjs/Observable";
 import { InvestedCoinModel } from "../models/common";
 import { DataSource } from "@angular/cdk/collections";
 import { ActivatedRoute } from "@angular/router";
+import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 
 @Component({
     selector: 'app-portfolio-investments',
@@ -18,9 +19,11 @@ export class PortfolioInvestmentsComponent implements OnInit {
     displayedColumns: string[] = ['logo', 'openCurrency', 'amount', 'openPrice', 'delete'];
 
     constructor(private portfolioService: PortfolioService,
+                private portfolioFacade: PortfolioFacade,
                 private route: ActivatedRoute) {
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
+            this.portfolioFacade.load(this.portfolioId);
         });
     }
 
@@ -34,7 +37,7 @@ export class PortfolioInvestmentsComponent implements OnInit {
 
     ngOnInit() {
         this.investmentsListDataSource = new InvestmentsListDataSource(this.investmentsListDatabase);
-        this.investmentsListDatabase.investments = this.portfolioService.getPortfolioInvestments(this.portfolioId);
+        this.investmentsListDatabase.investments = this.portfolioFacade.$portfolioState;
     }
 
 }

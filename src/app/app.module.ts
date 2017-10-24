@@ -22,7 +22,6 @@ import { ViewCardModeComponent } from './components/view-card-mode/view-card-mod
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { PermissionsDirective } from "./directives/permissions.directive";
 import { ListModeItemComponent } from './components/list-mode-item/list-mode-item.component';
-import { StoreModule } from '@ngrx/store';
 import { MarketTickerService } from "./services/market-ticker.service";
 import { FooterInvestComponent } from './components/footer-invest/footer-invest.component';
 import { OutOutletService } from "./services/out-outler.service";
@@ -46,6 +45,7 @@ import { LoaderService } from "./shared/loader.service";
 import { PoloniexWssService } from './services/external-api/poloniex-wss.service';
 import { GuestComponent } from './guest/guest.component';
 import { MainComponent } from './main/main.component';
+import { StoreManagementModule } from './store';
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
@@ -148,6 +148,9 @@ export const MainRoutes: Routes = [
         IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
+        StoreManagementModule.forRoot()
+        // StoreModule.forRoot({portfolioStore: portfolioReducer}),
+        // EffectsModule.forRoot([PortfolioEffects])
     ],
     providers: [
         {
