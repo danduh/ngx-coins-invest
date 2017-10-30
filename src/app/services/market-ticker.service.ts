@@ -12,7 +12,7 @@ export class MarketTickerService {
     constructor(private http: HttpClient) {
     }
 
-    public getMultiSymbols(symbols: string[], curr = 'USD') {
+    public getMultiSymbols(curr = 'USD', symbols: string[]) {
         let params = new HttpParams();
         params = params.append('fsyms', symbols.toString());
         params = params.append('tsyms', curr.toString());

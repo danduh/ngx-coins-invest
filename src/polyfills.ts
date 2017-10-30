@@ -42,3 +42,5 @@ import 'rxjs/add/operator/toPromise';
 import 'web-animations-js';
 import 'ts-helpers';
 
+import "rxjs/add/operator/take";
+import "rxjs/add/operator/takeWhile";

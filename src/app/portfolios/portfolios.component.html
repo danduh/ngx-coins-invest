@@ -15,6 +15,7 @@
             <md-form-field>
                 <input mdInput formControlName="comment" placeholder="Comment">
             </md-form-field>
+            <app-currency-selector (onSelect)="onBaseCurrencySelect($event.value)"></app-currency-selector>
             <button md-raised-button [color]="'primary'" type="submit">Create</button>
         </form>
     </md-expansion-panel>

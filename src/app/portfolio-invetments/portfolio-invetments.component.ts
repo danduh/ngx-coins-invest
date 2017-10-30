@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PortfolioService } from "../services/portfolio.service";
+import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
 import { Observable } from "rxjs/Observable";
 import { InvestedCoinModel } from "../models/common";
 import { DataSource } from "@angular/cdk/collections";
 import { ActivatedRoute } from "@angular/router";
+import { InvestmentsFacade } from '../store/investments/investments.facade';
 import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 
 @Component({
@@ -14,21 +15,22 @@ import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 export class PortfolioInvestmentsComponent implements OnInit {
     investmentsListDatabase = new InvestmentsListDatabase();
     investmentsListDataSource: InvestmentsListDataSource | null;
+    portfolio: PortfolioModel;
     portfolioId: number;
     // displayedColumns: string[] = ['logo', 'amount', 'price', 'openPrice'];
-    displayedColumns: string[] = ['logo', 'openCurrency', 'amount', 'openPrice', 'delete'];
+    displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'price', 'delete'];
 
     constructor(private portfolioService: PortfolioService,
+                private investmentsFacade: InvestmentsFacade,
                 private portfolioFacade: PortfolioFacade,
                 private route: ActivatedRoute) {
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
-            this.portfolioFacade.load(this.portfolioId);
+            this.investmentsFacade.load(this.portfolioId);
         });
     }
 
     deleteInvest(investId) {
-        // this.investmentsListDatabase.investments =
         this.portfolioService.removeInvestment(this.portfolioId, investId)
             .subscribe((resp) => {
                 console.log(resp);
@@ -36,8 +38,19 @@ export class PortfolioInvestmentsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.portfolio = this.portfolioFacade.getPortfolioById(this.portfolioId);
+        console.log(this.portfolio);
         this.investmentsListDataSource = new InvestmentsListDataSource(this.investmentsListDatabase);
-        this.investmentsListDatabase.investments = this.portfolioFacade.$portfolioState;
+        this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState;
+
+        this.investmentsFacade.$investmentsState
+            .subscribe(this.startTicker.bind(this));
+
+    }
+
+    startTicker(data) {
+        if (!!data)
+            console.log(data)
     }
 
 }

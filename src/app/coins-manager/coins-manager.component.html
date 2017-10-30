@@ -23,8 +23,6 @@
                     {{portfolio.name}}
                 </md-option>
             </md-select>
-            <app-currency-selector (onSelect)="coinToBuy.openCurrency = $event.value"></app-currency-selector>
-
             <md-input-container>
                 <input mdInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.amount"/>
             </md-input-container>

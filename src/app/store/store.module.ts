@@ -1,20 +1,17 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PortfolioEffects } from './portfolio/portfolio.effects';
+import { InvestmentsEffects, investmentsReducer, InvestmentsFacade } from './investments';
 import { portfolioReducer } from './portfolio/portfolio.reducer';
 import { PortfolioFacade } from './portfolio/portfolio.facade';
+import { PortfolioEffects } from './portfolio/portfolio.effects';
 
-const STORE_PROVIDERS = []
-// export interface AppState {
-//     bagState: BagState;
-// }
 
 @NgModule({
-    providers: [],
+    providers: [PortfolioFacade],
     imports: [
-        StoreModule.forRoot({portfolioStore: portfolioReducer}),
-        EffectsModule.forRoot([PortfolioEffects])
+        StoreModule.forRoot({investmentsStore: investmentsReducer, portfolioStore: portfolioReducer}),
+        EffectsModule.forRoot([InvestmentsEffects, PortfolioEffects])
     ],
     exports: [
         StoreModule,
@@ -25,7 +22,7 @@ export class StoreManagementModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: StoreManagementModule,
-            providers: [PortfolioFacade]
+            providers: [InvestmentsFacade]
 
         };
     }

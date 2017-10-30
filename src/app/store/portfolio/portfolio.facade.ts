@@ -1,23 +1,33 @@
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PortfolioActions } from './portfolio.actions';
-import { Injectable } from '@angular/core';
-
+import { PortfolioModel } from '../../services/portfolio.service';
 
 export const getPortfolioState = (state) => {
     console.log(state);
     return state['portfolioStore'];
 };
 
-
 @Injectable()
 export class PortfolioFacade {
-    $portfolioState;
+    $portfolioStore;
 
     constructor(private store: Store<any>) {
-        this.$portfolioState = store.select(getPortfolioState);
+        this.$portfolioStore = store.select(getPortfolioState);
     }
 
-    public load(portfolioId) {
-        this.store.dispatch({type: PortfolioActions.LOAD_PORTFOLIO, requestValues: portfolioId});
+    public loadAll() {
+        this.store.dispatch({type: PortfolioActions.LOAD_PORTFOLIOS});
     }
+
+    public getPortfolioById(portfolioId: number): PortfolioModel {
+        portfolioId = +portfolioId;
+        let portfolio: PortfolioModel;
+        this.$portfolioStore.subscribe((portfolios) => {
+            if (!!portfolios)
+                portfolio = portfolios.find((p) => p.id === portfolioId);
+        });
+        return portfolio;
+    }
+
 }

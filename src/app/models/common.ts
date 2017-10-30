@@ -26,7 +26,7 @@ export class CoinModel {
 }
 
 export class InvestedCoinModel extends CoinModel {
-    coinId?: string; // BTC
+    coinId: string; // BTC
     investId?: string; // id sequelized
     createdAt?: number; // sequelized
     updatedAt?: number; // sequelized
@@ -45,6 +45,14 @@ export class InvestedCoinModel extends CoinModel {
 
     constructor(coin: CoinModel) {
         super(coin);
+        const keys = Object.keys(coin);
+        let _l = keys.length;
+
+        while (_l--) {
+            let key = keys[_l];
+            this[key] = coin[key];
+        }
+
         this.metaData = new CoinModel(coin);
 
     }

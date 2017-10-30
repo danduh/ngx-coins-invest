@@ -14,11 +14,6 @@
         </md-cell>
     </ng-container>
 
-    <ng-container cdkColumnDef="openCurrency">
-        <md-header-cell *cdkHeaderCellDef> Open Currency</md-header-cell>
-        <md-cell *cdkCellDef="let coin"> {{coin.openCurrency}}</md-cell>
-    </ng-container>
-
     <ng-container cdkColumnDef="amount">
         <md-header-cell *cdkHeaderCellDef> Amount</md-header-cell>
         <md-cell *cdkCellDef="let coin"> {{coin.amount?.toPrecision(4)}}</md-cell>

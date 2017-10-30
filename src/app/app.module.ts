@@ -149,8 +149,8 @@ export const MainRoutes: Routes = [
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
         StoreManagementModule.forRoot()
-        // StoreModule.forRoot({portfolioStore: portfolioReducer}),
-        // EffectsModule.forRoot([PortfolioEffects])
+        // StoreModule.forRoot({portfolioStore: investmentsReducer}),
+        // EffectsModule.forRoot([InvestmentsEffects])
     ],
     providers: [
         {

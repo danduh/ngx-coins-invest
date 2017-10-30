@@ -67,6 +67,7 @@ export class CoinsManagerComponent implements OnInit {
     }
 
     submit() {
+        this.coinToBuy.coinId = this.coinId;
         // this.coinToBuy.amount = this.coinToBuy.openPrice * this.coinToBuy.quantity;
         this.portfolioService.createInvestment(this.coinToBuy, this.selectedPortfolio.id)
             .subscribe((portfolio) => {

@@ -9,11 +9,7 @@ export class PortfolioAction {
 
 @Injectable()
 export class PortfolioActions {
-    static LOAD_PORTFOLIO = '[Portfolio] LOAD_PORTFOLIO_FROM_SERVER';
-    static LOAD_PORTFOLIO_START = '[Portfolio] LOAD_PORTFOLIO_FROM_SERVER_START';
-    static LOAD_PORTFOLIO_END = '[Portfolio] LOAD_PORTFOLIO_ITEMS_SERVER_END';
-    static LOAD_PORTFOLIO_SUCCESS = '[Portfolio] LOAD_PORTFOLIO_ITEMS_SUCCESSFULL';
-
-    static PORTFOLIO_TICKER_SUBSCRIBE = '[Portfolio] SUBSCRIBE FOR TICKER DATA';
-    static PORTFOLIO_TICKER_TICK = '[Portfolio] TICK SUCCESS';
+    static LOAD_PORTFOLIOS = '[Portfolio] LOAD_PORTFOLIOS_FROM_SERVER';
+    static LOAD_PORTFOLIO_ERROR = '[Portfolio] LOAD_PORTFOLIOS_ERROR';
+    static LOAD_PORTFOLIO_SUCCESS = '[Portfolio] LOAD_PORTFOLIOS_SUCCESSFULL';
 }
