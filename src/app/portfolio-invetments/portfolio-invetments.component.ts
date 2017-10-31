@@ -17,13 +17,14 @@ export class PortfolioInvestmentsComponent implements OnInit {
     investmentsListDataSource: InvestmentsListDataSource | null;
     portfolio: PortfolioModel;
     portfolioId: number;
-    // displayedColumns: string[] = ['logo', 'amount', 'price', 'openPrice'];
     displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'price', 'delete'];
+
 
     constructor(private portfolioService: PortfolioService,
                 private investmentsFacade: InvestmentsFacade,
                 private portfolioFacade: PortfolioFacade,
                 private route: ActivatedRoute) {
+
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
             this.investmentsFacade.load(this.portfolioId);
@@ -38,8 +39,10 @@ export class PortfolioInvestmentsComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.portfolio = this.portfolioFacade.getPortfolioById(this.portfolioId);
         console.log(this.portfolio);
+
         this.investmentsListDataSource = new InvestmentsListDataSource(this.investmentsListDatabase);
         this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState;
 

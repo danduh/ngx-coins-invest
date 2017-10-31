@@ -24,8 +24,12 @@ export class PortfolioFacade {
         portfolioId = +portfolioId;
         let portfolio: PortfolioModel;
         this.$portfolioStore.subscribe((portfolios) => {
-            if (!!portfolios)
+            if (!!portfolios) {
                 portfolio = portfolios.find((p) => p.id === portfolioId);
+            }
+            /**
+             * TODO: should to find way to get portfolio by Id...  probable move call from component to resolver...
+             */
         });
         return portfolio;
     }
