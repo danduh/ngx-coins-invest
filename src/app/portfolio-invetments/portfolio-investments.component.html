@@ -29,6 +29,21 @@
         <md-cell *cdkCellDef="let coin"> {{coin.price | priceFormat}}</md-cell>
     </ng-container>
 
+    <ng-container cdkColumnDef="currentPrice">
+        <md-header-cell *cdkHeaderCellDef> Current Price</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.currentPrice | priceFormat}}</md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="openValue">
+        <md-header-cell *cdkHeaderCellDef> Open Value</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.openValue | currency : portfolio.baseCurrency}}</md-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="currentValue">
+        <md-header-cell *cdkHeaderCellDef> Current Value</md-header-cell>
+        <md-cell *cdkCellDef="let coin"> {{coin.currentValue | currency : portfolio.baseCurrency}}</md-cell>
+    </ng-container>
+
     <!-- Profit/Lowfit in USD-->
     <ng-container cdkColumnDef="changeInOpenCurrency">
         <md-header-cell *cdkHeaderCellDef> P/L($)</md-header-cell>
@@ -55,7 +70,7 @@
     <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
     <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
 </md-table>
-
+<button (click)="startTicker()">dddds</button>
 <!--<md-list>-->
 <!--<md-list-item *ngFor="let coin of visibleCoins | async">-->
 <!--<md-icon md-list-icon>-->

@@ -37,13 +37,13 @@ export class InvestedCoinModel extends CoinModel {
     openCurrency?: string; // USD ETH EUR
     changeInOpenCurrency?: number; // (counted)
     changePct?: number; // change in % (counted)
+    currentPrice?: number;
 
-    _openValue?: number; // openPrice * amount (counted)
-    get openValue() {
-        return this.amount * this.openPrice;
+    get currentValue(): number {
+        return this.amount * (this.currentPrice || 0);
     }
 
-    constructor(coin: CoinModel) {
+    constructor(coin: InvestedCoinModel) {
         super(coin);
         const keys = Object.keys(coin);
         let _l = keys.length;
@@ -53,7 +53,7 @@ export class InvestedCoinModel extends CoinModel {
             this[key] = coin[key];
         }
 
-        this.metaData = new CoinModel(coin);
+        this.metaData = new CoinModel(coin.metaData);
 
     }
 }

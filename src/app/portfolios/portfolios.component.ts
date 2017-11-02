@@ -3,7 +3,7 @@ import { PortfolioModel, PortfolioService } from "../services/portfolio.service"
 import { Observable } from "rxjs/Observable";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ErrorHandlerClass } from "../components/extendable/error-handler.class";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 
 @Component({
@@ -20,8 +20,10 @@ export class PortfoliosComponent extends ErrorHandlerClass implements OnInit {
     constructor(private formBuilder: FormBuilder,
                 private router: Router,
                 private portfolioFacade: PortfolioFacade,
+                private route: ActivatedRoute,
                 private portfolioService: PortfolioService) {
         super();
+
         this.portfolioForm = formBuilder.group({
             name: '',
             comment: '',
@@ -30,7 +32,6 @@ export class PortfoliosComponent extends ErrorHandlerClass implements OnInit {
     }
 
     ngOnInit() {
-        this.portfolioFacade.loadAll();
         this.portfolios = this.portfolioFacade.$portfolioStore
             .catch((err, cou) => {
                 if (!!err && err.error === 'noAccountFound') {

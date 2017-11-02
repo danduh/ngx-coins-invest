@@ -26,18 +26,18 @@ export class InvestmentsEffects {
             }
         );
 
-    @Effect() tickPortfolio$: Observable<PortfolioAction> = this.actions$.ofType(InvestmentsActions.PORTFOLIO_TICKER_TICK)
-        .mergeMap((action: PortfolioAction) => {
-                return this.marketTickerService.getMultiSymbols(action.requestValues.baseCurrency, action.requestValues.coinIds)
-
-                // return this.portfolioService.getPortfolioInvestments(action.requestValues)
-                    .map((data: InvestedCoinModel[]) => {
-                        console.log(data)
-                        return {
-                            type: InvestmentsActions.PORTFOLIO_TICKER_SUCCESS,
-                            payload: data
-                        };
-                    });
-            }
-        );
+    // @Effect() tickPortfolio$: Observable<PortfolioAction> = this.actions$.ofType(InvestmentsActions.PORTFOLIO_TICKER_TICK)
+    //     .mergeMap((action: PortfolioAction) => {
+    //             return this.marketTickerService.subscribeToTicker(action.requestValues.baseCurrency, action.requestValues.coinIds)
+    //
+    //             // return this.portfolioService.getPortfolioInvestments(action.requestValues)
+    //                 .map((data: InvestedCoinModel[]) => {
+    //                     console.log(data)
+    //                     return {
+    //                         type: InvestmentsActions.PORTFOLIO_TICKER_SUCCESS,
+    //                         // payload: data
+    //                     };
+    //                 });
+    //         }
+    //     );
 }

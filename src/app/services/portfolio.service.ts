@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
-import { InvestedCoinModel } from "../models/common";
+import {Injectable} from "@angular/core";
+import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs/Observable";
+import {InvestedCoinModel} from "../models/common";
 
 export class InvestmentModel {
 
@@ -10,6 +10,7 @@ export class InvestmentModel {
 
 export class PortfolioModel {
     id: number;
+    baseCurrency: string;
     name: string;
     comment: string;
     invetments?: InvestmentModel[];
@@ -40,6 +41,7 @@ export class PortfolioService {
     }
 
     getPortfolioInvestments(portfolioId) {
-        return this.http.get<InvestedCoinModel[]>(`${this.baseUrl}portfolios/${portfolioId}/investments`);
+        return this.http.get<InvestedCoinModel[]>(`${this.baseUrl}portfolios/${portfolioId}/investments`)
+            .map((coins) => coins.map((c) => new InvestedCoinModel(c)));
     }
 }

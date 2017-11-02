@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
-import { Observable } from "rxjs/Observable";
-import { InvestedCoinModel } from "../models/common";
-import { DataSource } from "@angular/cdk/collections";
-import { ActivatedRoute } from "@angular/router";
-import { InvestmentsFacade } from '../store/investments/investments.facade';
-import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
+import {Component, OnInit} from '@angular/core';
+import {PortfolioModel, PortfolioService} from "../services/portfolio.service";
+import {Observable} from "rxjs/Observable";
+import {InvestedCoinModel} from "../models/common";
+import {DataSource} from "@angular/cdk/collections";
+import {ActivatedRoute} from "@angular/router";
+import {InvestmentsFacade} from '../store/investments/investments.facade';
+import {PortfolioFacade} from '../store/portfolio/portfolio.facade';
+import {MarketTickerService} from '../services/market-ticker.service';
 
 @Component({
     selector: 'app-portfolio-investments',
@@ -17,12 +18,13 @@ export class PortfolioInvestmentsComponent implements OnInit {
     investmentsListDataSource: InvestmentsListDataSource | null;
     portfolio: PortfolioModel;
     portfolioId: number;
-    displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'price', 'delete'];
+    displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'currentPrice', 'openValue', 'currentValue', 'delete'];
 
 
     constructor(private portfolioService: PortfolioService,
                 private investmentsFacade: InvestmentsFacade,
                 private portfolioFacade: PortfolioFacade,
+                private marketTickerService: MarketTickerService,
                 private route: ActivatedRoute) {
 
         this.route.params.subscribe(params => {
@@ -39,29 +41,23 @@ export class PortfolioInvestmentsComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        this.portfolio = this.portfolioFacade.getPortfolioById(this.portfolioId);
-        console.log(this.portfolio);
+        this.portfolio = this.route.snapshot.data['currentPortfolio'];
 
         this.investmentsListDataSource = new InvestmentsListDataSource(this.investmentsListDatabase);
-        this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState;
-
-        this.investmentsFacade.$investmentsState
-            .subscribe(this.startTicker.bind(this));
-
+        this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState
+            .map((data) => {
+                return data;
+            });
     }
 
-    startTicker(data) {
-        if (!!data)
-            console.log(data)
+    startTicker() {
+        this.investmentsFacade.startTicker(this.portfolio.baseCurrency);
     }
-
 }
 
 
 export class InvestmentsListDatabase {
     investments: Observable<InvestedCoinModel[]>;
-
 }
 
 

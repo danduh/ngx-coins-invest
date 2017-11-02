@@ -46,6 +46,8 @@ import { PoloniexWssService } from './services/external-api/poloniex-wss.service
 import { GuestComponent } from './guest/guest.component';
 import { MainComponent } from './main/main.component';
 import { StoreManagementModule } from './store';
+import { PortfolioResolver } from './services/resolvers/portfolio.resolver';
+import { InvestmentsResolver } from './services/resolvers/investments.resolver';
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
@@ -92,19 +94,26 @@ export const MainRoutes: Routes = [
             path: 'portfolio',
             component: PortfoliosComponent,
             canActivate: [AuthGuard, OutOutletService],
-            data: {title: 'Select Portfolio'}
+            data: {title: 'Select Portfolio'},
+            resolve: {
+                portfolios: PortfolioResolver
+            }
         },
         {
             path: 'portfolio/:portfolioId',
             component: PortfolioInvestmentsComponent,
             canActivate: [AuthGuard, OutOutletService],
-            data: {title: 'Portfolio Investments'}
+            data: {title: 'Portfolio Investments'},
+            resolve: {
+                currentPortfolio: PortfolioResolver,
+                investments: InvestmentsResolver
+            }
         },
         {
             path: 'investto/:coinId/:baseCurrency',
             component: CoinsManagerComponent,
             canActivate: [AuthGuard],
-            data: {title: 'Invest To', groups: ['investors']}
+            data: {title: 'Invest To', groups: ['investors']},
         },
         {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
     ]
@@ -158,6 +167,8 @@ export const MainRoutes: Routes = [
             useClass: CognitoAuthInterceptor,
             multi: true
         },
+        InvestmentsResolver,
+        PortfolioResolver,
         PoloniexWssService,
         ConfigService,
         PortfolioService,

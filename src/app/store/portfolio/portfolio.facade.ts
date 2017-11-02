@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PortfolioActions } from './portfolio.actions';
 import { PortfolioModel } from '../../services/portfolio.service';
+import { Observable } from 'rxjs/Observable';
 
 export const getPortfolioState = (state) => {
-    console.log(state);
     return state['portfolioStore'];
 };
 
@@ -27,11 +27,25 @@ export class PortfolioFacade {
             if (!!portfolios) {
                 portfolio = portfolios.find((p) => p.id === portfolioId);
             }
-            /**
-             * TODO: should to find way to get portfolio by Id...  probable move call from component to resolver...
-             */
         });
         return portfolio;
+    }
+
+    public getPortfolioByIdRx(portfolioId): Observable<PortfolioModel> {
+        return Observable.create((observer) => {
+            let portfolio = this.getPortfolioById(portfolioId);
+            if (!!portfolio) {
+                observer.next(portfolio);
+                observer.complete();
+            }
+            this.$portfolioStore.subscribe((resp) => {
+                if (!!resp) {
+                    observer.next(this.getPortfolioById(portfolioId));
+                    observer.complete();
+                }
+            });
+            this.loadAll();
+        });
     }
 
 }
