@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {environment} from "../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {CoinModel} from "../models/common";
+import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+import { CoinModel } from "../models/common";
 
 import * as io from 'socket.io-client';
-import {CCC} from './utils/market-ticker.utils';
-import {resolveSoa} from "dns";
+import { CCC } from './utils/market-ticker.utils';
+import { resolveSoa } from "dns";
 
 @Injectable()
 export class MarketTickerService {
@@ -14,10 +14,22 @@ export class MarketTickerService {
     private allCoinsUrl = 'https://api.coinmarketcap.com/v1/ticker/';
     private wsUrl = 'https://streamer.cryptocompare.com/';
     private socket;
-    private defExchange = 'polo'
+    private defExchange = 'polo';
 
     constructor(private http: HttpClient) {
         this.socket = io(this.wsUrl);
+    }
+
+    public firstTick(curr, symbols) {
+        return this.http.get(`https://min-api.cryptocompare.com/data/pricemulti?tsyms=${curr}&fsyms=${symbols.join(',')}`)
+            .map((data) => {
+                return symbols.map((sym) => {
+                    return {
+                        FROMSYMBOL: sym,
+                        PRICE: data[sym][curr]
+                    };
+                });
+            });
     }
 
     public getMultiSymbols(curr = 'USD', symbols: string[]) {
@@ -29,13 +41,14 @@ export class MarketTickerService {
     }
 
     public subscribeToTicker(curr, symbols: string[]) {
+        // this.firstTick(curr, symbols);
+
         return Observable.create((observer) => {
             let subscription = symbols.map((s) => {
                 return `5~CCCAGG~${s}~${curr}`;
             });
             console.log(subscription);
-            // let subscription = ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'];
-            this.socket.emit('SubAdd', {subs: subscription});
+
             this.socket.on("m", function (message) {
                 let messageType = message.substring(0, message.indexOf("~"));
                 let res = <any>{};
@@ -47,6 +60,7 @@ export class MarketTickerService {
                 }
 
             });
+            this.socket.emit('SubAdd', {subs: subscription});
             // setTimeout(() => {
             //     this.socket.close()
             // }, 15000)

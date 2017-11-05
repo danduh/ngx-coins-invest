@@ -1,21 +1,21 @@
-<md-card class="coin-card">
-    <md-card-header>
-        <div md-card-avatar class="header-image">
+<mat-card class="coin-card">
+    <mat-card-header>
+        <div mat-card-avatar class="header-image">
             <img [src]="coin.logo">
         </div>
-        <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
+        <mat-card-title>{{coin.name}} ({{coin.symbol}})</mat-card-title>
 
-        <md-card-subtitle>
+        <mat-card-subtitle>
             {{coin.price|currency:coin.baseCurrency:true}} -
             <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
                 ({{coin.percent_change_24h}}%)
                 </span>
-        </md-card-subtitle>
-        <a class="coin-add-link" md-mini-fab routerLink="/investto/{{coin.name}}">
-            <md-icon>check</md-icon>
+        </mat-card-subtitle>
+        <a class="coin-add-link" mat-mini-fab routerLink="/investto/{{coin.name}}">
+            <mat-icon>check</mat-icon>
         </a>
-    </md-card-header>
-    <md-card-content>
+    </mat-card-header>
+    <mat-card-content>
 
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

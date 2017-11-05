@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {InvestedCoinModel} from "../models/common";
+import { Injectable } from "@angular/core";
+import { environment } from "../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+import { InvestedCoinModel } from "../models/common";
 
 export class InvestmentModel {
 
@@ -30,6 +30,10 @@ export class PortfolioService {
 
     createPortfolio(portfolio: PortfolioModel) {
         return this.http.post<PortfolioModel>(`${this.baseUrl}portfolios`, portfolio);
+    }
+
+    deletePortfolio(portfolioId): Observable<PortfolioModel[]> {
+        return this.http.delete<PortfolioModel[]>(`${this.baseUrl}portfolios/${portfolioId}`);
     }
 
     createInvestment(invest: InvestedCoinModel, portfolioId: number) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material';
 import { WindowService } from '../services/window.service';
 import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 
@@ -9,7 +9,7 @@ import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-    @ViewChild('sidenav') sideNav: MdSidenav;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     public sideNavMode = 'side';
 
     constructor(private windowService: WindowService,

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { UserLoginService } from "../services/user-login.service";
 import { LoggedInCallback } from "../services/cognito-utility.service";
 import { AccountService } from "../services/account.service";
+import { LoaderService } from "app/shared/loader.service";
 
 @Component({
     selector: 'app-login',
@@ -18,8 +19,9 @@ export class LoginComponent implements OnInit {
     public error: string = null;
     public changePswd = false;
 
-    constructor(public dialog: MdDialog,
+    constructor(public dialog: MatDialog,
                 private route: ActivatedRoute,
+                private loaderService: LoaderService,
                 public userService: UserLoginService,
                 private accountService: AccountService,
                 private router: Router) {
@@ -46,69 +48,12 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    cognitoCallback(message: string, result: any) {
-        if (message != null) { // error
-            this.error = message;
-            console.log("result: " + this.error);
-            if (this.error === 'User is not confirmed.') {
-                console.log("redirecting");
-                this.router.navigate(['/home/confirmRegistration', this.username]);
-            } else if (this.error === 'User needs to set password.') {
-                console.log("redirecting to set new password");
-                this.router.navigate(['/home/newPassword']);
-            }
-        } else { //  success
-            this.accountService.getOrCreate()
-                .subscribe((response) => {
-                    this.router.navigate(['/app/portfolio'])
-                        .then(
-                            function () {
-                                console.log('navigate success');
-                            },
-                            function () {
-                                console.log('navigate failure');
-                            }
-                        );
-                });
-        }
-    }
-
-    authenticationCallback(message: string, result: any) {
-        if (message != null) { // error
-            this.error = message;
-            console.log("result: " + this.error);
-            if (this.error === 'User is not confirmed.') {
-                console.log("redirecting");
-                this.router.navigate(['/home/confirmRegistration', this.username]);
-            } else if (this.error === 'User needs to set password.') {
-                console.log("redirecting to set new password");
-                this.router.navigate(['/home/newPassword']);
-            }
-        } else { //  success
-            this.router.navigate(['/app/portfolio'])
-                .then(
-                    function () {
-                        console.log('navigate success');
-                    },
-                    function () {
-                        console.log('navigate failure');
-                    }
-                );
-        }
-    }
-
-    isLoggedIn(message: string, isLoggedIn: boolean) {
-        if (isLoggedIn) {
-            this.router.navigate(['/portfolio']);
-        }
-    }
-
     login() {
         if (this.username == null || this.password == null) {
             this.error = "All fields are required";
             return;
         }
-
+        this.loaderService.isActive = true;
         this.userService.rxAuthenticate(this.username, this.password)
             .subscribe(
                 this.authSuccessHandler.bind(this),
@@ -158,7 +103,9 @@ export class LoginComponent implements OnInit {
 
     postLoginRedirect() {
         this.router.navigate(['/app/portfolio'])
-            .then((resp) => console.log(resp));
+            .then((resp) => {
+                this.loaderService.isActive = false;
+            });
     }
 
     errorHandler(error) {

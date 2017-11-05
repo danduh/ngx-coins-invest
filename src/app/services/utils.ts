@@ -7,14 +7,18 @@ import { Observable } from 'rxjs/Observable';
 import { CognitoUtil } from "./cognito-utility.service";
 import { LoaderService } from "../shared/loader.service";
 
+const BLACK_LIST = ['min-api.cryptocompare.com'];
+
 @Injectable()
 export class CognitoAuthInterceptor implements HttpInterceptor {
-    constructor(private cognitoUtil: CognitoUtil,
-                private loaderService: LoaderService) {
+    constructor(private cognitoUtil: CognitoUtil) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.loaderService.loaderState = 'query';
+        if (BLACK_LIST.some((bl) => req.url.includes(bl))) {
+            return next.handle(req);
+        }
+
         return this.cognitoUtil.rxGetAuthToken()
             .catch((err) => {
                 console.log(err);
@@ -27,7 +31,6 @@ export class CognitoAuthInterceptor implements HttpInterceptor {
 
                 return next.handle(authReq)
                     .map((event: HttpEvent<any>) => {
-                        this.loaderService.loaderState = 'indeterminate';
                         return event;
                     })
                     .catch((err: HttpErrorResponse, caught) => {

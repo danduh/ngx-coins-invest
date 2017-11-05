@@ -1,43 +1,43 @@
 <div class="coins-manager" *ngIf="!!coin">
-    <md-card class="example-card">
-        <md-card-header>
+    <mat-card class="example-card">
+        <mat-card-header>
             <div class="card-header-left">
-                <div md-card-avatar class="example-header-image">
+                <div mat-card-avatar class="example-header-image">
                     <img [src]="coin.logo">
                 </div>
-                <md-card-title>{{coin.name}} ({{coin.symbol}})</md-card-title>
+                <mat-card-title>{{coin.name}} ({{coin.symbol}})</mat-card-title>
 
-                <md-card-subtitle>
+                <mat-card-subtitle>
                     {{coin.price|priceFormat}} -
                     <span [ngClass]="{'positive':coin.percent_change_24h > 0, 'negative':coin.percent_change_24h < 0}">
                     ({{coin.percent_change_24h}}%)
                 </span>
-                </md-card-subtitle>
-                <md-card-subtitle>BTC {{coin.price_btc}}</md-card-subtitle>
+                </mat-card-subtitle>
+                <mat-card-subtitle>BTC {{coin.price_btc}}</mat-card-subtitle>
             </div>
-        </md-card-header>
+        </mat-card-header>
 
-        <md-card-content>
-            <md-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio" class="portfolio-select">
-                <md-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
+        <mat-card-content>
+            <mat-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio" class="portfolio-select">
+                <mat-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
                     {{portfolio.name}}
-                </md-option>
-            </md-select>
-            <md-input-container>
-                <input mdInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.amount"/>
-            </md-input-container>
-            <md-input-container>
-                <input mdInput type="number" placeholder="Price" [(ngModel)]="coinToBuy.openPrice"/>
-            </md-input-container>
-            <md-input-container>
-                <input mdInput type="text" placeholder="Note" [(ngModel)]="coinToBuy.description"/>
-            </md-input-container>
-        </md-card-content>
-        <md-card-actions>
-            <button md-raised-button color="primary" (click)="submit()">Submit</button>
-            <button md-button>Cancel</button>
-        </md-card-actions>
-    </md-card>
+                </mat-option>
+            </mat-select>
+            <mat-input-container>
+                <input matInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.amount"/>
+            </mat-input-container>
+            <mat-input-container>
+                <input matInput type="number" placeholder="Price" [(ngModel)]="coinToBuy.openPrice"/>
+            </mat-input-container>
+            <mat-input-container>
+                <input matInput type="text" placeholder="Note" [(ngModel)]="coinToBuy.description"/>
+            </mat-input-container>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+            <button mat-button>Cancel</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
 <div class="graph">
     <canvas *ngIf="!!lineChartData"

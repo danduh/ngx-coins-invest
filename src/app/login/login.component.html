@@ -1,24 +1,24 @@
-<div class="form">
+<div class="form" *ngIf="!(loaderService.isActive|async)">
     <form class="login-box" (ngSubmit)="login()">
         <p>
-            <md-input-container class="app-full-width" *ngIf="!changePswd; else newPasswordInput">
-                <input mdInput type="text" placeholder="User Name" [(ngModel)]="username" name="username"/>
-            </md-input-container>
+            <mat-input-container class="app-full-width" *ngIf="!changePswd; else newPasswordInput">
+                <input matInput type="text" placeholder="User Name" [(ngModel)]="username" name="username"/>
+            </mat-input-container>
             <ng-template #newPasswordInput>
-                <md-input-container class="app-full-width">
-                    <input mdInput type="password" placeholder="New Password"
+                <mat-input-container class="app-full-width">
+                    <input matInput type="password" placeholder="New Password"
                            [(ngModel)]="newPassword"
                            name="newPassword"/>
-                </md-input-container>
+                </mat-input-container>
             </ng-template>
-            <md-input-container class="app-full-width">
-                <input mdInput type="password" placeholder="{{changePswd?'confirm':''}} Password"
+            <mat-input-container class="app-full-width">
+                <input matInput type="password" placeholder="{{changePswd?'confirm':''}} Password"
                        name="password"
                        [(ngModel)]="password"/>
-            </md-input-container>
+            </mat-input-container>
         </p>
         <p>
-            <button md-raised-button color="primary" type="submit">Submit</button>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
             <b><a [routerLink]="['/g/email-confirm']"> Confirm Email</a></b>
         </p>
     </form>
@@ -26,3 +26,4 @@
         {{error}}
     </p>
 </div>
+

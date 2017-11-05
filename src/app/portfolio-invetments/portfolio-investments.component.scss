@@ -4,7 +4,7 @@
     overflow: auto;
     height: calc(100vh - 140px);
 
-    md-list-item {
+    mat-list-item {
         border-bottom: 1px solid #e0e0e0;
         &:nth-child(even) {
             background: #EEEEEE
@@ -18,7 +18,7 @@
     .mat-row {
         min-height: 32px !important;
     }
-    md-cell, md-header-cell {
+    mat-cell, mat-header-cell {
         &:nth-child(1) {
             min-width: 175px;
         }
@@ -39,7 +39,7 @@
             width: 100%
         }
     }
-    md-icon {
+    mat-icon {
         float: left;
         width: $coinLogoSize !important;
         height: $coinLogoSize !important;
@@ -47,12 +47,16 @@
     }
 }
 
+app-footer-invest {
+    display: block;
+}
+
 @media ($mat-xsmall) {
-    md-header-row {
+    mat-header-row {
         flex-wrap: wrap;
         justify-content: space-between;
     }
-    md-table.list-view {
+    mat-table.list-view {
         .mat-row {
             height: 100px;
             flex-wrap: wrap;
@@ -71,7 +75,7 @@
                 text-align: right;
             }
         }
-        md-cell, md-header-cell {
+        mat-cell, mat-header-cell {
             flex: none !important;
             &:nth-child(1) {
                 width: 100%;
@@ -91,7 +95,7 @@
                 width: 100%;
             }
         }
-        md-icon {
+        mat-icon {
             width: $coinLogoSizeMobile !important;
             height: $coinLogoSizeMobile !important;
         }

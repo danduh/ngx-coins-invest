@@ -3,37 +3,37 @@
           #formDir="ngForm"
           [formGroup]="emailConfirmForm"
           (ngSubmit)="onConfirmRegistration()">
-        <md-input-container class="app-full-width">
-            <input mdInput id="email" type="email" maxlength="50" class="form-control"
+        <mat-input-container class="app-full-width">
+            <input matInput id="email" type="email" maxlength="50" class="form-control"
                    placeholder="Email (username)"
                    formControlName="email"/>
-        </md-input-container>
-        <md-input-container class="app-full-width">
-            <input mdInput id="password" type="password" maxlength="50" class="form-control"
+        </mat-input-container>
+        <mat-input-container class="app-full-width">
+            <input matInput id="password" type="password" maxlength="50" class="form-control"
                    placeholder="Password"
                    formControlName="password"/>
-        </md-input-container>
-        <md-input-container class="app-full-width">
-            <input mdInput id="confirmationCode"
+        </mat-input-container>
+        <mat-input-container class="app-full-width">
+            <input matInput id="confirmationCode"
                    placeholder="Confirmation Code"
                    type="text" maxlength="50" class="form-control"
                    formControlName="confirmationCode"/>
-        </md-input-container>
-        <button md-raised-button
+        </mat-input-container>
+        <button mat-raised-button
                 id="confirmRegistration" type="submit"
                 class="btn btn-info btn-block">Confirm
         </button>
 
         <p>Can't find your code?
-            <button md-button color="warn"
+            <button mat-button color="warn"
                     (click)="resendCode()">
                 ResendCode
             </button>
-            <button md-button color="primary"
+            <button mat-button color="primary"
                     [routerLink]="['/g/register']">
                 Register
             </button>
-            <button md-button color="primary"
+            <button mat-button color="primary"
                     [routerLink]="['/g/login']">
                 Login
             </button>

@@ -3,7 +3,7 @@ import { UserRegistrationService } from "../services/user-registration.ervice";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DialogComponent } from "../components/dialog/dialog.component";
-import { MdDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
 import { AccountService } from "../services/account.service";
 import { UserLoginService } from '../services/user-login.service';
 
@@ -21,7 +21,7 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
 
     constructor(public regService: UserRegistrationService,
                 public router: Router,
-                public dialog: MdDialog,
+                public dialog: MatDialog,
                 public route: ActivatedRoute,
                 private userLoginService: UserLoginService,
                 private accountService: AccountService) {

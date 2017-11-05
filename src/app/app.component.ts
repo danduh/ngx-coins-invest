@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MdSidenav } from "@angular/material";
-import { WindowService } from "./services/window.service";
 import { LoaderService } from "./shared/loader.service";
 import { UserLoginService } from './services/user-login.service';
 import { Observable } from 'rxjs/Observable';

@@ -1,24 +1,24 @@
 <div class="portfolios-component">
-    <md-expansion-panel [expanded]="expanded">
-        <md-expansion-panel-header>
-            <md-panel-title>
+    <mat-expansion-panel [expanded]="expanded">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
                 Create new portfolio
-            </md-panel-title>
-            <md-panel-description>
+            </mat-panel-title>
+            <mat-panel-description>
                 give it name and start monitor your investments
-            </md-panel-description>
-        </md-expansion-panel-header>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
         <form (ngSubmit)="onCreate()" [formGroup]="portfolioForm">
-            <md-form-field>
-                <input mdInput formControlName="name" placeholder="Name it">
-            </md-form-field>
-            <md-form-field>
-                <input mdInput formControlName="comment" placeholder="Comment">
-            </md-form-field>
+            <mat-form-field>
+                <input matInput formControlName="name" placeholder="Name it">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput formControlName="comment" placeholder="Comment">
+            </mat-form-field>
             <app-currency-selector (onSelect)="onBaseCurrencySelect($event.value)"></app-currency-selector>
-            <button md-raised-button [color]="'primary'" type="submit">Create</button>
+            <button mat-raised-button [color]="'primary'" type="submit">Create</button>
         </form>
-    </md-expansion-panel>
+    </mat-expansion-panel>
 
     <div class="cards-view" *ngIf="portfolios | async; let portfoliosItems">
         <div *ngIf="portfoliosItems.length === 0; else portfolioCardsSelect">

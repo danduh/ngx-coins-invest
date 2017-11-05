@@ -1,2 +1,3 @@
 <app-header (toggleMenu)="toggleMenu()"></app-header>
 <router-outlet></router-outlet>
+<mat-spinner *ngIf="(loaderService.isActive|async)"></mat-spinner>

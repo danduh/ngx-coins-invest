@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {PortfolioModel, PortfolioService} from "../services/portfolio.service";
-import {Observable} from "rxjs/Observable";
-import {InvestedCoinModel} from "../models/common";
-import {DataSource} from "@angular/cdk/collections";
-import {ActivatedRoute} from "@angular/router";
-import {InvestmentsFacade} from '../store/investments/investments.facade';
-import {PortfolioFacade} from '../store/portfolio/portfolio.facade';
-import {MarketTickerService} from '../services/market-ticker.service';
+import { Component, OnInit } from '@angular/core';
+import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
+import { Observable } from "rxjs/Observable";
+import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
+import { DataSource } from "@angular/cdk/collections";
+import { ActivatedRoute } from "@angular/router";
+import { InvestmentsFacade } from '../store/investments/investments.facade';
+import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
+import { MarketTickerService } from '../services/market-ticker.service';
 
 @Component({
     selector: 'app-portfolio-investments',
@@ -14,12 +14,13 @@ import {MarketTickerService} from '../services/market-ticker.service';
     styleUrls: ['./portfolio-investments.component.scss']
 })
 export class PortfolioInvestmentsComponent implements OnInit {
-    investmentsListDatabase = new InvestmentsListDatabase();
-    investmentsListDataSource: InvestmentsListDataSource | null;
-    portfolio: PortfolioModel;
-    portfolioId: number;
-    displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'currentPrice', 'openValue', 'currentValue', 'delete'];
+    private portfolioId: number;
+    private investmentsListDatabase = new InvestmentsListDatabase();
+    private investmentsListDataSource: InvestmentsListDataSource | null;
 
+    public portfolio: PortfolioModel;
+    public displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'currentPrice', 'valueChange', 'valuePctChange', 'openValue', 'currentValue', 'delete'];
+    public totals: Observable<InvestTotalsModel>;
 
     constructor(private portfolioService: PortfolioService,
                 private investmentsFacade: InvestmentsFacade,
@@ -34,25 +35,20 @@ export class PortfolioInvestmentsComponent implements OnInit {
     }
 
     deleteInvest(investId) {
-        this.portfolioService.removeInvestment(this.portfolioId, investId)
-            .subscribe((resp) => {
-                console.log(resp);
-            });
+        this.investmentsFacade.removeInvestment(this.portfolioId, investId);
     }
 
     ngOnInit() {
         this.portfolio = this.route.snapshot.data['currentPortfolio'];
 
         this.investmentsListDataSource = new InvestmentsListDataSource(this.investmentsListDatabase);
-        this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState
-            .map((data) => {
-                return data;
-            });
+        this.investmentsListDatabase.investments = this.investmentsFacade.$investmentsState;
+
+        this.investmentsFacade.startTicker(this.portfolio.baseCurrency);
+
+        this.totals = this.investmentsFacade.$totals;
     }
 
-    startTicker() {
-        this.investmentsFacade.startTicker(this.portfolio.baseCurrency);
-    }
 }
 
 

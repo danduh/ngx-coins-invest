@@ -1,9 +1,11 @@
-import {Store} from '@ngrx/store';
-import {InvestmentsActions} from './investments.actions';
-import {Injectable} from '@angular/core';
-import {InvestedCoinModel} from '../../models/common';
-import {Observable} from 'rxjs/Observable';
-import {MarketTickerService} from "../../services/market-ticker.service";
+import { Store } from '@ngrx/store';
+import { InvestmentsActions } from './investments.actions';
+import { Injectable } from '@angular/core';
+import { InvestedCoinModel, InvestTotalsModel } from '../../models/common';
+import { Observable } from 'rxjs/Observable';
+import { MarketTickerService } from "../../services/market-ticker.service";
+import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 
 export const getInvestmentsState = (state) => {
@@ -13,7 +15,13 @@ export const getInvestmentsState = (state) => {
 
 @Injectable()
 export class InvestmentsFacade {
-    $investmentsState;
+    public $investmentsState: Store<any>;
+
+    _$totals = new Subject<InvestTotalsModel>();
+
+    get $totals(): Observable<InvestTotalsModel> {
+        return this._$totals.asObservable();
+    }
 
     constructor(private store: Store<any>,
                 private marketTickerService: MarketTickerService) {
@@ -22,6 +30,14 @@ export class InvestmentsFacade {
 
     public load(portfolioId) {
         this.store.dispatch({type: InvestmentsActions.LOAD_INVESTMENT, requestValues: portfolioId});
+    }
+
+    public removePortfolio(portfolioId) {
+        this.store.dispatch({type: InvestmentsActions.DELETE_PORTFOLIO, requestValues: portfolioId});
+    }
+
+    public removeInvestment(portfolioId, investId) {
+        this.store.dispatch({type: InvestmentsActions.DELETE_INVESTMENT, requestValues: [portfolioId, investId]});
     }
 
     public getCoinIds(): string[] {
@@ -50,23 +66,59 @@ export class InvestmentsFacade {
     }
 
     public startTicker(curr) {
-        this.marketTickerService.subscribeToTicker(curr, this.getCoinIds())
+        let _T1 = this.marketTickerService.firstTick(curr, this.getCoinIds());
+        let _T2 = this.marketTickerService.subscribeToTicker(curr, this.getCoinIds());
+
+        Observable.concat(_T1, _T2)
+            .map((data) => {
+                return data;
+            })
             .subscribe(this.processTicker.bind(this));
     }
 
     private processTicker(ticker) {
-
         this.$investmentsState.take(1)
             .map(this.mergeCoinWithTicker.bind(this, ticker))
+            .map(this.calculateTotals.bind(this))
             .subscribe((coins: InvestedCoinModel[]) => {
                 this.store.dispatch({type: InvestmentsActions.PORTFOLIO_TICKER_TICK, payload: [...coins]});
-            });
+            }).unsubscribe();
 
     }
 
     private mergeCoinWithTicker(ticker, coins) {
-        let coin = coins.find((c) => c.coinId === ticker.FROMSYMBOL);
-        coin.currentPrice = ticker.PRICE;
+        if (Array.isArray(ticker)) {
+            ticker.forEach((t) => {
+                coins.forEach((c) => {
+                    if (c.coinId === t.FROMSYMBOL) {
+                        c.currentPrice = t.PRICE;
+                    }
+                });
+            });
+        } else {
+            coins.forEach((c) => {
+                if (c.coinId === ticker.FROMSYMBOL) {
+                    c.currentPrice = ticker.PRICE;
+                }
+            });
+        }
+        return coins;
+    }
+
+    private calculateTotals(coins: InvestedCoinModel[]) {
+        const total: InvestTotalsModel = {
+            open: 0,
+            current: 0
+        };
+
+        coins.forEach((c) => {
+            total.open += c.openValue;
+            total.current += c.currentValue;
+        });
+        total.profit = total.current - total.open;
+        total.profitPct = total.profit / total.open;
+        this._$totals.next(total);
+
         return coins;
     }
 }

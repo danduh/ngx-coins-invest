@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PortfolioModel } from "../../services/portfolio.service";
 import { Router } from "@angular/router";
+import { InvestmentsFacade } from "../../store/investments/investments.facade";
 
 @Component({
     selector: 'app-portfolio-card',
@@ -10,7 +11,8 @@ import { Router } from "@angular/router";
 export class PortfolioCardComponent implements OnInit {
     @Input() portfolio: PortfolioModel;
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private investmetFacade: InvestmentsFacade) {
     }
 
     ngOnInit() {
@@ -18,5 +20,9 @@ export class PortfolioCardComponent implements OnInit {
 
     public goToPortfolio() {
         this.router.navigate([`/app/portfolio/${this.portfolio.id}`]);
+    }
+
+    public deletePortfolio() {
+        this.investmetFacade.removePortfolio(this.portfolio.id);
     }
 }

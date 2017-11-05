@@ -1,16 +1,16 @@
 <div class="form">
     <form class="app-form" (ngSubmit)="onRegister()" [formGroup]="fromNewUser" #formDir="ngForm">
-        <md-input-container class="app-full-width">
-            <input mdInput type="email" placeholder="Email (username)" formControlName="username" required>
-        </md-input-container>
+        <mat-input-container class="app-full-width">
+            <input matInput type="email" placeholder="Email (username)" formControlName="username" required>
+        </mat-input-container>
 
-        <md-input-container class="app-full-width">
-            <input mdInput type="password" placeholder="Password" formControlName="password">
-        </md-input-container>
+        <mat-input-container class="app-full-width">
+            <input matInput type="password" placeholder="Password" formControlName="password">
+        </mat-input-container>
 
-        <md-input-container class="app-full-width">
-            <input mdInput type="password" placeholder="Confirm Password" formControlName="confirmPassword">
-        </md-input-container>
-        <button md-raised-button [color]="'primary'" type="submit">Sign In</button>
+        <mat-input-container class="app-full-width">
+            <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPassword">
+        </mat-input-container>
+        <button mat-raised-button [color]="'primary'" type="submit">Sign In</button>
     </form>
 </div>

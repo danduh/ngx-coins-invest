@@ -1,22 +1,23 @@
-<div class="portfolio-card-host" (click)="goToPortfolio()">
-    <md-card class="portfolio-card">
-        <md-card-header>
-            <div md-card-avatar class="example-header-image">
+<div class="portfolio-card-host">
+    <mat-icon (click)="deletePortfolio()">clear</mat-icon>
+    <mat-card class="portfolio-card" (click)="goToPortfolio()">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
                 <picture>
                     <img src="assets/brand/favicon.png" alt="MDN">
                 </picture>
             </div>
-            <md-card-title>{{portfolio.name}}</md-card-title>
-            <!--<md-card-subtitle>{{portfolio.comment}}</md-card-subtitle>-->
-        </md-card-header>
+            <mat-card-title>{{portfolio.name}}</mat-card-title>
+            <!--<mat-card-subtitle>{{portfolio.comment}}</mat-card-subtitle>-->
+        </mat-card-header>
 
-        <md-card-content>
+        <mat-card-content>
             <!-- TODO: GRAPH Should be here-->
             <app-graph-in-card></app-graph-in-card>
-        </md-card-content>
+        </mat-card-content>
 
-        <md-card-actions>
-            <button md-button>Invest</button>
-        </md-card-actions>
-    </md-card>
+        <mat-card-actions>
+            <button mat-button [routerLink]="['/app/coins']">Invest</button>
+        </mat-card-actions>
+    </mat-card>
 </div>

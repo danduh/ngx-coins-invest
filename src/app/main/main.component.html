@@ -1,7 +1,8 @@
 <app-header (toggleMenu)="toggleMenu()"></app-header>
-<md-sidenav-container>
-    <md-sidenav #sidenav [mode]="sideNavMode" [opened]="sideNavMode == 'side'">
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [mode]="sideNavMode" [opened]="sideNavMode == 'side'">
         <app-side-menu></app-side-menu>
-    </md-sidenav>
+    </mat-sidenav>
     <router-outlet></router-outlet>
-</md-sidenav-container>
+</mat-sidenav-container>
+

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
-import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material";
 import { CognitoUtil } from "./cognito-utility.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { DatePipe } from "@angular/common";
@@ -15,7 +15,7 @@ export class CoinsService {
 
     private _datePipe = new DatePipe('en');
     private cachedList: CoinModel[];
-    private authSnackBar: MdSnackBarRef<SimpleSnackBar>;
+    private authSnackBar: MatSnackBarRef<SimpleSnackBar>;
 
 
     // private getAuthHeader(shouldAuth?: boolean): any {
@@ -26,7 +26,7 @@ export class CoinsService {
 
     constructor(private router: Router,
                 public cognitoUtil: CognitoUtil,
-                private snackBar: MdSnackBar,
+                private snackBar: MatSnackBar,
                 private http: HttpClient) {
     }
 

@@ -1,11 +1,11 @@
 <form class="app-form" [formGroup]="profileForm" (ngSubmit)="onSave()">
-    <md-input-container class="app-full-width">
-        <input type="text" mdInput placeholder="First name"
+    <mat-input-container class="app-full-width">
+        <input type="text" matInput placeholder="First name"
                formControlName="firstName">
-    </md-input-container>
-    <md-input-container class="app-full-width">
-        <input type="text" mdInput placeholder="Last Name"
+    </mat-input-container>
+    <mat-input-container class="app-full-width">
+        <input type="text" matInput placeholder="Last Name"
                formControlName="lastName">
-    </md-input-container>
-    <button md-raised-button color="primary" type="submit">Save</button>
+    </mat-input-container>
+    <button mat-raised-button color="primary" type="submit">Save</button>
 </form>

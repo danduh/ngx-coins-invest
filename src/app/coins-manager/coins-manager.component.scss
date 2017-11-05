@@ -1,5 +1,5 @@
 .coins-manager {
-    md-card-header {
+    mat-card-header {
         position: relative;
         div.card-header-left {
             width: 60%;
@@ -57,7 +57,7 @@
 div.form {
     width: 500px;
     margin: 0 auto;
-    md-list {
+    mat-list {
         max-width: 500px;
         width: 100%;
         margin: 0 auto;

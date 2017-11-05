@@ -3,14 +3,17 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class LoaderService {
-    _loaderState: BehaviorSubject<string> = new BehaviorSubject(null);
+    private _isActive: BehaviorSubject<string> = new BehaviorSubject(null);
 
-    get loaderState() {
-        return this._loaderState.asObservable();
+    public get isActive() {
+        return this._isActive.asObservable();
     }
 
-    set loaderState(state: any) {
-        this._loaderState.next(state);
+    public set isActive(state: any) {
+        this._isActive.next(state);
+    }
+
+    constructor() {
     }
 
 }
