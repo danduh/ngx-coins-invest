@@ -18,9 +18,6 @@ export class InvestmentsActions {
     static PORTFOLIO_TICKER_TICK = '[Investments] TICK';
     static PORTFOLIO_TICKER_SUCCESS = '[Investments] TICK SUCCESS';
 
-    static DELETE_PORTFOLIO = '[Portfolio] Remove';
-    static DELETE_PORTFOLIO_SUCCESS = '[Portfolio] Removed successful';
-
     static DELETE_INVESTMENT = '[Investment] Remove';
     static DELETE_INVESTMENT_SUCCESS = '[Investment] Removed successful';
 }

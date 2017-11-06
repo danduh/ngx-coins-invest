@@ -28,12 +28,12 @@ export class InvestmentsFacade {
         this.$investmentsState = store.select(getInvestmentsState);
     }
 
-    public load(portfolioId) {
-        this.store.dispatch({type: InvestmentsActions.LOAD_INVESTMENT, requestValues: portfolioId});
+    public isEmpty() {
+        return this.getCoinIds().length === 0;
     }
 
-    public removePortfolio(portfolioId) {
-        this.store.dispatch({type: InvestmentsActions.DELETE_PORTFOLIO, requestValues: portfolioId});
+    public load(portfolioId) {
+        this.store.dispatch({type: InvestmentsActions.LOAD_INVESTMENT, requestValues: portfolioId});
     }
 
     public removeInvestment(portfolioId, investId) {

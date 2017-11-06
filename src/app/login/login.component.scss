@@ -1,10 +1,31 @@
-div.form {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 100px;
-  .app-full-width {
+mat-card {
     width: 100%;
-  }
+    max-width: 500px;
+    margin: 40px auto 0;
+    position: relative;
+    padding: 0;
+    mat-card-actions {
+        margin: 0;
+        button {
+            font-size: 20px;
+            padding: 4px 0;
+        }
+    }
+    .login-form {
+        padding: 50px;
+    }
+    .custom-card-footer {
+        text-align: center;
+        background: #f0f0f0;
+        display: block;
+        width: 500px;
+        line-height: 40px;
+        border-top: 1px solid #dcdcdc;
+        left: 0;
+        padding: 15px 0;
+    }
+    .app-full-width {
+        width: 100%;
+    }
 }
 

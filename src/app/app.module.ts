@@ -114,6 +114,9 @@ export const MainRoutes: Routes = [
             component: CoinsManagerComponent,
             canActivate: [AuthGuard],
             data: {title: 'Invest To', groups: ['investors']},
+            resolve: {
+                portfolios: PortfolioResolver
+            }
         },
         {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
     ]

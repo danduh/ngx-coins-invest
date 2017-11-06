@@ -22,10 +22,7 @@ export class PortfolioInvestmentsComponent implements OnInit {
     public displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'currentPrice', 'valueChange', 'valuePctChange', 'openValue', 'currentValue', 'delete'];
     public totals: Observable<InvestTotalsModel>;
 
-    constructor(private portfolioService: PortfolioService,
-                private investmentsFacade: InvestmentsFacade,
-                private portfolioFacade: PortfolioFacade,
-                private marketTickerService: MarketTickerService,
+    constructor(private investmentsFacade: InvestmentsFacade,
                 private route: ActivatedRoute) {
 
         this.route.params.subscribe(params => {
@@ -47,6 +44,10 @@ export class PortfolioInvestmentsComponent implements OnInit {
         this.investmentsFacade.startTicker(this.portfolio.baseCurrency);
 
         this.totals = this.investmentsFacade.$totals;
+    }
+
+    hideTable() {
+        return this.investmentsFacade.isEmpty();
     }
 
 }

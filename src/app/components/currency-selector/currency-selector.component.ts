@@ -8,6 +8,7 @@ import { ConfigService } from "../../services/config.service";
 })
 export class CurrencySelectorComponent implements OnInit {
     public currencies: string[];
+    public selectedValue: string = null;
     @Output() onSelect = new EventEmitter();
 
     constructor(private configService: ConfigService) {

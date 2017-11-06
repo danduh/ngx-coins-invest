@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PortfolioModel } from "../../services/portfolio.service";
 import { Router } from "@angular/router";
 import { InvestmentsFacade } from "../../store/investments/investments.facade";
+import { PortfolioFacade } from "../../store/portfolio/portfolio.facade";
 
 @Component({
     selector: 'app-portfolio-card',
@@ -12,7 +13,7 @@ export class PortfolioCardComponent implements OnInit {
     @Input() portfolio: PortfolioModel;
 
     constructor(private router: Router,
-                private investmetFacade: InvestmentsFacade) {
+                private portfolioFacade: PortfolioFacade) {
     }
 
     ngOnInit() {
@@ -23,6 +24,6 @@ export class PortfolioCardComponent implements OnInit {
     }
 
     public deletePortfolio() {
-        this.investmetFacade.removePortfolio(this.portfolio.id);
+        this.portfolioFacade.removePortfolio(this.portfolio.id);
     }
 }

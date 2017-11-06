@@ -1,4 +1,6 @@
 @import "../../assets/variables";
+@import "../../assets/material";
+@import '~@angular/material/theming';
 
 .list-view {
     overflow: auto;
@@ -44,6 +46,24 @@
         width: $coinLogoSize !important;
         height: $coinLogoSize !important;
         display: inline-block;
+    }
+}
+
+.empty-portfolio {
+    margin: 0 auto;
+    margin-top: 5vh;
+    width: 100%;
+    max-width: 400px;
+
+    mat-icon.add-icon {
+        margin: 0 auto;
+        font-size: 25vh;
+        display: block;
+        width: 25vh;
+        height: 25vh;
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 

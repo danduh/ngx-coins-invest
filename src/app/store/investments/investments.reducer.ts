@@ -6,7 +6,7 @@ export function investmentsReducer(state, action: PortfolioAction) {
         case InvestmentsActions.LOAD_INVESTMENTS_SUCCESS:
         case InvestmentsActions.PORTFOLIO_TICKER_SUCCESS:
         case InvestmentsActions.PORTFOLIO_TICKER_TICK:
-        case InvestmentsActions.DELETE_PORTFOLIO_SUCCESS:
+        case InvestmentsActions.DELETE_INVESTMENT_SUCCESS:
             return action.payload;
         default:
             return state;

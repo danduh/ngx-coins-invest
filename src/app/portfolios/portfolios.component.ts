@@ -47,11 +47,7 @@ export class PortfoliosComponent extends ErrorHandlerClass implements OnInit {
 
     onCreate() {
         this.portfolioNew = this.portfolioForm.value;
-        console.log(this.portfolioNew);
-        this.portfolioService.createPortfolio(this.portfolioForm.value)
-            .subscribe((portfolio) => {
-                this.router.navigate([`/app/portfolio/${portfolio.id}`]);
-            }, this.errorHandler.bind(this));
+        this.portfolioFacade.createPortfolio(this.portfolioForm.value);
         this.expanded = false;
     }
 

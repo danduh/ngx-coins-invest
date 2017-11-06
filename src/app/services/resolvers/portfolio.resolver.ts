@@ -12,7 +12,11 @@ export class PortfolioResolver implements Resolve<PortfolioModel> {
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<PortfolioModel> {
-        return this.portfolioFacade.getPortfolioByIdRx(route.paramMap.get('portfolioId'));
+        return this.portfolioFacade.getPortfolioByIdRx(route.paramMap.get('portfolioId'))
+            .map((port) => {
+                console.log(port);
+                return port;
+            });
     }
 
 }

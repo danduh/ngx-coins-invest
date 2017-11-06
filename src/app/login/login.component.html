@@ -1,29 +1,38 @@
-<div class="form" *ngIf="!(loaderService.isActive|async)">
-    <form class="login-box" (ngSubmit)="login()">
-        <p>
-            <mat-input-container class="app-full-width" *ngIf="!changePswd; else newPasswordInput">
-                <input matInput type="text" placeholder="User Name" [(ngModel)]="username" name="username"/>
-            </mat-input-container>
-            <ng-template #newPasswordInput>
-                <mat-input-container class="app-full-width">
-                    <input matInput type="password" placeholder="New Password"
-                           [(ngModel)]="newPassword"
-                           name="newPassword"/>
+<mat-card class="authorization-card">
+    <div class="login-form" *ngIf="!(loaderService.isActive|async)">
+        <form class="login-box" (ngSubmit)="login()">
+            <mat-card-header>
+                <mat-card-title>
+                    <h1>Sign in to CryptoMonitor</h1>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-input-container class="app-full-width" *ngIf="!changePswd; else newPasswordInput">
+                    <input matInput type="text" placeholder="User Name" [(ngModel)]="username" name="username"/>
                 </mat-input-container>
-            </ng-template>
-            <mat-input-container class="app-full-width">
-                <input matInput type="password" placeholder="{{changePswd?'confirm':''}} Password"
-                       name="password"
-                       [(ngModel)]="password"/>
-            </mat-input-container>
-        </p>
-        <p>
-            <button mat-raised-button color="primary" type="submit">Submit</button>
-            <b><a [routerLink]="['/g/email-confirm']"> Confirm Email</a></b>
-        </p>
-    </form>
-    <p>
-        {{error}}
-    </p>
-</div>
+                <ng-template #newPasswordInput>
+                    <mat-input-container class="app-full-width">
+                        <input matInput type="password" placeholder="New Password"
+                               [(ngModel)]="newPassword"
+                               name="newPassword"/>
+                    </mat-input-container>
+                </ng-template>
+                <mat-input-container class="app-full-width">
+                    <input matInput type="password" placeholder="{{changePswd?'confirm':''}} Password"
+                           name="password"
+                           [(ngModel)]="password"/>
+                </mat-input-container>
 
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button class="app-full-width" color="primary" type="submit">Submit</button>
+            </mat-card-actions>
+        </form>
+        <p>
+            {{error}}
+        </p>
+    </div>
+    <div class="custom-card-footer">
+        <p><a [routerLink]="['/g/register']" class="link-inherit"> Don't have an account? Sign Up</a></p>
+    </div>
+</mat-card>

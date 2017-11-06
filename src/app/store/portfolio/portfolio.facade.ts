@@ -31,6 +31,14 @@ export class PortfolioFacade {
         return portfolio;
     }
 
+    public removePortfolio(portfolioId) {
+        this.store.dispatch({type: PortfolioActions.DELETE_PORTFOLIO, requestValues: portfolioId});
+    }
+
+    public createPortfolio(portfolio: PortfolioModel): void {
+        this.store.dispatch({type: PortfolioActions.CREATE_PORTFOLIO, payload: portfolio});
+    }
+
     public getPortfolioByIdRx(portfolioId): Observable<PortfolioModel> {
         return Observable.create((observer) => {
             let portfolio = this.getPortfolioById(portfolioId);

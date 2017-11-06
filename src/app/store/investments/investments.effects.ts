@@ -9,7 +9,6 @@ import { MarketTickerService } from '../../services/market-ticker.service';
 @Injectable()
 export class InvestmentsEffects {
     constructor(private actions$: Actions,
-                private marketTickerService: MarketTickerService,
                 private portfolioService: PortfolioService) {
 
     }
@@ -20,18 +19,6 @@ export class InvestmentsEffects {
                     .map((data: InvestedCoinModel[]) => {
                         return {
                             type: InvestmentsActions.LOAD_INVESTMENTS_SUCCESS,
-                            payload: data
-                        };
-                    });
-            }
-        );
-
-    @Effect() deletePortfolio$: Observable<PortfolioAction> = this.actions$.ofType(InvestmentsActions.DELETE_PORTFOLIO)
-        .mergeMap((action: PortfolioAction) => {
-                return this.portfolioService.deletePortfolio(action.requestValues)
-                    .map((data: PortfolioModel[]) => {
-                        return {
-                            type: InvestmentsActions.DELETE_PORTFOLIO_SUCCESS,
                             payload: data
                         };
                     });
@@ -51,18 +38,4 @@ export class InvestmentsEffects {
             }
         );
 
-    // @Effect() tickPortfolio$: Observable<PortfolioAction> = this.actions$.ofType(InvestmentsActions.PORTFOLIO_TICKER_TICK)
-    //     .mergeMap((action: PortfolioAction) => {
-    //             return this.marketTickerService.subscribeToTicker(action.requestValues.baseCurrency, action.requestValues.coinIds)
-    //
-    //             // return this.portfolioService.getPortfolioInvestments(action.requestValues)
-    //                 .map((data: InvestedCoinModel[]) => {
-    //                     console.log(data)
-    //                     return {
-    //                         type: InvestmentsActions.PORTFOLIO_TICKER_SUCCESS,
-    //                         // payload: data
-    //                     };
-    //                 });
-    //         }
-    //     );
 }

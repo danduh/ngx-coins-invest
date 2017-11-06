@@ -18,11 +18,18 @@
         </mat-card-header>
 
         <mat-card-content>
-            <mat-select placeholder="Select Portfolio" [(ngModel)]="selectedPortfolio" name="portfolio" class="portfolio-select">
-                <mat-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
-                    {{portfolio.name}}
-                </mat-option>
-            </mat-select>
+
+            <mat-form-field>
+                <mat-select class="portfolio-select"
+                            placeholder="Select Portfolio"
+                            [(ngModel)]="selectedPortfolio"
+                            name="portfolio">
+                    <mat-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
+                        {{portfolio.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
             <mat-input-container>
                 <input matInput type="number" placeholder="Mount" [(ngModel)]="coinToBuy.amount"/>
             </mat-input-container>
