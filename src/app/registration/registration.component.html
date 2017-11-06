@@ -1,16 +1,18 @@
-<div class="form">
-    <form class="app-form" (ngSubmit)="onRegister()" [formGroup]="fromNewUser" #formDir="ngForm">
-        <mat-input-container class="app-full-width">
-            <input matInput type="email" placeholder="Email (username)" formControlName="username" required>
-        </mat-input-container>
+<mat-card class="authorization-card">
+    <div class="form">
+        <form class="app-form" (ngSubmit)="onRegister()" [formGroup]="fromNewUser" #formDir="ngForm">
+            <mat-input-container class="app-full-width">
+                <input matInput type="email" placeholder="Email (username)" formControlName="username" required>
+            </mat-input-container>
 
-        <mat-input-container class="app-full-width">
-            <input matInput type="password" placeholder="Password" formControlName="password">
-        </mat-input-container>
+            <mat-input-container class="app-full-width">
+                <input matInput type="password" placeholder="Password" formControlName="password">
+            </mat-input-container>
 
-        <mat-input-container class="app-full-width">
-            <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPassword">
-        </mat-input-container>
-        <button mat-raised-button [color]="'primary'" type="submit">Sign In</button>
-    </form>
-</div>
+            <mat-input-container class="app-full-width">
+                <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPassword">
+            </mat-input-container>
+            <button mat-raised-button [color]="'primary'" type="submit">Sign In</button>
+        </form>
+    </div>
+</mat-card>

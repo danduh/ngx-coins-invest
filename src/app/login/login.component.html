@@ -1,5 +1,5 @@
-<mat-card class="authorization-card">
-    <div class="login-form" *ngIf="!(loaderService.isActive|async)">
+<mat-card class="authorization-card" *ngIf="!(loaderService.isActive|async)">
+    <div class="login-form">
         <form class="login-box" (ngSubmit)="login()">
             <mat-card-header>
                 <mat-card-title>

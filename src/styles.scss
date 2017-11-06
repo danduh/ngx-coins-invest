@@ -21,11 +21,11 @@ app-root {
 }
 
 .pos {
-    color: $positiveTextColor;
+    color: $positiveTextColor !important;
 }
 
 .neg {
-    color: $negativeTextColor;
+    color: $negativeTextColor !important;
 }
 
 .app-form {
