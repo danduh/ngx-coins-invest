@@ -10,7 +10,7 @@ import { UserLoginService } from '../services/user-login.service';
 @Component({
     selector: 'app-email-confirmation',
     templateUrl: './email-confirmation.component.html',
-    styleUrls: ['./email-confirmation.component.sass']
+    styleUrls: ['./email-confirmation.component.sass', '../shared/styles/simple-forms.scss']
 })
 export class EmailConfirmationComponent implements OnInit, OnDestroy {
     confirmationCode: string;

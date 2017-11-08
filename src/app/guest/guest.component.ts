@@ -8,7 +8,7 @@ import { LoaderService } from "../shared/loader.service";
 })
 export class GuestComponent implements OnInit {
 
-    constructor(private loaderService: LoaderService) {
+    constructor(public loaderService: LoaderService) {
     }
 
     ngOnInit() {

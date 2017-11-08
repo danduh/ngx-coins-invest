@@ -48,6 +48,8 @@ import { MainComponent } from './main/main.component';
 import { StoreManagementModule } from './store';
 import { PortfolioResolver } from './services/resolvers/portfolio.resolver';
 import { InvestmentsResolver } from './services/resolvers/investments.resolver';
+import { environment } from "../environments/environment";
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
@@ -122,6 +124,7 @@ export const MainRoutes: Routes = [
     ]
     },
 ];
+console.log(environment.production, 1);
 
 @NgModule({
     declarations: [
@@ -150,17 +153,18 @@ export const MainRoutes: Routes = [
         MainComponent,
     ],
     imports: [
+        BrowserModule,
+        ServiceWorkerModule.register('/ngsw-worker.js'),
         ChartsModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
         IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
-        StoreManagementModule.forRoot()
+        StoreManagementModule.forRoot(),
         // StoreModule.forRoot({portfolioStore: investmentsReducer}),
         // EffectsModule.forRoot([InvestmentsEffects])
     ],

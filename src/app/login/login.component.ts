@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
 
     constructor(public dialog: MatDialog,
                 private route: ActivatedRoute,
-                private loaderService: LoaderService,
+                public loaderService: LoaderService,
                 public userService: UserLoginService,
                 private accountService: AccountService,
                 private router: Router) {

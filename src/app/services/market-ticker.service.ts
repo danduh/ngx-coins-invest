@@ -6,7 +6,6 @@ import { CoinModel } from "../models/common";
 
 import * as io from 'socket.io-client';
 import { CCC } from './utils/market-ticker.utils';
-import { resolveSoa } from "dns";
 
 @Injectable()
 export class MarketTickerService {
