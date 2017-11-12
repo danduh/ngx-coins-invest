@@ -8,6 +8,8 @@ export function investmentsReducer(state, action: PortfolioAction) {
         case InvestmentsActions.PORTFOLIO_TICKER_TICK:
         case InvestmentsActions.DELETE_INVESTMENT_SUCCESS:
             return action.payload;
+        case '@ngrx/store/init':
+            return [];
         default:
             return state;
     }

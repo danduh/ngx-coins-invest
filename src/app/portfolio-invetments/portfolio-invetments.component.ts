@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PortfolioModel } from "../services/portfolio.service";
 import { Observable } from "rxjs/Observable";
 import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
 import { DataSource } from "@angular/cdk/collections";
 import { ActivatedRoute } from "@angular/router";
 import { InvestmentsFacade } from '../store/investments/investments.facade';
-import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
-import { MarketTickerService } from '../services/market-ticker.service';
 
 @Component({
     selector: 'app-portfolio-investments',
     templateUrl: './portfolio-investments.component.html',
     styleUrls: ['./portfolio-investments.component.scss']
 })
-export class PortfolioInvestmentsComponent implements OnInit {
+export class PortfolioInvestmentsComponent implements OnInit, OnDestroy {
     private portfolioId: number;
     private investmentsListDatabase = new InvestmentsListDatabase();
     private investmentsListDataSource: InvestmentsListDataSource | null;
@@ -27,7 +25,7 @@ export class PortfolioInvestmentsComponent implements OnInit {
 
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
-            this.investmentsFacade.load(this.portfolioId);
+            // this.investmentsFacade.load(this.portfolioId);
         });
     }
 
@@ -48,6 +46,13 @@ export class PortfolioInvestmentsComponent implements OnInit {
 
     hideTable() {
         return this.investmentsFacade.isEmpty();
+    }
+
+    ngOnDestroy() {
+        this.investmentsFacade.clearState();
+        this.investmentsFacade.subscription.unsubscribe();
+        this.investmentsFacade.destroyed$.next();
+        this.investmentsFacade.destroyed$.complete();
     }
 
 }

@@ -11,7 +11,18 @@ export class InvestmentsResolver implements Resolve<InvestedCoinModel[]> {
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<InvestedCoinModel[]> {
-        return this.investmentsFacade.getInvestmentsRx(route.paramMap.get('portfolioId'));
+        return Observable.create((observer) => {
+            this.investmentsFacade.clearState();
+            this.investmentsFacade.load(route.paramMap.get('portfolioId'));
+            this.investmentsFacade.$investmentsState
+                .subscribe((investments) => {
+                    if (Array.isArray(investments) && investments.length > 0) {
+                        observer.next(investments);
+                        observer.complete();
+                    }
+                });
+        });
+
     }
 
 }

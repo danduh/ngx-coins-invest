@@ -50,6 +50,7 @@ import { PortfolioResolver } from './services/resolvers/portfolio.resolver';
 import { InvestmentsResolver } from './services/resolvers/investments.resolver';
 import { environment } from "../environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
@@ -153,6 +154,9 @@ console.log(environment.production, 1);
         MainComponent,
     ],
     imports: [
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }),
         BrowserModule,
         ServiceWorkerModule.register('/ngsw-worker.js'),
         ChartsModule,

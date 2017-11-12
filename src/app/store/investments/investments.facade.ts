@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { MarketTickerService } from "../../services/market-ticker.service";
 import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { ReplaySubject } from "rxjs/ReplaySubject";
 
 
 export const getInvestmentsState = (state) => {
@@ -16,6 +17,8 @@ export const getInvestmentsState = (state) => {
 @Injectable()
 export class InvestmentsFacade {
     public $investmentsState: Store<any>;
+    public destroyed$ = new Subject();
+    public subscription;
 
     _$totals = new Subject<InvestTotalsModel>();
 
@@ -26,6 +29,10 @@ export class InvestmentsFacade {
     constructor(private store: Store<any>,
                 private marketTickerService: MarketTickerService) {
         this.$investmentsState = store.select(getInvestmentsState);
+    }
+
+    public clearState() {
+        this.store.dispatch({type: '@ngrx/store/init'});
     }
 
     public isEmpty() {
@@ -66,10 +73,11 @@ export class InvestmentsFacade {
     }
 
     public startTicker(curr) {
-        let _T1 = this.marketTickerService.firstTick(curr, this.getCoinIds());
-        let _T2 = this.marketTickerService.subscribeToTicker(curr, this.getCoinIds());
+        let _T1 = this.marketTickerService.firstTick(curr, this.getCoinIds()).takeUntil(this.destroyed$);
+        let _T2 = this.marketTickerService.subscribeToTicker(curr, this.getCoinIds()).takeUntil(this.destroyed$);
 
-        Observable.concat(_T1, _T2)
+        this.subscription = Observable.concat(_T1, _T2)
+            .takeUntil(this.destroyed$)
             .map((data) => {
                 return data;
             })
