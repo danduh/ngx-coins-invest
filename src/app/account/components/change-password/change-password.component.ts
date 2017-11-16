@@ -11,7 +11,7 @@ export class ChangePasswordComponent implements OnInit {
     public changePasswordForm: FormGroup;
 
     constructor(private formBuilder: FormBuilder,
-                private loaderService: LoaderService) {
+                public loaderService: LoaderService) {
 
         this.changePasswordForm = new FormGroup({
             currentPassword: new FormControl(null, [

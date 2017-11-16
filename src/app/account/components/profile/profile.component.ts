@@ -18,7 +18,7 @@ export class ProfileComponent extends ErrorHandlerClass implements OnInit {
 
     constructor(private formBuilder: FormBuilder,
                 private accountService: AccountService,
-                private loaderService: LoaderService,
+                public loaderService: LoaderService,
                 private sanitizer: DomSanitizer) {
         super();
 
