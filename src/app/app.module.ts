@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ChartsModule } from 'ng2-charts';
@@ -51,6 +51,8 @@ import { InvestmentsResolver } from './services/resolvers/investments.resolver';
 import { environment } from "../environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { Angulartics2Module } from "angulartics2";
+import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
@@ -85,47 +87,56 @@ export const MainRoutes: Routes = [
         ]
     },
     {
-        path: 'app', component: MainComponent, children: [
-        {path: 'account', loadChildren: './account/account.module#AccountModule'},
-        {
-            path: 'coins',
-            component: CoinsListComponent,
-            canActivate: [AuthGuard, OutOutletService],
-            data: {title: 'Select Coin'}
-        },
-        {
-            path: 'portfolio',
-            component: PortfoliosComponent,
-            canActivate: [AuthGuard, OutOutletService],
-            data: {title: 'Select Portfolio'},
-            resolve: {
-                portfolios: PortfolioResolver
-            }
-        },
-        {
-            path: 'portfolio/:portfolioId',
-            component: PortfolioInvestmentsComponent,
-            canActivate: [AuthGuard, OutOutletService],
-            data: {title: 'Portfolio Investments'},
-            resolve: {
-                currentPortfolio: PortfolioResolver,
-                investments: InvestmentsResolver
-            }
-        },
-        {
-            path: 'investto/:coinId/:baseCurrency',
-            component: CoinsManagerComponent,
-            canActivate: [AuthGuard],
-            data: {title: 'Invest To', groups: ['investors']},
-            resolve: {
-                portfolios: PortfolioResolver
-            }
-        },
-        {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
-    ]
+        path: 'app',
+        component: MainComponent,
+        // resolve: {
+        //     portfolios: ConfigResolver
+        // },
+        children: [
+            {path: 'account', loadChildren: './account/account.module#AccountModule'},
+            {
+                path: 'coins',
+                component: CoinsListComponent,
+                canActivate: [AuthGuard, OutOutletService],
+                data: {title: 'Select Coin'}
+            },
+            {
+                path: 'portfolio',
+                component: PortfoliosComponent,
+                canActivate: [AuthGuard, OutOutletService],
+                data: {title: 'Select Portfolio'},
+                resolve: {
+                    portfolios: PortfolioResolver
+                }
+            },
+            {
+                path: 'portfolio/:portfolioId',
+                component: PortfolioInvestmentsComponent,
+                canActivate: [AuthGuard, OutOutletService],
+                data: {title: 'Portfolio Investments'},
+                resolve: {
+                    currentPortfolio: PortfolioResolver,
+                    investments: InvestmentsResolver
+                }
+            },
+            {
+                path: 'investto/:coinId/:baseCurrency',
+                component: CoinsManagerComponent,
+                canActivate: [AuthGuard],
+                data: {title: 'Invest To', groups: ['investors']},
+                resolve: {
+                    portfolios: PortfolioResolver
+                }
+            },
+            {path: '', component: CoinsListComponent, canActivate: [AuthGuard], data: {title: 'Select Coin'}}
+        ]
     },
 ];
 console.log(environment.production, 1);
+
+export function loadConfig(config: ConfigService) {
+    return () => config.get().toPromise();
+}
 
 @NgModule({
     declarations: [
@@ -164,11 +175,11 @@ console.log(environment.production, 1);
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
         IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
         StoreManagementModule.forRoot(),
+        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
         // StoreModule.forRoot({portfolioStore: investmentsReducer}),
         // EffectsModule.forRoot([InvestmentsEffects])
     ],
@@ -176,6 +187,12 @@ console.log(environment.production, 1);
         {
             provide: HTTP_INTERCEPTORS,
             useClass: CognitoAuthInterceptor,
+            multi: true
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loadConfig,
+            deps: [ConfigService],
             multi: true
         },
         InvestmentsResolver,

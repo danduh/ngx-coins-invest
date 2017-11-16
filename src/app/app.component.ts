@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { LoaderService } from "./shared/loader.service";
 import { UserLoginService } from './services/user-login.service';
 import { Observable } from 'rxjs/Observable';
+import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
 
 @Component({
     selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     public isLoggedIn: Observable<boolean>;
 
     constructor(private userService: UserLoginService,
+                private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
                 private loaderService: LoaderService) {
     }
 

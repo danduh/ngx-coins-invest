@@ -55,8 +55,8 @@ export class CoinsManagerComponent implements OnInit {
             .subscribe((coin) => {
                 if (!coin)
                     return
-                this.coin = new InvestedCoinModel(coin);
-                this.coinToBuy = new InvestedCoinModel(coin);
+                this.coin = new InvestedCoinModel(<InvestedCoinModel>coin);
+                this.coinToBuy = new InvestedCoinModel(<InvestedCoinModel>coin);
                 this.coinDataSubs.unsubscribe();
             });
 

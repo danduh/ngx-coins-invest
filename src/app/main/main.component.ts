@@ -14,7 +14,7 @@ export class MainComponent implements OnInit {
 
     constructor(private windowService: WindowService,
                 private portfolioFacade: PortfolioFacade) {
-        this.portfolioFacade.loadAll();
+        // this.portfolioFacade.loadAll();
     }
 
     ngOnInit() {

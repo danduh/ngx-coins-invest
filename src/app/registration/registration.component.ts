@@ -8,7 +8,7 @@ import { RegistrationUser, UserRegistrationService } from "../services/user-regi
 @Component({
     selector: 'app-registration',
     templateUrl: './registration.component.html',
-    styleUrls: ['./registration.component.scss']
+    styleUrls: ['./registration.component.scss', '../shared/styles/simple-forms.scss']
 })
 export class RegistrationComponent {
     newUser: AppUser;

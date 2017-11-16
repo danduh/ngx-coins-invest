@@ -34,6 +34,9 @@ export class CognitoAuthInterceptor implements HttpInterceptor {
                         return event;
                     })
                     .catch((err: HttpErrorResponse, caught) => {
+                        if (err instanceof HttpErrorResponse) {
+                            console.log('ddd')
+                        }
                         if (err.error instanceof Error) {
                             console.log("Client-side error occured.");
                         } else {
@@ -43,7 +46,18 @@ export class CognitoAuthInterceptor implements HttpInterceptor {
 
                         let errMsg;
                         if (err.status === 404) {
-                            errMsg = JSON.parse(err.error);
+                            try {
+                                errMsg = JSON.parse(err.error);
+                            } catch (err) {
+                                return Observable.throw(err.error);
+                            }
+                        }
+                        if (err.status === 401) {
+                            try {
+                                errMsg = JSON.parse(err.error);
+                            } catch (err) {
+                                return Observable.throw(err.error);
+                            }
                         }
                         return Observable.throw(errMsg);
                     });

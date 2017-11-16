@@ -15,6 +15,7 @@ export interface AppConfig {
 export class ConfigService {
     private baseUrl = environment['baseApiUrl'];
     config: AppConfig = null;
+    error: any;
 
     constructor(private http: HttpClient) {
     }
@@ -26,8 +27,8 @@ export class ConfigService {
 
         return this.http.get<AppConfig>(this.baseUrl + 'config')
             .map((config) => {
-                this.config = config;
+                this.config = <AppConfig>config;
                 return config;
-            });
+            })
     }
 }

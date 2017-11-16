@@ -4,6 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --e=local --port 4300 --host 0.0.0.0 --disableHostCheck true",
+        "start:prod": "ng serve --e=prod --port 4300 --host 0.0.0.0 --disableHostCheck true",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
@@ -42,8 +43,9 @@
         "@ngrx/router-store": "^4.1.0",
         "@ngrx/store": "^4.1.0",
         "@ngrx/store-devtools": "^4.0.0",
-        "amazon-cognito-identity-js": "^1.21.0",
+        "amazon-cognito-identity-js": "1.21.0",
         "angular2-universal": "^2.1.0-rc.1",
+        "angulartics2": "^4.0.1",
         "autobahn": "^17.5.2",
         "aws-fed-deployment": "0.1.0",
         "body-parser": "^1.18.2",

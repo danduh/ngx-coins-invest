@@ -10,7 +10,7 @@ import { LoaderService } from "app/shared/loader.service";
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['login.component.scss']
+    styleUrls: ['login.component.scss', '../shared/styles/simple-forms.scss']
 })
 export class LoginComponent implements OnInit {
     public username: string;
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
     }
 
     authErrorHandler(err) {
-
+        this.loaderService.isActive = false;
         switch (err.code) {
             case 'UserNotFoundException':
                 this.error = err.message;

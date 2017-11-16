@@ -3,19 +3,22 @@ import { ErrorHandlerClass } from '../../../components/extendable/error-handler.
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountService, AccountModel } from '../../../services/account.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoaderService } from "../../../shared/loader.service";
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss']
+    styleUrls: ['./profile.component.scss', '../../../shared/styles/simple-forms.scss']
 })
 export class ProfileComponent extends ErrorHandlerClass implements OnInit {
     profileForm: FormGroup;
     private profile: AccountModel;
-    url
-    trustedUrl
+    url;
+    trustedUrl;
+
     constructor(private formBuilder: FormBuilder,
                 private accountService: AccountService,
+                private loaderService: LoaderService,
                 private sanitizer: DomSanitizer) {
         super();
 

@@ -22,7 +22,10 @@ export class PortfolioEffects {
                             type: PortfolioActions.LOAD_PORTFOLIO_SUCCESS,
                             payload: data
                         };
-                    });
+                    })
+                    // .catch((err) => {
+                    //     return {type: PortfolioActions.LOAD_PORTFOLIO_ERROR};
+                    // });
             }
         );
 
