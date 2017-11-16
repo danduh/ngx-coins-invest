@@ -1,4 +1,5 @@
 @import "../../assets/variables";
+@import "../../assets/media-queries";
 @import "../../assets/material";
 @import '~@angular/material/theming';
 
@@ -71,7 +72,7 @@ app-footer-invest {
     display: block;
 }
 
-@media ($mat-xsmall) {
+@media #{$generic-phone}{
     mat-header-row {
         flex-wrap: wrap;
         justify-content: space-between;
@@ -99,6 +100,10 @@ app-footer-invest {
             flex: none !important;
             &:nth-child(1) {
                 width: 100%;
+            }
+            &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(9) {
+                display: none;
+                //width: 100%;
             }
             &.mat-cell {
 

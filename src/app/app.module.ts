@@ -134,9 +134,9 @@ export const MainRoutes: Routes = [
 ];
 console.log(environment.production, 1);
 
-export function loadConfig(config: ConfigService) {
-    return () => config.get().toPromise();
-}
+// export function loadConfig(config: ConfigService) {
+//     return () => config.get().toPromise();
+// }
 
 @NgModule({
     declarations: [
@@ -189,12 +189,12 @@ export function loadConfig(config: ConfigService) {
             useClass: CognitoAuthInterceptor,
             multi: true
         },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: loadConfig,
-            deps: [ConfigService],
-            multi: true
-        },
+        // {
+        //     provide: APP_INITIALIZER,
+        //     useFactory: loadConfig,
+        //     deps: [ConfigService],
+        //     multi: true
+        // },
         InvestmentsResolver,
         PortfolioResolver,
         PoloniexWssService,
