@@ -3,38 +3,27 @@
 @import "assets/aw-cryptocoins/cryptocoins-colors.css";
 @import "assets/reset-css";
 @import "assets/variables";
+@import "./app/angular-material/angular-material.module";
 
 html {
-  height: 100%;
+    height: 100%;
 }
 
 body {
-  margin: 0;
-  font-size: 18px;
-  height: 100%;
+    margin: 0;
+    font-size: 18px;
+    height: 100%;
 }
 
 app-root {
-  height: 100%;
-  display: block;
+    height: 100%;
+    display: block;
 }
 
 .pos {
-  color: $positiveTextColor;
+    color: $positiveTextColor !important;
 }
 
 .neg {
-  color: $negativeTextColor;
+    color: $negativeTextColor !important;
 }
-
-.app-form {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 100px;
-  .app-full-width {
-    width: 100%;
-  }
-}
-
-

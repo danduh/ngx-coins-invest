@@ -1,0 +1,129 @@
+@import "../../assets/variables";
+@import "../../assets/media-queries";
+@import "../../assets/material";
+@import '~@angular/material/theming';
+
+.list-view {
+    overflow: auto;
+    height: calc(100vh - 140px);
+
+    mat-list-item {
+        border-bottom: 1px solid #e0e0e0;
+        &:nth-child(even) {
+            background: #EEEEEE
+        }
+
+        /deep/ .mat-list-text {
+            height: 100%;
+            padding-top: 6px;
+        }
+    }
+    .mat-row {
+        min-height: 32px !important;
+    }
+    mat-cell, mat-header-cell {
+        &:nth-child(1) {
+            min-width: 175px;
+        }
+    }
+    .row-content {
+        display: inline-block;
+        padding-left: 10px;
+        h3 {
+            font-size: 1em;
+            font-weight: 600;
+            padding: 7px 0;
+        }
+    }
+    .mat-card-avatar {
+        width: $coinLogoSize;
+        height: $coinLogoSize;
+        img {
+            width: 100%
+        }
+    }
+    mat-icon {
+        float: left;
+        width: $coinLogoSize !important;
+        height: $coinLogoSize !important;
+        display: inline-block;
+    }
+}
+
+.empty-portfolio {
+    margin: 0 auto;
+    margin-top: 5vh;
+    width: 100%;
+    max-width: 400px;
+
+    mat-icon.add-icon {
+        margin: 0 auto;
+        font-size: 25vh;
+        display: block;
+        width: 25vh;
+        height: 25vh;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+app-footer-invest {
+    display: block;
+}
+
+@media #{$generic-phone}{
+    mat-header-row {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    mat-table.list-view {
+        .mat-row {
+            height: 100px;
+            flex-wrap: wrap;
+            display: flex;
+            justify-content: space-between;
+        }
+        .row-content {
+            width: 84%;
+            justify-content: space-around;
+            display: flex;
+            h3 {
+                display: inline-block;
+            }
+            span {
+                display: inline-block;
+                text-align: right;
+            }
+        }
+        mat-cell, mat-header-cell {
+            flex: none !important;
+            &:nth-child(1) {
+                width: 100%;
+            }
+            &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(9) {
+                display: none;
+                //width: 100%;
+            }
+            &.mat-cell {
+
+            }
+            &.no-mobile {
+                display: none;
+            }
+        }
+
+        .mat-card-avatar {
+            width: $coinLogoSizeMobile;
+            height: $coinLogoSizeMobile;
+            img {
+                width: 100%;
+            }
+        }
+        mat-icon {
+            width: $coinLogoSizeMobile !important;
+            height: $coinLogoSizeMobile !important;
+        }
+
+    }
+}

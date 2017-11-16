@@ -12,7 +12,7 @@ export class AuthGuard {
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean | {}> {
         return this.userService.rxIsAuthenticated()
             .catch((err) => {
-                this.router.navigate(['/login']);
+                this.router.navigate(['/g/login']);
                 return Observable.throw(err);
             });
     }

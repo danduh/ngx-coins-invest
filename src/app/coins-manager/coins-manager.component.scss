@@ -1,67 +1,88 @@
-.coin-card {
-  md-card-header {
-    position: relative;
-    .coin-add-link {
-      position: absolute;
-      right: 0;
-      top: 0;
-      opacity: 0;
-      transition: opacity 300ms linear;
+.coins-manager {
+    mat-card-header {
+        position: relative;
+        div.card-header-left {
+            width: 60%;
+        }
+        div.card-header-right {
+            width: 40%;
+        }
+        .coin-add-link {
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            transition: opacity 300ms linear;
+        }
+        &:hover {
+            .coin-add-link {
+                opacity: 1;
+            }
+        }
     }
-    &:hover {
-      .coin-add-link {
-        opacity: 1;
-      }
+    .portfolio-select {
+        width: 45%;
     }
-  }
-
-  width: 400px;
-  margin: 2px;
+    /deep/ .mat-select-trigger {
+        width: 200px;
+    }
+    width: 500px;
+    margin: 2px auto;
 
 }
 
 .mat-card-avatar {
-  width: 128px;
-  height: 128px;
+    width: 64px;
+    height: 64px;
+    float: left;
+    padding-left: 10px;
+    img {
+        width: 100%;
+    }
 }
 
 .positive, .negative {
-  font-size: 1.2em;
-  font-weight: 500;
+    font-size: 1.2em;
+    font-weight: 500;
 }
 
 .positive {
-  color: green;
+    color: green;
 }
 
 .negative {
-  color: red;
+    color: red;
 }
 
-
-
 div.form {
-  width: 500px;
-  margin: 0 auto;
-  md-list {
-    max-width: 500px;
-    width: 100%;
+    width: 500px;
     margin: 0 auto;
-    i.cc {
-      font-size: 3em;
-      float: left;
-      margin-right: 20px;
+    mat-list {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+        i.cc {
+            font-size: 3em;
+            float: left;
+            margin-right: 20px;
+        }
+        h4, p {
+            margin: 0;
+        }
+        div.coin-data {
+            width: 30%;
+            float: left;
+        }
     }
-    h4, p {
-      margin: 0;
-    }
-    div.coin-data {
-      width: 30%;
-      float: left;
-    }
-  }
 }
 
 .example-full-width {
-  width: 100%;
+    width: 100%;
+}
+
+.graph {
+    width: 800px;
+    height: 300px;
+    display: block;
+    margin: 0 auto;
 }

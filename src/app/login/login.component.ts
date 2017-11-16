@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseClass } from "../classes/base.class";
-import { MdDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { UserLoginService } from "../services/user-login.service";
 import { LoggedInCallback } from "../services/cognito-utility.service";
 import { AccountService } from "../services/account.service";
+import { LoaderService } from "app/shared/loader.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['login.component.scss']
+    styleUrls: ['login.component.scss', '../shared/styles/simple-forms.scss']
 })
 export class LoginComponent implements OnInit {
     public username: string;
@@ -20,9 +19,9 @@ export class LoginComponent implements OnInit {
     public error: string = null;
     public changePswd = false;
 
-    constructor(public dialog: MdDialog,
-                private auth: AuthService,
+    constructor(public dialog: MatDialog,
                 private route: ActivatedRoute,
+                public loaderService: LoaderService,
                 public userService: UserLoginService,
                 private accountService: AccountService,
                 private router: Router) {
@@ -35,67 +34,18 @@ export class LoginComponent implements OnInit {
         // this.userService.isAuthenticated(this);
         this.userService.rxIsAuthenticated()
             .subscribe((response) => {
-                this.authenticationCallback(null, response);
+                this.router.navigate(['/app/portfolio'])
+                    .then(
+                        function () {
+                            console.log('navigate success');
+                        },
+                        function () {
+                            console.log('navigate failure');
+                        }
+                    );
             }, (err) => {
-                this.authenticationCallback(err, false);
+                console.log(err);
             });
-    }
-
-    cognitoCallback(message: string, result: any) {
-        if (message != null) { // error
-            this.error = message;
-            console.log("result: " + this.error);
-            if (this.error === 'User is not confirmed.') {
-                console.log("redirecting");
-                this.router.navigate(['/home/confirmRegistration', this.username]);
-            } else if (this.error === 'User needs to set password.') {
-                console.log("redirecting to set new password");
-                this.router.navigate(['/home/newPassword']);
-            }
-        } else { //  success
-            this.accountService.getOrCreate()
-                .subscribe((response) => {
-                    this.router.navigate(['/portfolio'])
-                        .then(
-                            function () {
-                                console.log('navigate success');
-                            },
-                            function () {
-                                console.log('navigate failure');
-                            }
-                        );
-                });
-        }
-    }
-
-    authenticationCallback(message: string, result: any) {
-        if (message != null) { // error
-            this.error = message;
-            console.log("result: " + this.error);
-            if (this.error === 'User is not confirmed.') {
-                console.log("redirecting");
-                this.router.navigate(['/home/confirmRegistration', this.username]);
-            } else if (this.error === 'User needs to set password.') {
-                console.log("redirecting to set new password");
-                this.router.navigate(['/home/newPassword']);
-            }
-        } else { //  success
-            this.router.navigate(['/portfolio'])
-                .then(
-                    function () {
-                        console.log('navigate success');
-                    },
-                    function () {
-                        console.log('navigate failure');
-                    }
-                );
-        }
-    }
-
-    isLoggedIn(message: string, isLoggedIn: boolean) {
-        if (isLoggedIn) {
-            this.router.navigate(['/portfolio']);
-        }
     }
 
     login() {
@@ -103,11 +53,41 @@ export class LoginComponent implements OnInit {
             this.error = "All fields are required";
             return;
         }
-
-        this.userService.authenticate(this.username, this.password, this);
+        this.loaderService.isActive = true;
+        this.userService.rxAuthenticate(this.username, this.password)
+            .subscribe(
+                this.authSuccessHandler.bind(this),
+                this.authErrorHandler.bind(this)
+            );
 
         this.error = null;
 
+    }
+
+    authSuccessHandler(result) {
+        switch (result) {
+            case 'onSuccess':
+                this.postLoginRedirect();
+                break;
+            default:
+                console.log(result);
+        }
+    }
+
+    authErrorHandler(err) {
+        this.loaderService.isActive = false;
+        switch (err.code) {
+            case 'UserNotFoundException':
+                this.error = err.message;
+                break;
+            case 'UserNotConfirmedException':
+                this.error = err.message;
+                break;
+            default:
+                console.log('SomethingWrong');
+                console.log(this.error);
+                break;
+        }
     }
 
     postLogin(data) {
@@ -122,8 +102,10 @@ export class LoginComponent implements OnInit {
     }
 
     postLoginRedirect() {
-        this.router.navigate(['/portfolio'])
-            .then((resp) => console.log(resp));
+        this.router.navigate(['/app/portfolio'])
+            .then((resp) => {
+                this.loaderService.isActive = false;
+            });
     }
 
     errorHandler(error) {
@@ -167,9 +149,9 @@ export class LogoutComponent implements LoggedInCallback {
     isLoggedIn(message: string, isLoggedIn: boolean) {
         if (isLoggedIn) {
             this.userService.logout();
-            this.router.navigate(['/login']);
+            this.router.navigate(['/g/login']);
         }
 
-        this.router.navigate(['/login']);
+        this.router.navigate(['g//login']);
     }
 }

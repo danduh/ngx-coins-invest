@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { CognitoCallback, CognitoUtil } from "./cognito-utility.service";
 import { CognitoUserAttribute, AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import * as AWS from "aws-sdk";
+import { Observable } from 'rxjs/Observable';
 
 export class RegistrationUser {
     name: string;
@@ -21,110 +22,124 @@ export class UserRegistrationService {
 
     }
 
-    register(user: RegistrationUser, callback: CognitoCallback): void {
-        console.log("UserRegistrationService: user is " + user);
 
-        let attributeList = [];
+    rxConfirmRegistration(username: string, confirmationCode: string): Observable<any> {
+        return Observable.create((observer) => {
+            let userData = {
+                Username: username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
+            let cognitoUser = new CognitoUser(userData);
 
-        let dataEmail = {
-            Name: 'email',
-            Value: user.email
-        };
-        let dataNickname = {
-            Name: 'nickname',
-            Value: user.name
-        };
-        attributeList.push(new CognitoUserAttribute(dataEmail));
-        attributeList.push(new CognitoUserAttribute(dataNickname));
-
-        this.cognitoUtil.getUserPool().signUp(user.email, user.password, attributeList, null, function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                console.log("UserRegistrationService: registered user is " + result);
-                callback.cognitoCallback(null, result);
-            }
-        });
-
-    }
-
-    confirmRegistration(username: string, confirmationCode: string, callback: CognitoCallback): void {
-
-        let userData = {
-            Username: username,
-            Pool: this.cognitoUtil.getUserPool()
-        };
-
-        let cognitoUser = new CognitoUser(userData);
-
-        cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                callback.cognitoCallback(null, result);
-            }
+            cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
+                if (err) {
+                    observer.error(err);
+                } else {
+                    observer.next(result);
+                }
+                observer.complete();
+            });
         });
     }
 
-    resendCode(username: string, callback: CognitoCallback): void {
-        let userData = {
-            Username: username,
-            Pool: this.cognitoUtil.getUserPool()
-        };
+    rxNewPassword(newPasswordUser: NewPasswordUser): Observable<any> {
+        return Observable.create((observer) => {
+            console.log(newPasswordUser);
+            // Get these details and call
+            // cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+            let authenticationData = {
+                Username: newPasswordUser.username,
+                Password: newPasswordUser.existingPassword,
+            };
+            let authenticationDetails = new AuthenticationDetails(authenticationData);
 
-        let cognitoUser = new CognitoUser(userData);
+            let userData = {
+                Username: newPasswordUser.username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
 
-        cognitoUser.resendConfirmationCode(function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                callback.cognitoCallback(null, result);
-            }
+            console.log("UserLoginService: Params set...Authenticating the user");
+            let cognitoUser = new CognitoUser(userData);
+            console.log("UserLoginService: config is " + AWS.config);
+            cognitoUser.authenticateUser(authenticationDetails, {
+                newPasswordRequired: (userAttributes, requiredAttributes) => {
+                    delete userAttributes.email_verified;
+                    cognitoUser.completeNewPasswordChallenge(newPasswordUser.password, requiredAttributes, {
+                        onSuccess: function (result) {
+                            console.log('Password Changed');
+                            observer.next(userAttributes);
+                            observer.complete();
+                        },
+                        onFailure: function (err) {
+                            observer.next(err);
+                            observer.complete();
+                        }
+                    });
+                },
+                onSuccess: function (result) {
+                    console.log('Password Changed');
+                    observer.next(result);
+                    observer.complete();
+                },
+                onFailure: function (err) {
+                    observer.next(err);
+                    observer.complete();
+                }
+            });
         });
     }
 
-    newPassword(newPasswordUser: NewPasswordUser, callback: CognitoCallback): void {
-        console.log(newPasswordUser);
-        // Get these details and call
-        // cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
-        let authenticationData = {
-            Username: newPasswordUser.username,
-            Password: newPasswordUser.existingPassword,
-        };
-        let authenticationDetails = new AuthenticationDetails(authenticationData);
+    rxRegister(user: RegistrationUser): Observable<any> {
 
-        let userData = {
-            Username: newPasswordUser.username,
-            Pool: this.cognitoUtil.getUserPool()
-        };
+        return Observable.create((observer) => {
+            console.log("UserRegistrationService: user is " + user);
 
-        console.log("UserLoginService: Params set...Authenticating the user");
-        let cognitoUser = new CognitoUser(userData);
-        console.log("UserLoginService: config is " + AWS.config);
-        cognitoUser.authenticateUser(authenticationDetails, {
-            newPasswordRequired: function (userAttributes, requiredAttributes) {
-                // User was signed up by an admin and must provide new
-                // password and required attributes, if any, to complete
-                // authentication.
+            let attributeList = [];
 
-                // the api doesn't accept this field back
-                delete userAttributes.email_verified;
-                cognitoUser.completeNewPasswordChallenge(newPasswordUser.password, requiredAttributes, {
-                    onSuccess: function (result) {
-                        callback.cognitoCallback(null, userAttributes);
-                    },
-                    onFailure: function (err) {
-                        callback.cognitoCallback(err, null);
+            let dataEmail = {
+                Name: 'email',
+                Value: user.email
+            };
+            let dataNickname = {
+                Name: 'nickname',
+                Value: user.email
+            };
+            attributeList.push(new CognitoUserAttribute(dataEmail));
+            attributeList.push(new CognitoUserAttribute(dataNickname));
+
+            this.cognitoUtil.getUserPool()
+                .signUp(user.email, user.password, attributeList, null, function (err, result) {
+                    if (err) {
+                        observer.error(err);
+                    } else {
+                        observer.next(result);
                     }
+                    observer.complete();
                 });
-            },
-            onSuccess: function (result) {
-                callback.cognitoCallback(null, result);
-            },
-            onFailure: function (err) {
-                callback.cognitoCallback(err, null);
-            }
         });
     }
+
+
+    rxResendCode(username: string): Observable<any> {
+        return Observable.create((observer) => {
+
+            let userData = {
+                Username: username,
+                Pool: this.cognitoUtil.getUserPool()
+            };
+
+            let cognitoUser = new CognitoUser(userData);
+
+            cognitoUser.resendConfirmationCode((err, result) => {
+                if (!!err) {
+                    observer.error(err);
+                } else {
+                    observer.next(result);
+                }
+                observer.complete();
+            });
+        });
+    }
+
 }
 

@@ -1,0 +1,15 @@
+<mat-card class="authorization-card" *ngIf="!(loaderService.isActive|async)">
+    <div class="login-form">
+        <form class="login-box" [formGroup]="profileForm" (ngSubmit)="onSave()">
+            <mat-input-container class="app-full-width">
+                <input type="text" matInput placeholder="First name"
+                       formControlName="firstName">
+            </mat-input-container>
+            <mat-input-container class="app-full-width">
+                <input type="text" matInput placeholder="Last Name"
+                       formControlName="lastName">
+            </mat-input-container>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+        </form>
+    </div>
+</mat-card>

@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserRegistrationService } from "../services/user-registration.ervice";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { DialogComponent } from "../components/dialog/dialog.component";
-import { MdDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
 import { AccountService } from "../services/account.service";
+import { UserLoginService } from '../services/user-login.service';
 
 @Component({
     selector: 'app-email-confirmation',
     templateUrl: './email-confirmation.component.html',
-    styleUrls: ['./email-confirmation.component.sass']
+    styleUrls: ['./email-confirmation.component.sass', '../shared/styles/simple-forms.scss']
 })
 export class EmailConfirmationComponent implements OnInit, OnDestroy {
     confirmationCode: string;
@@ -20,8 +21,9 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
 
     constructor(public regService: UserRegistrationService,
                 public router: Router,
-                public dialog: MdDialog,
+                public dialog: MatDialog,
                 public route: ActivatedRoute,
+                private userLoginService: UserLoginService,
                 private accountService: AccountService) {
     }
 
@@ -32,8 +34,9 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
         });
 
         this.emailConfirmForm = new FormGroup({
-            'email': new FormControl(this.email),
-            'confirmationCode': new FormControl()
+            email: new FormControl(this.email, [Validators.required]),
+            password: new FormControl(null, [Validators.required]),
+            confirmationCode: new FormControl(null, [Validators.required])
         });
 
         this.errorMessage = null;
@@ -45,19 +48,31 @@ export class EmailConfirmationComponent implements OnInit, OnDestroy {
 
     onConfirmRegistration() {
         this.errorMessage = null;
-        this.regService.confirmRegistration(this.emailConfirmForm.value.email, this.emailConfirmForm.value.confirmationCode, this);
+        this.regService.rxConfirmRegistration(this.emailConfirmForm.value.email, this.emailConfirmForm.value.confirmationCode)
+            .mergeMap((resp) => {
+                console.log('MERGE_1');
+                return this.userLoginService.rxAuthenticate(this.emailConfirmForm.value.email, this.emailConfirmForm.value.password);
+            })
+            .mergeMap((resp) => {
+                console.log('MERGE_2');
+                return this.accountService.createAccountUser(this.emailConfirmForm.value);
+            })
+            .subscribe((resp) => {
+                console.log('MERGE_3');
+                this.router.navigate(['/g/login']);
+            }, (err) => {
+                this.errorMessage = err.message;
+                this.showErrorMsg(this.errorMessage);
+            });
     }
 
-    cognitoCallback(message: string, result: any) {
-        if (message != null) { //
-            // error
-            this.errorMessage = message;
-            console.log('message: ' + this.errorMessage);
-            this.showErrorMsg(message);
-        } else {
-            console.log('Moving to create Account');
-            this.router.navigate(['/login']);
-        }
+    resendCode() {
+        this.regService.rxResendCode(this.emailConfirmForm.value.email)
+            .subscribe((res) => {
+                console.log(res);
+            }, (res) => {
+                console.log(res);
+            });
     }
 
     showErrorMsg(msg) {

@@ -1,28 +1,46 @@
-<div class="form">
-    <form class="app-form" method="POST" action="#" role="form" [formGroup]="emailConfirmForm" #formDir="ngForm">
-        <md-input-container class="app-full-width">
-            <input mdInput id="email" type="email" maxlength="50" class="form-control"
-                   placeholder="Email (username)"
-                   formControlName="email"/>
-        </md-input-container>
-        <md-input-container class="app-full-width">
-            <input mdInput id="confirmationCode"
-                   placeholder="Confirmation Code"
-                   type="text" maxlength="50" class="form-control"
-                   formControlName="confirmationCode"/>
-        </md-input-container>
-        <button md-raised-button (click)="onConfirmRegistration()"
-                id="confirmRegistration" type="submit"
-                class="btn btn-info btn-block">Confirm
-        </button>
-
+<mat-card class="authorization-card">
+    <div class="login-form">
+        <form class="app-form" action="#" role="form"
+              #formDir="ngForm"
+              [formGroup]="emailConfirmForm"
+              (ngSubmit)="onConfirmRegistration()">
+            <mat-input-container class="app-full-width">
+                <input matInput id="email" type="email" maxlength="50" class="form-control"
+                       placeholder="Email (username)"
+                       formControlName="email"/>
+            </mat-input-container>
+            <mat-input-container class="app-full-width">
+                <input matInput id="password" type="password" maxlength="50" class="form-control"
+                       placeholder="Password"
+                       formControlName="password"/>
+            </mat-input-container>
+            <mat-input-container class="app-full-width">
+                <input matInput id="confirmationCode"
+                       placeholder="Confirmation Code"
+                       type="text" maxlength="50" class="form-control"
+                       formControlName="confirmationCode"/>
+            </mat-input-container>
+            <button mat-raised-button
+                    id="confirmRegistration" type="submit"
+                    class="btn btn-info btn-block app-full-width">Confirm
+            </button>
+        </form>
+        <dialog>{{errorMessage}}</dialog>
+    </div>
+    <div class="custom-card-footer">
         <p>Can't find your code?
-            <a [routerLink]="['/home/resendCode']">
-                <i class="fa fa-fw fa-group"></i> ResendCode
-            </a>
-            <a [routerLink]="['/register']"> <i class="fa fa-fw fa-group"></i> Register</a> <a
-                [routerLink]="['/login']"> <i class="fa fa-fw fa-user"></i> Login</a>
+            <button mat-button color="warn"
+                    (click)="resendCode()">
+                ResendCode
+            </button>
+            <button mat-button color="primary"
+                    [routerLink]="['/g/register']">
+                Register
+            </button>
+            <button mat-button color="primary"
+                    [routerLink]="['/g/login']">
+                Login
+            </button>
         </p>
-    </form>
-    <dialog>{{errorMessage}}</dialog>
-</div>
+    </div>
+</mat-card>

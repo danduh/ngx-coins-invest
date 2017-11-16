@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit, Optional } from '@angular/core';
-import { MD_DIALOG_DATA } from "@angular/material";
+import { MAT_DIALOG_DATA } from "@angular/material";
 
 @Component({
     selector: 'app-dialog',
@@ -9,7 +9,7 @@ import { MD_DIALOG_DATA } from "@angular/material";
 export class DialogComponent implements OnInit {
     response;
 
-    constructor(@Optional() @Inject(MD_DIALOG_DATA) public config: any) {
+    constructor(@Optional() @Inject(MAT_DIALOG_DATA) public config: any) {
         // this.config = {};
     }
 

@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../services/auth.service";
-import { AppUser } from "../models/common";
+import { ErrorHandlerClass } from "../components/extendable/error-handler.class";
 
 @Component({
     selector: 'app-account',
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit {
-    appUser: AppUser;
+export class AccountComponent extends ErrorHandlerClass implements OnInit {
+    public navTabs = [
+        {path: 'profile', title: 'Profile'},
+        {path: 'change-password', title: 'Change Password'}
+    ];
 
-    constructor(private auth: AuthService) {
-        this.appUser = this.auth.appUser;
+    constructor() {
+        super();
     }
 
     ngOnInit() {
-        console.log(this.appUser);
     }
+
 
 }

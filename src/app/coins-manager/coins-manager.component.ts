@@ -3,6 +3,8 @@ import { CoinModel, InvestedCoinModel } from '../models/common';
 import { CoinsService } from '../services/coins.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'app-coins-manager',
@@ -15,37 +17,65 @@ export class CoinsManagerComponent implements OnInit {
     public coins: CoinModel[] = [];
     private paramsSubs: Subscription;
     private coinDataSubs: Subscription;
+    private coinGraphSubs: Subscription;
+    private coinId: string;
+    private baseCurrency: string;
+
+    public lineChartLegend = true;
+    public lineChartType = 'line';
+    public lineChartData: any[];
+    public lineChartLabels: any[];
+    public portfolios: Observable<PortfolioModel[]>;
+    public selectedPortfolio: PortfolioModel;
 
     constructor(private coinService: CoinsService,
+                private portfolioService: PortfolioService,
                 private route: ActivatedRoute,
                 private router: Router) {
+
+        this.paramsSubs = this.route.params.subscribe(params => {
+            this.coinId = params['coinId'];
+            this.baseCurrency = params['baseCurrency'];
+        });
+
     }
 
     ngOnInit() {
-        this.paramsSubs = this.route.params.subscribe(params => {
-            this.getCoinData(params['coinId']);
-        });
+        this.getCoinData();
+        this.portfolios = this.portfolioService.getAllPortfolios();
     }
 
-    getCoinData(coinId) {
+
+    getCoinData() {
         if (!!this.coinDataSubs) {
             this.coinDataSubs.unsubscribe();
         }
 
-        this.coinDataSubs = this.coinService.getOneCoin(coinId)
+        this.coinDataSubs = this.coinService.getOneCoin(this.coinId)
             .subscribe((coin) => {
-                this.coin = new InvestedCoinModel(coin);
-                this.coinToBuy = new InvestedCoinModel(coin);
+                if (!coin)
+                    return
+                this.coin = new InvestedCoinModel(<InvestedCoinModel>coin);
+                this.coinToBuy = new InvestedCoinModel(<InvestedCoinModel>coin);
                 this.coinDataSubs.unsubscribe();
+            });
+
+        this.coinGraphSubs = this.coinService.getCoinGraph(this.coinId, this.baseCurrency)
+            .subscribe((graphData) => {
+                this.lineChartData = graphData.parsedData;
+                this.lineChartLabels = graphData.xAxisLabels;
+                this.coinGraphSubs.unsubscribe();
             });
     }
 
     submit() {
-        this.coinToBuy.amount = this.coinToBuy.openPrice * this.coinToBuy.quantity;
-        this.coinService.addCoin(this.coinToBuy)
-            .subscribe((response) => {
-                this.router.navigate(['/portfolio']);
+        this.coinToBuy.coinId = this.coinId;
+        // this.coinToBuy.amount = this.coinToBuy.openPrice * this.coinToBuy.quantity;
+        this.portfolioService.createInvestment(this.coinToBuy, this.selectedPortfolio.id)
+            .subscribe((portfolio) => {
+                this.router.navigate(['app/portfolio', portfolio.id]);
             });
+
     }
 
     updateValue(ev) {

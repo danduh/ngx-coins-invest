@@ -1,0 +1,98 @@
+<ng-container *ngIf="hideTable()">
+    <div class="empty-portfolio">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title><h1 class="mat-headline">Add coins to your portfolio.</h1></mat-card-title>
+            </mat-card-header>
+            <mat-card-content [routerLink]="['/app/coins']">
+                <mat-icon color="primary" class="add-icon">add</mat-icon>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</ng-container>
+<ng-container *ngIf="!hideTable()">
+    <mat-table #table [dataSource]="investmentsListDataSource" class="list-view">
+        <!-- ID Column -->
+        <ng-container cdkColumnDef="logo">
+            <mat-header-cell *cdkHeaderCellDef>Crypto Coin</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                <mat-icon mat-list-icon>
+                    <div mat-card-avatar class="example-header-image">
+                        <img [src]="coin.metaData.logo">
+                    </div>
+                </mat-icon>
+                <div class="row-content">
+                    <h3>{{coin.metaData.symbol}}</h3><span>{{coin.createdAt * 1000| date}}</span>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="amount">
+            <mat-header-cell *cdkHeaderCellDef> Amount</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin"> {{coin.amount | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="openPrice">
+            <mat-header-cell *cdkHeaderCellDef> Open</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                {{coin.openPrice |currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="price">
+            <mat-header-cell *cdkHeaderCellDef> Current</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                {{coin.price |currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="currentPrice">
+            <mat-header-cell *cdkHeaderCellDef> Price</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                {{coin.currentPrice |currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="openValue">
+            <mat-header-cell *cdkHeaderCellDef> Invested</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                {{coin.openValue |currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="currentValue">
+            <mat-header-cell *cdkHeaderCellDef> Value</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                {{coin.currentValue |currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="valueChange">
+            <mat-header-cell *cdkHeaderCellDef> p/l($)</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin" [ngClass]="coin.valueChange>0 ? 'pos':'neg'">
+                {{coin.valueChange|currency:portfolio.baseCurrency}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="valuePctChange">
+            <mat-header-cell *cdkHeaderCellDef> p/l(%)</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin" [ngClass]="coin.valuePctChange>0 ? 'pos':'neg'">
+                {{coin.valuePctChange|percent}}
+            </mat-cell>
+        </ng-container>
+
+        <!-- Color Column -->
+        <ng-container cdkColumnDef="delete">
+            <mat-header-cell *cdkHeaderCellDef> Delete / Edit</mat-header-cell>
+            <mat-cell *cdkCellDef="let coin">
+                <button mat-raised-button color="warn" (click)="deleteInvest(coin.id)">Delete</button>
+                <!--<button (click)="goToDetailPage(coin.$key)">Edit</button>-->
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <app-footer-invest [totals]="totals"></app-footer-invest>
+</ng-container>
+

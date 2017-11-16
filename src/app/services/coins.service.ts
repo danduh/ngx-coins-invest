@@ -1,49 +1,127 @@
 import { Injectable } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
 import { Router } from '@angular/router';
-import { Http, Response, Headers } from '@angular/http';
-import { AuthService } from './auth.service';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
-import { MdSnackBar, MdSnackBarRef, SimpleSnackBar } from "@angular/material";
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material";
 import { CognitoUtil } from "./cognito-utility.service";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { DatePipe } from "@angular/common";
+import { ConfigService } from "./config.service";
 
 @Injectable()
 export class CoinsService {
     baseUrl = environment['baseApiUrl'];
+    coinsApiUrl = 'https://min-api.cryptocompare.com/data/';
 
+    private _datePipe = new DatePipe('en');
     private cachedList: CoinModel[];
-    private authSnackBar: MdSnackBarRef<SimpleSnackBar>;
-
-
-    // private getAuthHeader(shouldAuth?: boolean): any {
-    //     let headerObject = {'Content-Type': 'application/json'};
-    //     // headerObject['Authorization'] = this.cognitoUtil.getAuthToken();
-    //     return {headers: new Headers(headerObject)};
-    // }
+    private authSnackBar: MatSnackBarRef<SimpleSnackBar>;
 
     constructor(private router: Router,
+                private configService: ConfigService,
                 public cognitoUtil: CognitoUtil,
-                private snackBar: MdSnackBar,
-                private http: Http) {
+                private snackBar: MatSnackBar,
+                private http: HttpClient) {
     }
 
-    public getList(): Observable<CoinModel[]> {
-        // const options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins`)
-            .map(this.postRequestSuccess.bind(this));
+    private normalizeCoins(baseCurrency: string, dataType: string, response): CoinModel | CoinModel[] {
+        if (dataType.indexOf('histo') !== -1) {
+            return response;
+        }
+
+        let _coins = response.RAW;
+
+        let symbols = Object.keys(response.RAW);
+        let results: CoinModel[] = [];
+
+        symbols.forEach((sym) => {
+            if (sym === baseCurrency) {
+                return;
+            }
+
+            let coin = _coins[sym][baseCurrency];
+            results.push({
+                name: coin.FROMSYMBOL,
+                symbol: this.configService.config.mapCoinName[coin.FROMSYMBOL],
+                baseCurrency: coin.TOSYMBOL,
+                quantity: coin.FROMSYMBOL,
+                market_cap: coin.MKTCAP,
+                percent_change_24h: Number((coin.CHANGEPCT24HOUR).toFixed(4)),
+                price: coin.PRICE,
+                logo: this.configService.config.mediaBaseUrl + coin.FROMSYMBOL.toLowerCase() + '.png',
+                volume_24h: coin.VOLUME24HOUR,
+                volume_24h_to: coin.VOLUME24HOURTO
+            });
+        });
+        return results.length === 1 ? results[0] : results;
+    };
+
+    private options(baseCurrency, coinId = null) {
+
+        let params: HttpParams = new HttpParams()
+            .set('limit', '30')
+            .set('fsym', baseCurrency)
+            .set('tsyms', baseCurrency)
+            .set('fsyms', coinId ? coinId : this.configService.config.allowedCoins.join(','));
+
+        if (!!coinId) {
+            params.set('tsym', coinId);
+        }
+
+        return params;
     }
 
-    public getOneCoin(coinId) {
-        // let options = this.getAuthHeader();
-        return this.http.get(`${this.baseUrl}coins/${coinId}`)
-            .map(this.postRequestSuccess.bind(this))
-            .map((coins) => coins[0]);
+
+    public getList(curr = 'USD', dataType = 'pricemultifull'): Observable<CoinModel[]> {
+        let params = this.options(curr);
+
+        return this.http.get<CoinModel[]>(`${this.coinsApiUrl}${dataType}`, {params})
+            .map(this.normalizeCoins.bind(this, curr, dataType));
+    }
+
+    public getOneCoin(coinId, curr = 'USD', dataType = 'pricemultifull'): Observable<CoinModel> {
+        let params: HttpParams = this.options(curr, coinId);
+
+        return this.http.get<CoinModel>(`${this.coinsApiUrl}${dataType}`, {params})
+            .map(this.normalizeCoins.bind(this, curr, dataType));
+    }
+
+    public getCoinGraph(curr, coinId, timeRange = 'week') {
+        let params: HttpParams = new HttpParams()
+            .set('fsym', curr)
+            .set('tsym', coinId);
+
+        return this.http.get<CoinModel>(`${this.coinsApiUrl}histohour`, {params})
+            .map((response) => {
+                let data = response['Data'];
+                let parsedData = [
+                    // {label: 'Open', data: []},
+                    {label: 'Close', data: []},
+                    {label: 'Low', data: []},
+                    {label: 'High', data: []},
+                ];
+                let xAxisLabels = [];
+
+                let _len = response['Data'].length;
+
+                while (_len--) {
+                    let point = response['Data'][_len];
+                    // parsedData[0].data[_len] = point['open'];
+                    parsedData[0].data[_len] = point['close'];
+                    parsedData[1].data[_len] = point['low'];
+                    parsedData[2].data[_len] = point['high'];
+
+                    xAxisLabels[_len] = this._datePipe.transform(point['time'] * 1000);
+                }
+                return {parsedData, xAxisLabels};
+            });
     }
 
     public addCoin(coin): Observable<CoinModel> {
         // let options = this.getAuthHeader();
-        return this.http.post(`${this.baseUrl}invested/${coin.id}`, coin)
+        return this.http.post(`${this.baseUrl}invested`, coin)
             .map(this.postRequestSuccess.bind(this));
     }
 

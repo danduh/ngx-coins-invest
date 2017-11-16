@@ -1,20 +1,59 @@
-<ng-container *ngIf="!!visibleCoins && visibleCoins.length>0; else loader">
-    <md-input-container class="example-full-width">
-        <input mdInput type="text" [formControl]="inputSelector" placeholder="Search"/>
-    </md-input-container>
-
-    <section>
-        <app-coin-card [coin]="coin" *ngFor="let coin of visibleCoins | filter : searchTerm"></app-coin-card>
-    </section>
-
-    <footer>
-        <button md-raised-button color="primary" (click)="showMoreCoins()">Show More</button>
-    </footer>
-</ng-container>
+<!--<section class="component-header">-->
+    <!--<app-currency-selector (onSelect)="onCurrencyChange($event.value)"></app-currency-selector>-->
+    <!--<mat-input-container class="example-full-width">-->
+        <!--<input matInput type="text" [formControl]="inputSelector" placeholder="Search"/>-->
+    <!--</mat-input-container>-->
+<!--</section>-->
+<mat-table #table [dataSource]="coinsListDataSource">
+    <ng-container cdkColumnDef="logo">
+        <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            <img [src]="row.logo" alt="logo"/>
+        </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="name">
+        <mat-header-cell *cdkHeaderCellDef> name</mat-header-cell>
+        <mat-cell *cdkCellDef="let row"> {{row.name}}</mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="price">
+        <mat-header-cell *cdkHeaderCellDef> price</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            {{row.price|currency:row.baseCurrency}}
+        </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="percent_change_24h">
+        <mat-header-cell *cdkHeaderCellDef> change</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            <span [ngClass]="{'positive':row.percent_change_24h > 0, 'negative':row.percent_change_24h < 0}">
+                {{row.percent_change_24h}}%
+            </span>
+        </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="market_cap">
+        <mat-header-cell *cdkHeaderCellDef> Market Cap</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            {{row.market_cap|currency:row.baseCurrency}}
+        </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="volume_24h">
+        <mat-header-cell *cdkHeaderCellDef> 24H Value</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            {{row.volume_24h|priceFormat}}
+        </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="volume_24h_to">
+        <mat-header-cell *cdkHeaderCellDef> 24H Value ()</mat-header-cell>
+        <mat-cell *cdkCellDef="let row">
+            {{row.volume_24h_to|currency:row.baseCurrency:'symbol':'4.2-2'}}
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns:displayedColumns" (click)="onSelect(row)"></mat-row>
+</mat-table>
 <ng-template #loader>
-    <md-progress-spinner
-            class="example-margin"
-            [color]="'primary'"
-            [mode]="'indeterminate'">
-    </md-progress-spinner>
+    <mat-progress-spinner
+        class="example-margin"
+        [color]="'primary'"
+        [mode]="'indeterminate'">
+    </mat-progress-spinner>
 </ng-template>

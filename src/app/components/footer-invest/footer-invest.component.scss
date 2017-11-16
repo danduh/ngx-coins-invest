@@ -1,36 +1,47 @@
 @import "../../../assets/variables";
+@import "../../../assets/media-queries";
 
 .footer-invest {
-  display: block;
-  width: 100%;
-  height: 64px;
-  position: fixed;
-  bottom: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.12);
-  background: #FFF;
-  
-  .footer-invest-inner {
-    float: left;
-    width: 33%;
-    height: 100%;
-    text-align: center;
-    &.pos {
-      h3 {
-        color: $positiveTextColor
-      }
+    display: block;
+    width: 100%;
+    height: 64px;
+    //position: fixed;
+    bottom: 0;
+    border-top: 2px solid rgba(0, 0, 0, 0.12);
+    background: #FFF;
+
+    .footer-invest-inner {
+        float: left;
+        width: 24.9%;
+        height: 100%;
+        text-align: center;
+        &.pos {
+            h3 {
+                color: $positiveTextColor
+            }
+        }
+        h3 {
+            font-size: 1.25em;
+            padding: 10px 0 3px;
+        }
+        span {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
     }
-    h3 {
-      font-size: 1.25em;
-      padding: 10px 0 3px;
+    .profit {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
     }
-    span {
-      font-size: 0.75em;
-      text-transform: uppercase;
-      opacity: 0.5;
+
+    @media #{$generic-phone} {
+        .footer-invest-inner {
+            width: 24%;
+            h3 {
+                font-size: 1em;
+                padding: 10px 0 3px;
+            }
+        }
     }
-  }
-  .profit {
-    border-right: 1px solid rgba(0, 0, 0, 0.12);
-    border-left: 1px solid rgba(0, 0, 0, 0.12);
-  }
 }

@@ -23,20 +23,24 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 $matToolbarRowHeight: 64px;
 
 .mat-cell {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 .mat-header-cell {
-  font-size: 18px;
-  text-transform: uppercase;
+    font-size: 18px;
+    text-transform: uppercase;
 }
 
 .mat-sidenav-container {
-  height: calc(100% - #{$matToolbarRowHeight}) !important;
+    height: calc(100% - #{$matToolbarRowHeight}) !important;
 }
 
-.mat-row{
-  &:nth-child(even) {
-    background: #EEEEEE
-  }
+.mat-row {
+    &:nth-child(even) {
+        background: #EEEEEE
+    }
+}
+
+.mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary, .mat-toolbar.mat-primary {
+    color: #FFF;
 }

@@ -1,10 +1,29 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { MdSnackBar } from "@angular/material";
-import { AuthService } from "./auth.service";
-import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
+
+// TODO: Change to single profile. ..
+
+export class AccountModel {
+    public id: number = null;
+    public createdAt?: string = null;
+
+    private _fullName: string;
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+
+    set fullName(value) {
+        console.error('You should not set user\'s this.fullName');
+    }
+
+    userSub: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
 
 @Injectable()
 export class AccountService {
@@ -19,9 +38,17 @@ export class AccountService {
 
     }
 
-    public getOrCreate(): Observable<any> {
+    public getOrCreate(): Observable<AccountModel> {
         let params = new HttpParams().set('getOrCreate', 'true');
-        return this.http.get(`${this.baseUrl}accounts`, {params});
+        return this.http.get<AccountModel>(`${this.baseUrl}accounts`, {params});
+    }
+
+    public getAccount(): Observable<any> {
+        return this.http.get<AccountModel>(`${this.baseUrl}accounts`);
+    }
+
+    public updateAccount(profile: AccountModel) {
+        return this.http.put<AccountModel>(`${this.baseUrl}accounts/${profile.id}`, profile);
     }
 
     private postRequestSuccess(response: Response) {
