@@ -5,6 +5,12 @@ import { InvestedCoinModel, InvestTotalsModel } from "../models/common";
 import { DataSource } from "@angular/cdk/collections";
 import { ActivatedRoute } from "@angular/router";
 import { InvestmentsFacade } from '../store/investments/investments.facade';
+import { Platform } from "@angular/cdk/platform";
+
+const COLUMNS = {
+    desktop: ['logo', 'amount', 'openPrice', 'currentPrice', 'valueChange', 'valuePctChange', 'openValue', 'currentValue', 'delete'],
+    mobile: ['logo', 'currentPrice', 'valueChange', 'valuePctChange', 'currentValue', 'delete']
+};
 
 @Component({
     selector: 'app-portfolio-investments',
@@ -17,12 +23,15 @@ export class PortfolioInvestmentsComponent implements OnInit, OnDestroy {
     private investmentsListDataSource: InvestmentsListDataSource | null;
 
     public portfolio: PortfolioModel;
-    public displayedColumns: string[] = ['logo', 'amount', 'openPrice', 'currentPrice', 'valueChange', 'valuePctChange', 'openValue', 'currentValue', 'delete'];
+    public displayedColumns: string[];
     public totals: Observable<InvestTotalsModel>;
+    public isMobile = false;
 
     constructor(private investmentsFacade: InvestmentsFacade,
+                private platform: Platform,
                 private route: ActivatedRoute) {
-
+        this.isMobile = ((this.platform.ANDROID || this.platform.IOS) && this.platform.isBrowser);
+        this.displayedColumns = this.isMobile ? COLUMNS.mobile : COLUMNS.desktop;
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
             // this.investmentsFacade.load(this.portfolioId);

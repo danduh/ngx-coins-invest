@@ -53,6 +53,8 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Angulartics2Module } from "angulartics2";
 import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
+import { Platform } from "@angular/cdk/platform";
+
 
 export const MainRoutes: Routes = [
     {path: '', redirectTo: '/g/login', pathMatch: 'full'},
