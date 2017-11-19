@@ -1,6 +1,6 @@
 <div class="side-menu">
     <mat-list>
-        <a mat-list-item *ngFor="let item of menuItems" [routerLink]="item.link" [ngClass]="{'underline':item.split}">
+        <a mat-list-item *ngFor="let item of menuItems" (click)="onClick(item)" [ngClass]="{'underline':item.split}">
             <!--<a [routerLink]="item.link" mat-menu-item class="">-->
             <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
             <h4 mat-line>{{item.label}}</h4>

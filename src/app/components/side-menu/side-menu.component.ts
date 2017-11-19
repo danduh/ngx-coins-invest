@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MENU_LIST } from "../../constants/fixtures";
+import { Route, Router } from "@angular/router";
 
 export interface MenuItem {
     link: string;
@@ -17,11 +18,18 @@ export interface MenuItem {
 })
 export class SideMenuComponent implements OnInit {
     public menuItems = MENU_LIST.sort((item) => -item.weight);
+    @Input('sidenav') sidenav;
 
-    constructor() {
+    constructor(private router: Router) {
+    }
+
+    onClick(item) {
+        this.router.navigate([item.link]);
+        this.sidenav.close();
     }
 
     ngOnInit() {
+        console.log(this.sidenav);
     }
 
 }

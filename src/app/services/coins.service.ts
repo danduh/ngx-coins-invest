@@ -58,34 +58,46 @@ export class CoinsService {
         return results.length === 1 ? results[0] : results;
     };
 
-    private options(baseCurrency, coinId = null) {
-
+    private options(baseCurrency, coinId = null): Observable<HttpParams> {
         let params: HttpParams = new HttpParams()
             .set('limit', '30')
             .set('fsym', baseCurrency)
-            .set('tsyms', baseCurrency)
-            .set('fsyms', coinId ? coinId : this.configService.config.allowedCoins.join(','));
+            .set('tsyms', baseCurrency);
 
         if (!!coinId) {
             params.set('tsym', coinId);
         }
 
-        return params;
+        return Observable.create((observer) => {
+            if (!!this.configService.config) {
+                params = params.set('fsyms', coinId ? coinId : this.configService.config.allowedCoins.join(','));
+                observer.next(params);
+                observer.complete();
+            } else {
+                this.configService.get()
+                    .subscribe((config) => {
+                        params = params.set('fsyms', coinId ? coinId : config.allowedCoins.join(','));
+                        observer.next(params);
+                        observer.complete();
+                    });
+            }
+        });
     }
 
 
     public getList(curr = 'USD', dataType = 'pricemultifull'): Observable<CoinModel[]> {
-        let params = this.options(curr);
-
-        return this.http.get<CoinModel[]>(`${this.coinsApiUrl}${dataType}`, {params})
-            .map(this.normalizeCoins.bind(this, curr, dataType));
+        return this.options(curr).mergeMap((params) => {
+            debugger
+            return this.http.get<CoinModel[]>(`${this.coinsApiUrl}${dataType}`, {params})
+                .map(this.normalizeCoins.bind(this, curr, dataType));
+        });
     }
 
     public getOneCoin(coinId, curr = 'USD', dataType = 'pricemultifull'): Observable<CoinModel> {
-        let params: HttpParams = this.options(curr, coinId);
-
-        return this.http.get<CoinModel>(`${this.coinsApiUrl}${dataType}`, {params})
-            .map(this.normalizeCoins.bind(this, curr, dataType));
+        return this.options(curr, coinId).mergeMap((params) => {
+            return this.http.get<CoinModel>(`${this.coinsApiUrl}${dataType}`, {params})
+                .map(this.normalizeCoins.bind(this, curr, dataType));
+        });
     }
 
     public getCoinGraph(curr, coinId, timeRange = 'week') {

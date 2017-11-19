@@ -1,6 +1,9 @@
 <form>
     <mat-form-field>
-        <mat-select placeholder="Compare to" [(ngModel)]="selectedValue" name="curr" (change)="onSelect.emit($event)">
+        <mat-select placeholder="Base Currency"
+                    name="curr"
+                    [(ngModel)]="selectedValue"
+                    (change)="onSelect.emit($event)">
             <mat-option *ngFor="let curr of currencies" [value]="curr">
                 {{curr}}
             </mat-option>

@@ -9,7 +9,7 @@ import { Platform } from "@angular/cdk/platform";
 
 const COLUMNS = {
     desktop: ['logo', 'amount', 'openPrice', 'currentPrice', 'valueChange', 'valuePctChange', 'openValue', 'currentValue', 'delete'],
-    mobile: ['logo', 'currentPrice', 'valueChange', 'valuePctChange', 'currentValue', 'delete']
+    mobile: ['logo', 'currentPrice', 'valueChange', 'valuePctChange', 'currentValue']
 };
 
 @Component({

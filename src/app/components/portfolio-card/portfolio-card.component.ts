@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PortfolioModel } from "../../services/portfolio.service";
 import { Router } from "@angular/router";
-import { InvestmentsFacade } from "../../store/investments/investments.facade";
 import { PortfolioFacade } from "../../store/portfolio/portfolio.facade";
 
 @Component({
