@@ -1,6 +1,11 @@
+@import "../../../assets/media-queries";
+
+$form-width-desktop: 500px;
+$form-width-mobile: 80%;
+
 mat-card {
     width: 100%;
-    max-width: 500px;
+    max-width: $form-width-desktop;
     margin: 40px auto 0;
     position: relative;
     padding: 0;
@@ -28,7 +33,7 @@ mat-card {
         text-align: center;
         background: #f0f0f0;
         display: block;
-        width: 500px;
+        width: $form-width-desktop;
         line-height: 40px;
         border-top: 1px solid #dcdcdc;
         left: 0;
@@ -36,5 +41,14 @@ mat-card {
     }
     .app-full-width {
         width: 100%;
+    }
+}
+
+@media #{$generic-phone}{
+    mat-card {
+        width: $form-width-mobile;
+        .custom-card-footer {
+            width: 100%;
+        }
     }
 }
