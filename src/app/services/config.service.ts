@@ -29,6 +29,6 @@ export class ConfigService {
             .map((config) => {
                 this.config = <AppConfig>config;
                 return config;
-            })
+            });
     }
 }

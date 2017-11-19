@@ -11,6 +11,12 @@ import { DataSource } from "@angular/cdk/collections";
 import { LoaderService } from "../shared/loader.service";
 import { Router } from "@angular/router";
 import { PoloniexWssService } from '../services/external-api/poloniex-wss.service';
+import { Platform } from "@angular/cdk/platform";
+
+const COLUMNS = {
+    desktop: ['logo', 'name', 'price', 'percent_change_24h', 'market_cap', 'volume_24h', 'volume_24h_to'],
+    mobile: ['logo', 'name', 'price', 'percent_change_24h', 'volume_24h_to']
+};
 
 @Component({
     selector: 'app-coins-list',
@@ -23,7 +29,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     public inputSelector = new FormControl();
     public currencies: string[];
     public displayedColumns = ['logo', 'name', 'price', 'percent_change_24h', 'market_cap', 'volume_24h', 'volume_24h_to'];
-
+    public isMobile = false;
     searchTerm = '';
     private searchValueSubscription: Subscription;
     private _baseCurrency = new BehaviorSubject<string>('USD');
@@ -41,10 +47,13 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
     constructor(private coinsService: CoinsService,
                 private router: Router,
+                private platform: Platform,
                 private tickerService: MarketTickerService,
                 private configService: ConfigService,
                 private poloniexWssService: PoloniexWssService,
                 private loaderService: LoaderService) {
+        this.isMobile = ((this.platform.ANDROID || this.platform.IOS) && this.platform.isBrowser);
+        this.displayedColumns = this.isMobile ? COLUMNS.mobile : COLUMNS.desktop;
 
     }
 
