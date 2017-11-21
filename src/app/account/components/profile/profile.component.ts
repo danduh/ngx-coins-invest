@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountService, AccountModel } from '../../../services/account.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LoaderService } from "../../../shared/loader.service";
+import { PushNotificationsService } from "../../../services/service-workers/push-notifications";
 
 @Component({
     selector: 'app-profile',
@@ -18,6 +19,7 @@ export class ProfileComponent extends ErrorHandlerClass implements OnInit {
 
     constructor(private formBuilder: FormBuilder,
                 private accountService: AccountService,
+                private pushService: PushNotificationsService,
                 public loaderService: LoaderService,
                 private sanitizer: DomSanitizer) {
         super();
@@ -58,5 +60,9 @@ export class ProfileComponent extends ErrorHandlerClass implements OnInit {
             .subscribe((profile) => {
                 console.log(profile);
             }, this.errorHandler.bind(this));
+    }
+
+    subscribePush() {
+        this.pushService.subscribeToPush();
     }
 }
