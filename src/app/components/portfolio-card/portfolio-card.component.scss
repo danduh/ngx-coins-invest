@@ -1,3 +1,5 @@
+@import "../../../assets/media-queries";
+
 .portfolio-card-host {
     max-width: 300px;
     float: left;
@@ -17,7 +19,7 @@
         z-index: 100;
         color: #000;
         opacity: 0.6;
-        transition: opacity 280ms cubic-bezier(.4,0,.2,1);
+        transition: opacity 280ms cubic-bezier(.4, 0, .2, 1);
         &:hover {
             opacity: 1;
             font-weight: 900;
@@ -28,5 +30,12 @@
             width: 40px;
             height: 40px;
         }
+    }
+}
+
+@media #{$generic-phone}{
+    .portfolio-card-host {
+        width: 100%;
+        max-width: none;
     }
 }

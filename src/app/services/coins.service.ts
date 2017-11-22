@@ -87,7 +87,6 @@ export class CoinsService {
 
     public getList(curr = 'USD', dataType = 'pricemultifull'): Observable<CoinModel[]> {
         return this.options(curr).mergeMap((params) => {
-            debugger
             return this.http.get<CoinModel[]>(`${this.coinsApiUrl}${dataType}`, {params})
                 .map(this.normalizeCoins.bind(this, curr, dataType));
         });

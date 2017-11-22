@@ -54,6 +54,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Angulartics2Module } from "angulartics2";
 import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
 import { Platform } from "@angular/cdk/platform";
+import { PushNotificationsService } from "app/services/service-workers/push-notifications";
 
 
 export const MainRoutes: Routes = [
@@ -191,12 +192,7 @@ console.log(environment.production, 1);
             useClass: CognitoAuthInterceptor,
             multi: true
         },
-        // {
-        //     provide: APP_INITIALIZER,
-        //     useFactory: loadConfig,
-        //     deps: [ConfigService],
-        //     multi: true
-        // },
+        PushNotificationsService,
         InvestmentsResolver,
         PortfolioResolver,
         PoloniexWssService,

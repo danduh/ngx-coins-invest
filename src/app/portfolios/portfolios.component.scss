@@ -1,3 +1,5 @@
+@import "../../assets/media-queries";
+
 .portfolios-component {
     text-align: center;
     width: 100%;
@@ -14,5 +16,15 @@
             display: block;
             padding: 10px;
         }
+        @media #{$generic-phone}{
+            app-portfolio-card {
+                display: block;
+                padding: 10px;
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+
     }
 }
+

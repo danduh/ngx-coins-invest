@@ -20,12 +20,10 @@ export class LoginComponent implements OnInit {
     public changePswd = false;
 
     constructor(public dialog: MatDialog,
-                private route: ActivatedRoute,
                 public loaderService: LoaderService,
                 public userService: UserLoginService,
-                private accountService: AccountService,
                 private router: Router) {
-
+        this.loaderService.isActive = true;
     }
 
     ngOnInit() {
@@ -44,7 +42,7 @@ export class LoginComponent implements OnInit {
                         }
                     );
             }, (err) => {
-                console.log(err);
+                this.loaderService.isActive = true;
             });
     }
 
