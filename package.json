@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --e=local --port 4300 --host 0.0.0.0 --disableHostCheck true",
-        "start:prod": "ng serve --e=prod --port 4300 --host 0.0.0.0 --disableHostCheck true",
+        "start:prod": "ng serve --e=prod --aot --build-optimizer --port 4300 --host 0.0.0.0 --disableHostCheck true",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
@@ -13,7 +13,7 @@
         "precach": "sw-precache --verbose --config=sw-precache-config.js",
         "******BUILD_TASKS": "*************************BUILDS***********************",
         "build:dev": "ng build --prod --e=dev && npm run precach",
-        "build:prod": "ng build --prod  --e=prod && npm run precach",
+        "build:prod": "ng build --prod  --build-optimizer --e=prod && npm run precach",
         "******UPLOAD_TASKS": "************************UPLOADS************************",
         "uploadTo:prod": "aws-fed-deployment --dpl-config config/deploy.prod.config.json",
         "uploadTo:dev": "aws-fed-deployment --dpl-config config/deploy.dev.config.json",
