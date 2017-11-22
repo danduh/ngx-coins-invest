@@ -29,20 +29,24 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.error = null;
         console.log("Checking if the user is already authenticated. If so, then redirect to the secure site");
-        // this.userService.isAuthenticated(this);
         this.userService.rxIsAuthenticated()
             .subscribe((response) => {
-                this.router.navigate(['/app/portfolio'])
-                    .then(
-                        function () {
-                            console.log('navigate success');
-                        },
-                        function () {
-                            console.log('navigate failure');
-                        }
-                    );
+                console.log(response)
+                if (!response) {
+                    this.loaderService.isActive = false;
+                } else {
+                    this.router.navigate(['/app/portfolio'])
+                        .then(
+                            () => {
+                                console.log('navigate success');
+                            },
+                            () => {
+                                console.log('navigate failure');
+                            }
+                        );
+                }
             }, (err) => {
-                this.loaderService.isActive = true;
+                this.loaderService.isActive = false;
             });
     }
 
