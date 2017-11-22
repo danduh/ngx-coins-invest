@@ -149,14 +149,15 @@ export class UserLoginService {
             if (cognitoUser != null) {
                 cognitoUser.getSession(function (err, session) {
                     if (err) {
-                        observer.error(err);
+                        observer.next(err);
                     } else {
-                        session.isValid() ? observer.next(true) : observer.error(false);
+                        session.isValid() ? observer.next(true) : observer.next(false);
                     }
                     observer.complete();
                 });
             } else {
-                observer.error('Can\' t retrieve the CurrentUser ');
+                console.log('Can\' t retrieve the CurrentUser ');
+                observer.next(false);
                 observer.complete();
             }
         });
