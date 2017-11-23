@@ -31,6 +31,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/pluck';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/timeInterval';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/debounceTime';

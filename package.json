@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --e=local --port 4300 --host 0.0.0.0 --disableHostCheck true",
-        "start:prod": "ng serve --e=prod --aot --build-optimizer --port 4300 --host 0.0.0.0 --disableHostCheck true",
+        "start:prod": "ng serve --e=prod --port 4300 --host 0.0.0.0 --disableHostCheck true",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",

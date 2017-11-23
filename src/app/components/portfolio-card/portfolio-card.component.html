@@ -8,10 +8,38 @@
                 </picture>
             </div>
             <mat-card-title>{{portfolio.name}}</mat-card-title>
-            <!--<mat-card-subtitle>{{portfolio.comment}}</mat-card-subtitle>-->
+            <mat-card-title>
+                <b>Base: {{portfolio.baseCurrency}}</b>
+            </mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
+            <ul class="totals">
+                <li class="item">
+                    <div class="profit">
+                        <h3>{{(totals | async)?.open | currency}}</h3>
+                        <span>Invested</span>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="profit">
+                        <h3>{{(totals | async)?.current | currency}}</h3>
+                        <span>equity</span>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="equity {{(totals | async)?.profit > 0 ? 'pos': 'neg'}}">
+                        <h3>{{(totals | async)?.profit | currency}}</h3>
+                        <span>Profit</span>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="equity {{(totals | async)?.profitPct > 0 ? 'pos': 'neg'}}">
+                        <h3>{{(totals | async)?.profitPct | percent}}</h3>
+                        <span>P/L(%)</span>
+                    </div>
+                </li>
+            </ul>
             <!-- TODO: GRAPH Should be here-->
             <app-graph-in-card></app-graph-in-card>
         </mat-card-content>

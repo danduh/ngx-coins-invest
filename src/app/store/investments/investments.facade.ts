@@ -5,9 +5,6 @@ import { InvestedCoinModel, InvestTotalsModel } from '../../models/common';
 import { Observable } from 'rxjs/Observable';
 import { MarketTickerService } from "../../services/market-ticker.service";
 import { Subject } from "rxjs/Subject";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-
 
 export const getInvestmentsState = (state) => {
     return state['investmentsStore'];
@@ -61,14 +58,13 @@ export class InvestmentsFacade {
 
     public getInvestmentsRx(portfolioId): Observable<InvestedCoinModel[]> {
         return Observable.create((observer) => {
-            this.$investmentsState.subscribe((investments) => {
-                if (!!investments) {
-                    observer.next(investments);
-                    observer.complete();
-                } else {
-                    this.load(portfolioId);
-                }
-            });
+            return this.$investmentsState
+                .subscribe((investments) => {
+                    if (Array.isArray(investments) && investments.length > 0) {
+                        observer.next(investments);
+                        observer.complete();
+                    }
+                });
         });
     }
 
@@ -82,6 +78,21 @@ export class InvestmentsFacade {
                 return data;
             })
             .subscribe(this.processTicker.bind(this));
+    }
+
+    // TODO <> Multiple request HAVE to be fixed
+    public getTotalsOnly(curr, portfolioId) {
+        return this.$investmentsState
+            .filter((investments) => (Array.isArray(investments) && investments.length > 0))
+            .take(1)
+            .mergeMap((investments) => {
+                console.log('dd')
+                return this.marketTickerService.firstTick(curr, this.getCoinIds())
+                    .map((ticker) => {
+                        const coins = this.mergeCoinWithTicker(ticker, investments);
+                        return this.calculateTotals(coins, true);
+                    });
+            });
     }
 
     private processTicker(ticker) {
@@ -113,7 +124,7 @@ export class InvestmentsFacade {
         return coins;
     }
 
-    private calculateTotals(coins: InvestedCoinModel[]) {
+    private calculateTotals(coins: InvestedCoinModel[], returnTotals = false) {
         const total: InvestTotalsModel = {
             open: 0,
             current: 0
@@ -127,6 +138,6 @@ export class InvestmentsFacade {
         total.profitPct = total.profit / total.open;
         this._$totals.next(total);
 
-        return coins;
+        return returnTotals ? total : coins;
     }
 }

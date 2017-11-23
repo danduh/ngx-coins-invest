@@ -34,7 +34,6 @@ export class PortfolioInvestmentsComponent implements OnInit, OnDestroy {
         this.displayedColumns = this.isMobile ? COLUMNS.mobile : COLUMNS.desktop;
         this.route.params.subscribe(params => {
             this.portfolioId = params['portfolioId'];
-            // this.investmentsFacade.load(this.portfolioId);
         });
     }
 
@@ -60,7 +59,7 @@ export class PortfolioInvestmentsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.investmentsFacade.clearState();
         this.investmentsFacade.subscription.unsubscribe();
-        this.investmentsFacade.destroyed$.next();
+        this.investmentsFacade.destroyed$.next(true);
         this.investmentsFacade.destroyed$.complete();
     }
 

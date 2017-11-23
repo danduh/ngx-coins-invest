@@ -45,6 +45,7 @@ export class PortfolioService {
     }
 
     getPortfolioInvestments(portfolioId) {
+        console.log('getPortfolioInvestments', portfolioId);
         return this.http.get<InvestedCoinModel[]>(`${this.baseUrl}portfolios/${portfolioId}/investments`)
             .map((coins) => coins.map((c) => new InvestedCoinModel(c)));
     }

@@ -109,7 +109,7 @@ export const MainRoutes: Routes = [
                 canActivate: [AuthGuard, OutOutletService],
                 data: {title: 'Select Portfolio'},
                 resolve: {
-                    portfolios: PortfolioResolver
+                    portfolios: PortfolioResolver,
                 }
             },
             {

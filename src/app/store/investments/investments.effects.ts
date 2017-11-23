@@ -4,7 +4,6 @@ import { PortfolioAction, InvestmentsActions } from './investments.actions';
 import { PortfolioModel, PortfolioService } from '../../services/portfolio.service';
 import { InvestedCoinModel } from '../../models/common';
 import { Injectable } from '@angular/core';
-import { MarketTickerService } from '../../services/market-ticker.service';
 
 @Injectable()
 export class InvestmentsEffects {
