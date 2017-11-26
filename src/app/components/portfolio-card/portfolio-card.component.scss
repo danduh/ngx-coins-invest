@@ -42,6 +42,14 @@
             font-weight: 900;
         }
     }
+    .loader {
+        width: 252px;
+        height: 128px;
+        opacity: 0.6;
+        mat-spinner{
+            margin: 0 auto;
+        }
+    }
     .example-header-image {
         img {
             width: 40px;

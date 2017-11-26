@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { PortfolioFacade } from "../../store/portfolio/portfolio.facade";
 import { InvestmentsFacade } from "../../store/investments/investments.facade";
 import { Observable } from "rxjs/Observable";
+import { LoaderService } from "../../shared/loader.service";
 
 @Component({
     selector: 'app-portfolio-card',
@@ -16,13 +17,15 @@ export class PortfolioCardComponent implements OnInit {
 
     constructor(private router: Router,
                 private investmentsFacade: InvestmentsFacade,
-                private portfolioFacade: PortfolioFacade) {
+                private portfolioFacade: PortfolioFacade,
+                public loaderService: LoaderService) {
     }
 
     ngOnInit() {
+        this.loaderService.isActive = true;
         this.investmentsFacade.load(this.portfolio.id);
         this.totals = this.investmentsFacade
-            .getTotalsOnly(this.portfolio.baseCurrency, this.portfolio.id);
+            .getTotalsOnly(this.portfolio.baseCurrency, this.portfolio.id, false);
     }
 
     public goToPortfolio() {

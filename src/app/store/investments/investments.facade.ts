@@ -5,6 +5,7 @@ import { InvestedCoinModel, InvestTotalsModel } from '../../models/common';
 import { Observable } from 'rxjs/Observable';
 import { MarketTickerService } from "../../services/market-ticker.service";
 import { Subject } from "rxjs/Subject";
+import { LoaderService } from "../../shared/loader.service";
 
 export const getInvestmentsState = (state) => {
     return state['investmentsStore'];
@@ -24,6 +25,7 @@ export class InvestmentsFacade {
     }
 
     constructor(private store: Store<any>,
+                private loaderService: LoaderService,
                 private marketTickerService: MarketTickerService) {
         this.$investmentsState = store.select(getInvestmentsState);
     }
@@ -80,19 +82,21 @@ export class InvestmentsFacade {
             .subscribe(this.processTicker.bind(this));
     }
 
-    // TODO <> Multiple request HAVE to be fixed
-    public getTotalsOnly(curr, portfolioId) {
+    public getTotalsOnly(curr, portfolioId, valueForLoader = null) {
         return this.$investmentsState
             .filter((investments) => (Array.isArray(investments) && investments.length > 0))
             .take(1)
             .mergeMap((investments) => {
-                console.log('dd')
                 return this.marketTickerService.firstTick(curr, this.getCoinIds())
                     .map((ticker) => {
+                        console.log('valueForLoader', valueForLoader);
+                        if (valueForLoader !== null) {
+                            this.loaderService.isActive = valueForLoader;
+                        }
                         const coins = this.mergeCoinWithTicker(ticker, investments);
                         return this.calculateTotals(coins, true);
                     });
-            });
+            }).share();
     }
 
     private processTicker(ticker) {
