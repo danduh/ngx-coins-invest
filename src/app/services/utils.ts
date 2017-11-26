@@ -15,6 +15,7 @@ export class CognitoAuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        console.log(req.url)
         if (BLACK_LIST.some((bl) => req.url.includes(bl))) {
             return next.handle(req);
         }

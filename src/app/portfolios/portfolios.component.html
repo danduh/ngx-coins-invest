@@ -12,9 +12,9 @@
             <mat-form-field>
                 <input matInput formControlName="name" placeholder="Name it">
             </mat-form-field>
-            <mat-form-field>
-                <input matInput formControlName="comment" placeholder="Comment">
-            </mat-form-field>
+            <!--<mat-form-field>-->
+                <!--<input matInput formControlName="comment" placeholder="Comment">-->
+            <!--</mat-form-field>-->
             <app-currency-selector (onSelect)="onBaseCurrencySelect($event.value)"></app-currency-selector>
             <button mat-raised-button [color]="'primary'" type="submit">Create</button>
         </form>

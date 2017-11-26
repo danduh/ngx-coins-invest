@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
+import { PortfolioModel } from "../services/portfolio.service";
 import { Observable } from "rxjs/Observable";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ErrorHandlerClass } from "../components/extendable/error-handler.class";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { PortfolioFacade } from '../store/portfolio/portfolio.facade';
 
 @Component({
@@ -19,9 +19,7 @@ export class PortfoliosComponent extends ErrorHandlerClass implements OnInit {
 
     constructor(private formBuilder: FormBuilder,
                 private router: Router,
-                private portfolioFacade: PortfolioFacade,
-                private route: ActivatedRoute,
-                private portfolioService: PortfolioService) {
+                private portfolioFacade: PortfolioFacade) {
         super();
 
         this.portfolioForm = formBuilder.group({
