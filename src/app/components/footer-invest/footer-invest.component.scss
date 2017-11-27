@@ -44,4 +44,13 @@
             }
         }
     }
+    @media #{$small-phone} {
+        .footer-invest-inner {
+            width: 24%;
+            h3 {
+                font-size: 0.8em;
+                padding: 10px 0 3px;
+            }
+        }
+    }
 }
