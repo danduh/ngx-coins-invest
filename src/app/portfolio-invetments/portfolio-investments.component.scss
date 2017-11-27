@@ -127,3 +127,51 @@ app-footer-invest {
 
     }
 }
+
+@media #{$small-phone}{
+    mat-header-row {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    mat-table.list-view {
+        .mat-row {
+            height: 56px;
+            flex-wrap: wrap;
+            display: flex;
+            justify-content: space-between;
+        }
+        .row-content {
+            width: 84%;
+            justify-content: space-around;
+            display: flex;
+            h3 {
+                display: inline-block;
+            }
+            span {
+                display: inline-block;
+                text-align: right;
+            }
+        }
+
+        mat-cell, mat-header-cell {
+            flex: none !important;
+            font-size: 12px;
+            &:nth-child(1) {
+                width: 100%;
+            }
+        }
+        .mat-card-avatar {
+            width: 28px;
+            height: 28px;
+            img {
+                width: 100%;
+            }
+        }
+        mat-icon {
+            width: 28px !important;
+            height: 28px !important;
+        }
+    }
+
+}
