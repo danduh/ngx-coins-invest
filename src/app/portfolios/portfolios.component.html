@@ -2,32 +2,33 @@
     <mat-expansion-panel [expanded]="expanded">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Create new portfolio
+                <h2>Create new portfolio</h2>
             </mat-panel-title>
-            <mat-panel-description>
-                give it name and start monitor your investments
-            </mat-panel-description>
         </mat-expansion-panel-header>
+        <mat-panel-description>
+            give it name and start monitor your investments
+        </mat-panel-description>
         <form (ngSubmit)="onCreate()" [formGroup]="portfolioForm">
             <mat-form-field>
                 <input matInput formControlName="name" placeholder="Name it">
             </mat-form-field>
             <!--<mat-form-field>-->
-                <!--<input matInput formControlName="comment" placeholder="Comment">-->
+            <!--<input matInput formControlName="comment" placeholder="Comment">-->
             <!--</mat-form-field>-->
             <app-currency-selector (onSelect)="onBaseCurrencySelect($event.value)"></app-currency-selector>
             <button mat-raised-button [color]="'primary'" type="submit">Create</button>
         </form>
     </mat-expansion-panel>
 
-    <div class="cards-view" *ngIf="portfolios | async; let portfoliosItems">
-        <div *ngIf="portfoliosItems.length === 0; else portfolioCardsSelect">
-            <h1>Looks like you don't have any...</h1>
-        </div>
+    <div class="cards-view" *ngIf="!!portfolios">
+        <mat-card *ngIf="portfolios.length === 0; else portfolioCardsSelect">
+            <div>
+                <h1>Looks like you don't have any...</h1>
+            </div>
+        </mat-card>
         <ng-template #portfolioCardsSelect>
-            <app-portfolio-card *ngFor="let portfolio of portfoliosItems" [portfolio]="portfolio"></app-portfolio-card>
+            <app-portfolio-card *ngFor="let portfolio of portfolios" [portfolio]="portfolio"></app-portfolio-card>
         </ng-template>
-
     </div>
 
 </div>

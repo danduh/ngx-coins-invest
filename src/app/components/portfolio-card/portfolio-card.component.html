@@ -13,35 +13,38 @@
             </mat-card-title>
         </mat-card-header>
 
-        <mat-card-content *ngIf="(totals | async) && !(loaderService.isActive|async)" class="clearfix">
+        <mat-card-content *ngIf="totals && !(loaderService.isActive | async) && !isEmpty" class="clearfix">
             <ul class="totals">
                 <li class="item">
                     <div class="profit">
-                        <h3>{{(totals | async)?.open | currency}}</h3>
+                        <h3>{{totals?.open | currency}}</h3>
                         <span>Invested</span>
                     </div>
                 </li>
                 <li class="item">
                     <div class="profit">
-                        <h3>{{(totals | async)?.current | currency}}</h3>
+                        <h3>{{totals?.current | currency}}</h3>
                         <span>equity</span>
                     </div>
                 </li>
                 <li class="item">
-                    <div class="equity {{(totals | async)?.profit > 0 ? 'pos': 'neg'}}">
-                        <h3>{{(totals | async)?.profit | currency}}</h3>
+                    <div class="equity {{totals?.profit > 0 ? 'pos': 'neg'}}">
+                        <h3>{{totals?.profit | currency}}</h3>
                         <span>Profit</span>
                     </div>
                 </li>
                 <li class="item">
-                    <div class="equity {{(totals | async)?.profitPct > 0 ? 'pos': 'neg'}}">
-                        <h3>{{(totals | async)?.profitPct | percent}}</h3>
+                    <div class="equity {{totals?.profitPct > 0 ? 'pos': 'neg'}}">
+                        <h3>{{totals?.profitPct | percent}}</h3>
                         <span>P/L(%)</span>
                     </div>
                 </li>
             </ul>
         </mat-card-content>
-        <div class="loader clearfix"  *ngIf="(loaderService.isActive|async)">
+        <div class="loader clearfix" *ngIf="isEmpty">
+            <h1>Empty</h1>
+        </div>
+        <div class="loader clearfix" *ngIf="(loaderService.isActive|async) && !isEmpty">
             <mat-spinner></mat-spinner>
         </div>
         <mat-card-actions>

@@ -12,6 +12,9 @@
         display: flex;
         justify-content: flex-start;
         padding: 10px;
+        mat-card {
+            margin: 0 auto;
+        }
         app-portfolio-card {
             display: block;
             padding: 10px;

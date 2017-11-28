@@ -50,7 +50,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
                 private platform: Platform,
                 private tickerService: MarketTickerService,
                 private configService: ConfigService,
-                private poloniexWssService: PoloniexWssService,
                 private loaderService: LoaderService) {
         this.isMobile = ((this.platform.ANDROID || this.platform.IOS) && this.platform.isBrowser);
         this.displayedColumns = this.isMobile ? COLUMNS.mobile : COLUMNS.desktop;

@@ -13,7 +13,8 @@ import { LoaderService } from "../../shared/loader.service";
 })
 export class PortfolioCardComponent implements OnInit {
     @Input() portfolio: PortfolioModel;
-    totals: Observable<any>;
+    totals: any; // TODO <Add Totals interface>
+    isEmpty = false;
 
     constructor(private router: Router,
                 private investmentsFacade: InvestmentsFacade,
@@ -22,10 +23,14 @@ export class PortfolioCardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loaderService.isActive = true;
         this.investmentsFacade.load(this.portfolio.id);
-        this.totals = this.investmentsFacade
-            .getTotalsOnly(this.portfolio.baseCurrency, this.portfolio.id, false);
+        this.portfolioFacade
+            .getTotalsOnly(this.portfolio.baseCurrency, this.portfolio.id, false)
+            .subscribe((totals) => {
+                this.totals = totals;
+                this.isEmpty = this.totals.length === 0;
+                this.loaderService.isActive = this.isEmpty;
+            });
     }
 
     public goToPortfolio() {
