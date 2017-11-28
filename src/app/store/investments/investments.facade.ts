@@ -24,6 +24,25 @@ export class InvestmentsFacade {
         return this._$totals.asObservable();
     }
 
+    static mergeCoinWithTicker(ticker, coins) {
+        if (Array.isArray(ticker)) {
+            ticker.forEach((t) => {
+                coins.forEach((c) => {
+                    if (c.coinId === t.FROMSYMBOL) {
+                        c.currentPrice = t.PRICE;
+                    }
+                });
+            });
+        } else {
+            coins.forEach((c) => {
+                if (c.coinId === ticker.FROMSYMBOL) {
+                    c.currentPrice = ticker.PRICE;
+                }
+            });
+        }
+        return coins;
+    }
+
     constructor(private store: Store<any>,
                 private loaderService: LoaderService,
                 private marketTickerService: MarketTickerService) {
@@ -82,26 +101,9 @@ export class InvestmentsFacade {
             .subscribe(this.processTicker.bind(this));
     }
 
-    public getTotalsOnly(curr, portfolioId, valueForLoader = null) {
-        return this.$investmentsState
-            .filter((investments) => (Array.isArray(investments) && investments.length > 0))
-            .take(1)
-            .mergeMap((investments) => {
-                return this.marketTickerService.firstTick(curr, this.getCoinIds())
-                    .map((ticker) => {
-                        console.log('valueForLoader', valueForLoader);
-                        if (valueForLoader !== null) {
-                            this.loaderService.isActive = valueForLoader;
-                        }
-                        const coins = this.mergeCoinWithTicker(ticker, investments);
-                        return this.calculateTotals(coins, true);
-                    });
-            }).share();
-    }
-
     private processTicker(ticker) {
         this.$investmentsState.take(1)
-            .map(this.mergeCoinWithTicker.bind(this, ticker))
+            .map(InvestmentsFacade.mergeCoinWithTicker.bind(this, ticker))
             .map(this.calculateTotals.bind(this))
             .subscribe((coins: InvestedCoinModel[]) => {
                 this.store.dispatch({type: InvestmentsActions.PORTFOLIO_TICKER_TICK, payload: [...coins]});
@@ -109,26 +111,7 @@ export class InvestmentsFacade {
 
     }
 
-    private mergeCoinWithTicker(ticker, coins) {
-        if (Array.isArray(ticker)) {
-            ticker.forEach((t) => {
-                coins.forEach((c) => {
-                    if (c.coinId === t.FROMSYMBOL) {
-                        c.currentPrice = t.PRICE;
-                    }
-                });
-            });
-        } else {
-            coins.forEach((c) => {
-                if (c.coinId === ticker.FROMSYMBOL) {
-                    c.currentPrice = ticker.PRICE;
-                }
-            });
-        }
-        return coins;
-    }
-
-    private calculateTotals(coins: InvestedCoinModel[], returnTotals = false) {
+    public calculateTotals(coins: InvestedCoinModel[], returnTotals = false) {
         const total: InvestTotalsModel = {
             open: 0,
             current: 0

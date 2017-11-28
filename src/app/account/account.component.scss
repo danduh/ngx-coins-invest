@@ -3,9 +3,19 @@
 nav {
     width: 500px;
     margin: 0 auto;
+    a.mat-tab-link {
+        width: 33%;
+        white-space: normal;
+    }
 }
 
 @media #{$generic-phone}{
+    nav {
+        width: 100%;
+    }
+}
+
+@media #{$small-phone}{
     nav {
         width: 100%;
     }

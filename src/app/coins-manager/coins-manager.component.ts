@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
 import { CoinsService } from '../services/coins.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Observable } from "rxjs/Observable";
     templateUrl: './coins-manager.component.html',
     styleUrls: ['./coins-manager.component.scss']
 })
-export class CoinsManagerComponent implements OnInit {
+export class CoinsManagerComponent implements OnInit, OnDestroy {
     public coin: InvestedCoinModel;
     public coinToBuy: InvestedCoinModel;
     public coins: CoinModel[] = [];
@@ -25,8 +25,9 @@ export class CoinsManagerComponent implements OnInit {
     public lineChartType = 'line';
     public lineChartData: any[];
     public lineChartLabels: any[];
-    public portfolios: Observable<PortfolioModel[]>;
+    public portfolios: PortfolioModel[];
     public selectedPortfolio: PortfolioModel;
+    $portfolios: Subscription;
 
     constructor(private coinService: CoinsService,
                 private portfolioService: PortfolioService,
@@ -42,9 +43,16 @@ export class CoinsManagerComponent implements OnInit {
 
     ngOnInit() {
         this.getCoinData();
-        this.portfolios = this.portfolioService.getAllPortfolios();
+        this.$portfolios = this.portfolioService.getAllPortfolios()
+            .subscribe((resp) => {
+                this.portfolios = resp;
+            });
     }
 
+    ngOnDestroy() {
+        if (!!this.$portfolios)
+            this.$portfolios.unsubscribe()
+    }
 
     getCoinData() {
         if (!!this.coinDataSubs) {
@@ -53,8 +61,9 @@ export class CoinsManagerComponent implements OnInit {
 
         this.coinDataSubs = this.coinService.getOneCoin(this.coinId)
             .subscribe((coin) => {
-                if (!coin)
-                    return
+                if (!coin) {
+                    return;
+                }
                 this.coin = new InvestedCoinModel(<InvestedCoinModel>coin);
                 this.coinToBuy = new InvestedCoinModel(<InvestedCoinModel>coin);
                 this.coinDataSubs.unsubscribe();

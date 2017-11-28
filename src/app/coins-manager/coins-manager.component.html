@@ -1,5 +1,5 @@
-<div class="coins-manager" *ngIf="!!coin">
-    <mat-card class="example-card">
+<div class="coins-manager" *ngIf="!!portfolios && !!portfolios.length">
+    <mat-card class="example-card" *ngIf="!!coin">
         <mat-card-header>
             <div class="card-header-left">
                 <div mat-card-avatar class="example-header-image">
@@ -24,7 +24,7 @@
                             placeholder="Select Portfolio"
                             [(ngModel)]="selectedPortfolio"
                             name="portfolio">
-                    <mat-option *ngFor="let portfolio of portfolios | async" [value]="portfolio">
+                    <mat-option *ngFor="let portfolio of portfolios" [value]="portfolio">
                         {{portfolio.name}}
                     </mat-option>
                 </mat-select>
@@ -44,6 +44,13 @@
             <button mat-raised-button color="primary" (click)="submit()">Submit</button>
             <button mat-button>Cancel</button>
         </mat-card-actions>
+    </mat-card>
+</div>
+<div class="coins-manager" *ngIf="!portfolios || !portfolios.length">
+    <mat-card class="example-card">
+        <mat-card-header>
+            <h3>Please create portfolio first (<a [routerLink]="['/app/portfolio']" class="link-inherit">click here</a>)</h3>
+        </mat-card-header>
     </mat-card>
 </div>
 <div class="graph">

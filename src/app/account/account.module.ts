@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { AngularMaterialModule } from '../angular-material/angular-material.module';
 import { AccountComponent } from './account.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 
 export const AccountRoutes: Routes = [
@@ -31,6 +32,12 @@ export const AccountRoutes: Routes = [
                 data: {logout: false, title: 'Login'},
 
             },
+            {
+                path: 'notifications',
+                component: NotificationsComponent,
+                data: {logout: false, title: 'Login'},
+
+            },
         ]
     },
 ];
@@ -39,7 +46,8 @@ export const AccountRoutes: Routes = [
     declarations: [
         ProfileComponent,
         ChangePasswordComponent,
-        AccountComponent
+        AccountComponent,
+        NotificationsComponent
 
     ],
     imports: [
