@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -168,11 +167,8 @@ console.log(environment.production, 1);
         MainComponent,
     ],
     imports: [
-        StoreDevtoolsModule.instrument({
-            maxAge: 25
-        }),
         BrowserModule,
-        ServiceWorkerModule.register('/ngsw-worker.js'),
+        ServiceWorkerModule.register('/assets/ngsw-worker.js'),
         ChartsModule,
         HttpClientModule,
         BrowserAnimationsModule,
@@ -183,6 +179,10 @@ console.log(environment.production, 1);
         AngularMaterialModule,
         StoreManagementModule.forRoot(),
         Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+        environment.production ? StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }) : []
+
         // StoreModule.forRoot({portfolioStore: investmentsReducer}),
         // EffectsModule.forRoot([InvestmentsEffects])
     ],

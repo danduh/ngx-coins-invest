@@ -49,13 +49,14 @@
 <div class="coins-manager" *ngIf="!portfolios || !portfolios.length">
     <mat-card class="example-card">
         <mat-card-header>
-            <h3>Please create portfolio first (<a [routerLink]="['/app/portfolio']" class="link-inherit">click here</a>)</h3>
+            <h3>Please create portfolio first (<a [routerLink]="['/app/portfolio']" class="link-inherit">click here</a>)
+            </h3>
         </mat-card-header>
     </mat-card>
 </div>
 <div class="graph">
-    <canvas *ngIf="!!lineChartData"
-            baseChart width="800" height="300"
+    <canvas *ngIf="!!lineChartData && !isMobile"
+            baseChart width="{{chartSize.w}}" height="{{chartSize.h}}"
             [datasets]="lineChartData"
             [labels]="lineChartLabels"
             [options]="lineChartOptions"

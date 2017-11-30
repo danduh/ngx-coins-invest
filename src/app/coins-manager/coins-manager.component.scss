@@ -1,3 +1,8 @@
+@import "../../assets/media-queries";
+
+$form-width-desktop: 500px;
+$form-width-mobile: 80%;
+
 .coins-manager {
     mat-card-header {
         position: relative;
@@ -86,3 +91,32 @@ div.form {
     display: block;
     margin: 0 auto;
 }
+
+/**
+Currentluy not in use
+ */
+@media #{$generic-phone}{
+    .coins-manager {
+        width: $form-width-mobile;
+    }
+    .graph {
+        width: 100vh;
+        height: calc(100vh / 2);
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+@media #{$small-phone}{
+    .coins-manager {
+        width: $form-width-mobile;
+    }
+    .graph {
+        width: 100vh;
+        height: calc(100vh / 2);
+        display: block;
+        margin: 0 auto;
+    }
+
+}
+

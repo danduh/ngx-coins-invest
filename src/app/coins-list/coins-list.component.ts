@@ -10,7 +10,6 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { DataSource } from "@angular/cdk/collections";
 import { LoaderService } from "../shared/loader.service";
 import { Router } from "@angular/router";
-import { PoloniexWssService } from '../services/external-api/poloniex-wss.service';
 import { Platform } from "@angular/cdk/platform";
 
 const COLUMNS = {
@@ -48,8 +47,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     constructor(private coinsService: CoinsService,
                 private router: Router,
                 private platform: Platform,
-                private tickerService: MarketTickerService,
-                private configService: ConfigService,
                 private loaderService: LoaderService) {
         this.isMobile = ((this.platform.ANDROID || this.platform.IOS) && this.platform.isBrowser);
         this.displayedColumns = this.isMobile ? COLUMNS.mobile : COLUMNS.desktop;

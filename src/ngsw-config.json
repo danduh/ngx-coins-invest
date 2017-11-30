@@ -2,7 +2,7 @@
     "index": "/index.html",
     "assetGroups": [
         {
-            "name": "coins-invest",
+            "name": "Crypto Invest Monitor",
             "installMode": "prefetch",
             "resources": {
                 "files": [

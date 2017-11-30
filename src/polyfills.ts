@@ -26,6 +26,7 @@ import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/fromPromise';
 // import 'rxjs/add/observable/bindCallback';
 
 import 'rxjs/add/operator/share';

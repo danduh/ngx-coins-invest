@@ -4,7 +4,7 @@ import { CoinsService } from '../services/coins.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { PortfolioModel, PortfolioService } from "../services/portfolio.service";
-import { Observable } from "rxjs/Observable";
+import { Platform } from "@angular/cdk/platform";
 
 @Component({
     selector: 'app-coins-manager',
@@ -23,16 +23,25 @@ export class CoinsManagerComponent implements OnInit, OnDestroy {
 
     public lineChartLegend = true;
     public lineChartType = 'line';
-    public lineChartData: any[];
+    public lineChartData: any[] = null;
     public lineChartLabels: any[];
     public portfolios: PortfolioModel[];
     public selectedPortfolio: PortfolioModel;
+    public isMobile = false;
+    public chartSize = {w: 500, h: 300};
     $portfolios: Subscription;
 
     constructor(private coinService: CoinsService,
                 private portfolioService: PortfolioService,
                 private route: ActivatedRoute,
+                private platform: Platform,
                 private router: Router) {
+
+        this.isMobile = ((this.platform.ANDROID || this.platform.IOS) && this.platform.isBrowser);
+        // if (this.isMobile) {
+        //     this.chartSize.w = window.innerWidth;
+        //     this.chartSize.h = this.chartSize.w;
+        // }
 
         this.paramsSubs = this.route.params.subscribe(params => {
             this.coinId = params['coinId'];
@@ -50,8 +59,9 @@ export class CoinsManagerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (!!this.$portfolios)
-            this.$portfolios.unsubscribe()
+        if (!!this.$portfolios) {
+            this.$portfolios.unsubscribe();
+        }
     }
 
     getCoinData() {
