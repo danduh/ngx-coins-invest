@@ -80,7 +80,7 @@ export class PortfolioFacade {
                         const coins = InvestmentsFacade.mergeCoinWithTicker(ticker, investments);
                         return this.investmentsFacade.calculateTotals(coins, true);
                     });
-            })
+            });
             // .share();
     }
 

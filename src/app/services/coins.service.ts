@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CoinModel, InvestedCoinModel } from '../models/common';
 import { Router } from '@angular/router';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material";
@@ -132,8 +131,7 @@ export class CoinsService {
 
     public addCoin(coin): Observable<CoinModel> {
         // let options = this.getAuthHeader();
-        return this.http.post(`${this.baseUrl}invested`, coin)
-            .map(this.postRequestSuccess.bind(this));
+        return this.http.post<CoinModel>(`${this.baseUrl}invested`, coin);
     }
 
     public deleteInvest(investId): Observable<any> {
@@ -143,18 +141,13 @@ export class CoinsService {
         // }
 
         // let options = this.getAuthHeader();
-        return this.http.delete(`${this.baseUrl}invested/${investId}`)
-            .map(this.postRequestSuccess.bind(this));
+        return this.http.delete(`${this.baseUrl}invested/${investId}`);
     }
 
     public getInvestedList(): Observable<InvestedCoinModel[]> {
-        return this.http.get(`${this.baseUrl}invested`)
-            .map(this.postRequestSuccess.bind(this));
+        return this.http.get<InvestedCoinModel[]>(`${this.baseUrl}invested`);
     }
 
-    private postRequestSuccess(response: Response) {
-        return response.json();
-    }
 
     private postRequestFail(observer, response) {
         this.router.navigate(['/login']);

@@ -8,10 +8,13 @@ import { PortfolioEffects } from './portfolio/portfolio.effects';
 
 
 @NgModule({
-    providers: [PortfolioFacade],
+    providers: [
+        PortfolioFacade,
+        InvestmentsFacade
+    ],
     imports: [
         StoreModule.forRoot({investmentsStore: investmentsReducer, portfolioStore: portfolioReducer}),
-        EffectsModule.forRoot([InvestmentsEffects, PortfolioEffects])
+        EffectsModule.forRoot([PortfolioEffects, InvestmentsEffects])
     ],
     exports: [
         StoreModule,
@@ -19,11 +22,9 @@ import { PortfolioEffects } from './portfolio/portfolio.effects';
     ]
 })
 export class StoreManagementModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: StoreManagementModule,
-            providers: [InvestmentsFacade]
-
-        };
-    }
+    // static forRoot(): ModuleWithProviders {
+    //     return {
+    //         ngModule: StoreManagementModule,
+    //     };
+    // }
 }

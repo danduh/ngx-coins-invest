@@ -10,7 +10,9 @@
             "outDir": "dist",
             "assets": [
                 "assets",
-                "favicon.ico"
+                "favicon.ico",
+                "ngsw-worker.js",
+                "ngsw-config.json"
             ],
             "index": "index.html",
             "main": "main.ts",

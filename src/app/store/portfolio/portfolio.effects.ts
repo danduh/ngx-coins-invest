@@ -7,12 +7,6 @@ import { PortfolioAction, PortfolioActions } from './portfolio.actions';
 
 @Injectable()
 export class PortfolioEffects {
-    constructor(private actions$: Actions,
-                private marketTickerService: MarketTickerService,
-                private portfolioService: PortfolioService) {
-
-    }
-
     @Effect() loadPortfolio$: Observable<PortfolioAction> = this.actions$.ofType(PortfolioActions.LOAD_PORTFOLIOS)
         .mergeMap((action: PortfolioAction) => {
 
@@ -22,7 +16,7 @@ export class PortfolioEffects {
                             type: PortfolioActions.LOAD_PORTFOLIO_SUCCESS,
                             payload: data
                         };
-                    })
+                    });
                     // .catch((err) => {
                     //     return {type: PortfolioActions.LOAD_PORTFOLIO_ERROR};
                     // });
@@ -54,5 +48,9 @@ export class PortfolioEffects {
             }
         );
 
+    constructor(private actions$: Actions,
+                private portfolioService: PortfolioService) {
+
+    }
 
 }

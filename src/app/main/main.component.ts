@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { WindowService } from '../services/window.service';
 import { PortfolioFacade } from '../store/portfolio/portfolio.facade';

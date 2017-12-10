@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { ApplicationRef, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
@@ -32,7 +32,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { CognitoUtil } from "./services/cognito-utility.service";
 import { UserLoginService } from "./services/user-login.service";
 import { PortfoliosComponent } from './portfolios/portfolios.component';
-import { PortfolioService } from "app/services/portfolio.service";
+import { PortfolioService } from "./services/portfolio.service";
 import { CognitoAuthInterceptor } from "./services/utils";
 import { PortfolioCardComponent } from './components/portfolio-card/portfolio-card.component';
 import { PortfolioInvestmentsComponent } from './portfolio-invetments/portfolio-invetments.component';
@@ -52,8 +52,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Angulartics2Module } from "angulartics2";
 import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
-import { Platform } from "@angular/cdk/platform";
-import { PushNotificationsService } from "app/services/service-workers/push-notifications";
+import { PushNotificationsService } from "./services/service-workers/push-notifications";
 
 
 export const MainRoutes: Routes = [
@@ -168,7 +167,7 @@ console.log(environment.production, 1);
     ],
     imports: [
         BrowserModule,
-        ServiceWorkerModule.register('/assets/ngsw-worker.js'),
+        ServiceWorkerModule.register('./ngsw-worker.js'),
         ChartsModule,
         HttpClientModule,
         BrowserAnimationsModule,
@@ -177,11 +176,11 @@ console.log(environment.production, 1);
         IconsModule.forRoot({basePath: 'assets/SVG'}),
         RouterModule.forRoot(MainRoutes),
         AngularMaterialModule,
-        StoreManagementModule.forRoot(),
+        StoreManagementModule,
         Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-        environment.production ? StoreDevtoolsModule.instrument({
-            maxAge: 25
-        }) : []
+        // environment.production ? StoreDevtoolsModule.instrument({
+        //     maxAge: 25
+        // }) : []
 
         // StoreModule.forRoot({portfolioStore: investmentsReducer}),
         // EffectsModule.forRoot([InvestmentsEffects])
@@ -219,4 +218,11 @@ console.log(environment.production, 1);
     ]
 })
 export class AppModule {
+    constructor(private applicationRef: ApplicationRef) {
+        this.applicationRef.isStable.subscribe((ready) => {
+            console.log(ready)
+        }, (ready) => {
+            console.error(ready)
+        });
+    }
 }

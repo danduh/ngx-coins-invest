@@ -1,6 +1,5 @@
 import { SwPush } from "@angular/service-worker";
-import { Inject, Injectable, InjectionToken, Injector } from "@angular/core";
-import { AppConfig } from "../config.service";
+import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
@@ -21,51 +20,20 @@ export interface NotificationSubscription {
 export class PushNotificationsService {
     private baseUrl = environment['baseApiUrl'];
 
-    VAPID_PUBLIC_KEY = 'BL9e7DyZzS_J3oiFQ1RINZa-WqHvRw72Kp5ssH1MzK1W1wStfnK4TJFgrTTvnleSWr7l_N3Th_dMshSoJ4qRYZQ';
-    // KB1uGSdObw_dy3U0xk_CD7eOB9_HaUEbGP5eLGoTfFI
-
-    // VAPID_PUBLIC_KEY = 'AIzaSyCfDxZGtdUkLscZ05_6eiuW65YC-wRGE28';
+    VAPID_PUBLIC_KEY = 'BK_ukYKGH0YmWHeZhCF0bXUXAeynmjSlhUswYK3d1aZYGsXOX7DKnAB5ElRxLUnaMsoVymo_MLJwl87XPrmO3CI';
 
     constructor(private swPush: SwPush,
                 private http: HttpClient) {
     }
 
     subscribeToPush() {
-        // this.swPush.unsubscribe()
-        //     .then((subs) => {
-        //         console.log(subs)
-        //     }).catch((subs) => {
-        //     console.log(subs)
-        // })
-
-        // return Observable.create((observer) => {
-        this.swPush.requestSubscription({
+        const subscrCall = this.swPush.requestSubscription({
             serverPublicKey: this.VAPID_PUBLIC_KEY
-        })
-            .then(pushSubscription => {
-
-                console.log(JSON.stringify(pushSubscription));
-                // Passing subscription object to our backend
-            })
-            .catch(err => {
-                console.error(err);
+        });
+        return Observable.fromPromise(subscrCall)
+            .mergeMap((pushSubscription) => {
+                return this.createSubscription(PushNotificationEnum.webPush, pushSubscription);
             });
-
-        // this.swPush.requestSubscription({
-        //     serverPublicKey: this.VAPID_PUBLIC_KEY
-        // }).then((pushSubscription) => {
-        //     // this.createSubscription(PushNotificationEnum.webPush, pushSubscription)
-        //     //     .subscribe((reposne) => {
-        //     console.log(pushSubscription);
-        //     //     observer.next(reposne);
-        //     //     observer.complete();
-        //     // });
-        // }).catch((err) => {
-        //     console.log(err);
-        // });
-
-
-        // });
     }
 
     createSubscription(type: PushNotificationEnum, pushSubscription: PushSubscription) {

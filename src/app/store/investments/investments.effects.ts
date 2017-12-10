@@ -7,10 +7,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class InvestmentsEffects {
-    constructor(private actions$: Actions,
-                private portfolioService: PortfolioService) {
-
-    }
 
     @Effect() loadPortfolio$: Observable<PortfolioAction> = this.actions$.ofType(InvestmentsActions.LOAD_INVESTMENT)
         .mergeMap((action: PortfolioAction) => {
@@ -36,5 +32,10 @@ export class InvestmentsEffects {
                     });
             }
         );
+
+    constructor(private actions$: Actions,
+                private portfolioService: PortfolioService) {
+
+    }
 
 }

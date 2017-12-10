@@ -16,7 +16,6 @@ import 'core-js/es6/set';
 import 'core-js/es6/reflect';
 
 import 'core-js/es7/reflect';
-import 'zone.js/dist/zone';
 
 // import 'rxjs/add/observable/flatMap';
 import 'rxjs/add/observable/throw';
@@ -48,3 +47,5 @@ import 'ts-helpers';
 
 import "rxjs/add/operator/take";
 import "rxjs/add/operator/takeWhile";
+
+import 'zone.js/dist/zone';

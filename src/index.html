@@ -93,35 +93,35 @@
     </div>
 </app-root>
 <script>
-    if ('serviceWorker' in navigator) {
-        const versionUpdatedEvent = new CustomEvent("versionUpdated", null);
-
-        /** this = registration **/
-        const UpdateFound = function () {
-            const installingWorker = this.installing;
-            installingWorker.onstatechange = function () {
-                switch (installingWorker.state) {
-                    case 'installed':
-                        if (navigator.serviceWorker.controller) {
-
-                            /** NotificationService subscribed to this event **/
-                            document.dispatchEvent(versionUpdatedEvent);
-                            console.log('[SERVICE-WORKER] New or updated content is available.');
-                        } else {
-                            /** At this point, everything has been pre-cached.
-                             It's the perfect time to display a "Content is cached for offline use." message.**/
-                            console.log('[SERVICE-WORKER] Content is now available offline!');
-                        }
-                        break;
-                    case 'redundant':
-                        console.warn('[SERVICE-WORKER] The installing service worker became REDUNDANT.');
-                        break;
-                }
-            };
-        };
-
-//        window.addEventListener('SWRegistrationEvent', function (event) {
-        console.log('[SWRegistrationEvent]', event);
+//    if ('serviceWorker' in navigator) {
+//        const versionUpdatedEvent = new CustomEvent("versionUpdated", null);
+//
+//        /** this = registration **/
+//        const UpdateFound = function () {
+//            const installingWorker = this.installing;
+//            installingWorker.onstatechange = function () {
+//                switch (installingWorker.state) {
+//                    case 'installed':
+//                        if (navigator.serviceWorker.controller) {
+//
+//                            /** NotificationService subscribed to this event **/
+//                            document.dispatchEvent(versionUpdatedEvent);
+//                            console.log('[SERVICE-WORKER] New or updated content is available.');
+//                        } else {
+//                            /** At this point, everything has been pre-cached.
+//                             It's the perfect time to display a "Content is cached for offline use." message.**/
+//                            console.log('[SERVICE-WORKER] Content is now available offline!');
+//                        }
+//                        break;
+//                    case 'redundant':
+//                        console.warn('[SERVICE-WORKER] The installing service worker became REDUNDANT.');
+//                        break;
+//                }
+//            };
+//        };
+//
+////        window.addEventListener('SWRegistrationEvent', function (event) {
+//        console.log('[SWRegistrationEvent]', event);
 //        navigator.serviceWorker.register('/assets/service-worker.js')
 //            .then(function (registration) {
 //                registration.onupdatefound = UpdateFound.bind(registration);
@@ -132,8 +132,8 @@
 //                // registration failed :(
 //                console.log('SERVICE-WORKER ServiceWorker registration failed: ', err);
 //            });
-//        });
-    }
+////        });
+//    }
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109749943-1"></script>

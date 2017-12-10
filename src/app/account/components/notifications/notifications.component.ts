@@ -15,11 +15,11 @@ export class NotificationsComponent implements OnInit {
     }
 
     subscribe() {
-        this.pushService.subscribeToPush();
-            // .subscribe((response) => {
-            //     console.log('SUBSCIBED!!', response);
-            // }, (err) => {
-            //     console.log('NOT_SUBSCIBED!!', err);
-            // });
+        this.pushService.subscribeToPush()
+            .subscribe((response) => {
+                console.log('SUBSCIBED!!', response);
+            }, (err) => {
+                console.log('NOT_SUBSCIBED!!', err);
+            });
     }
 }
