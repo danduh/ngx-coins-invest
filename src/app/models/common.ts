@@ -12,6 +12,8 @@ export class CoinModel {
     price: number;
     createdAt?: number;
     baseCurrency?: string;
+    low_24h?: number;
+    high_24h?: number;
 
     constructor(coin) {
         const keys = Object.keys(coin);
@@ -37,8 +39,10 @@ export class InvestedCoinModel extends CoinModel {
     openCurrency?: string; // USD ETH EUR
     changeInOpenCurrency?: number; // (counted)
     changePct?: number; // change in % (counted)
-    currentPrice?: number = 0;
+    currentPrice? = 0;
     openValue?: number;
+    low_24h?: number;
+    high_24h?: number;
 
     get currentValue(): number {
         return this.amount * (this.currentPrice || 0);

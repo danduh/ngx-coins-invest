@@ -15,6 +15,12 @@ export const MENU_LIST: MenuItem[] = [
         weight: 10
     },
     {
+        link: '/app/alerts',
+        label: 'Alerts',
+        icon: 'notifications',
+        weight: 15
+    },
+    {
         link: '/app/coins',
         label: 'All Coins',
         icon: 'list',

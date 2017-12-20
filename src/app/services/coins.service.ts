@@ -51,7 +51,9 @@ export class CoinsService {
                 price: coin.PRICE,
                 logo: this.configService.config.mediaBaseUrl + coin.FROMSYMBOL.toLowerCase() + '.png',
                 volume_24h: coin.VOLUME24HOUR,
-                volume_24h_to: coin.VOLUME24HOURTO
+                volume_24h_to: coin.VOLUME24HOURTO,
+                high_24h: coin.HIGH24HOUR,
+                low_24h: coin.LOW24HOUR
             });
         });
         return results.length === 1 ? results[0] : results;

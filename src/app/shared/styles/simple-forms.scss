@@ -8,7 +8,6 @@ mat-card {
     max-width: $form-width-desktop;
     margin: 40px auto 0;
     position: relative;
-    padding: 0;
 
     /deep/ mat-card-header {
         .mat-card-header-text {
@@ -27,7 +26,7 @@ mat-card {
         }
     }
     .login-form {
-        padding: 50px;
+        padding: 26px;
     }
     .custom-card-footer {
         text-align: center;

@@ -49,10 +49,13 @@ import { PortfolioResolver } from './services/resolvers/portfolio.resolver';
 import { InvestmentsResolver } from './services/resolvers/investments.resolver';
 import { environment } from "../environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Angulartics2Module } from "angulartics2";
 import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
 import { PushNotificationsService } from "./services/service-workers/push-notifications";
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ConfigResolver } from "./services/resolvers/config.resolver";
+import { AlertsViewComponent } from './notifications/components/alerts-view/alerts-view.component';
+import { AlertsEditComponent } from './notifications/components/alerts-edit/alerts-edit.component';
 
 
 export const MainRoutes: Routes = [
@@ -120,6 +123,7 @@ export const MainRoutes: Routes = [
                     investments: InvestmentsResolver
                 }
             },
+            {path: 'alerts', loadChildren: './notifications/notifications.module#NotificationsModule'},
             {
                 path: 'investto/:coinId/:baseCurrency',
                 component: CoinsManagerComponent,
@@ -191,6 +195,7 @@ console.log(environment.production, 1);
             useClass: CognitoAuthInterceptor,
             multi: true
         },
+        ConfigResolver,
         PushNotificationsService,
         InvestmentsResolver,
         PortfolioResolver,
@@ -220,9 +225,9 @@ console.log(environment.production, 1);
 export class AppModule {
     constructor(private applicationRef: ApplicationRef) {
         this.applicationRef.isStable.subscribe((ready) => {
-            console.log(ready)
+            console.log(ready);
         }, (ready) => {
-            console.error(ready)
+            console.error(ready);
         });
     }
 }

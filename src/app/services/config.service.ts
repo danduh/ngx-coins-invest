@@ -20,7 +20,7 @@ export class ConfigService {
     constructor(private http: HttpClient) {
     }
 
-    get() {
+    get(): Observable<AppConfig> {
         if (!!this.config) {
             return Observable.of(this.config);
         }

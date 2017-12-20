@@ -3,7 +3,7 @@ import {
     MatSelectModule, MatAutocompleteModule, MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
     MatTooltipModule, MatSlideToggleModule, MatGridListModule, MatCardModule, MatTabsModule, MatToolbarModule, MatListModule,
     MatMenuModule, MatIconModule, MatSnackBarModule, MatDialogModule, MatSidenavModule, MatTableModule,
-    MatProgressSpinnerModule, MatExpansionModule, MatProgressBarModule
+    MatProgressSpinnerModule, MatExpansionModule, MatProgressBarModule, MatChipsModule
 } from '@angular/material';
 import { DialogComponent } from "../components/dialog/dialog.component";
 import { CommonModule } from "@angular/common";
@@ -15,6 +15,7 @@ import { FormsModule } from "@angular/forms";
         DialogComponent
     ],
     imports: [
+        MatChipsModule,
         MatProgressBarModule,
         MatExpansionModule,
         CommonModule,
@@ -42,6 +43,7 @@ import { FormsModule } from "@angular/forms";
         FormsModule,
     ],
     exports: [
+        MatChipsModule,
         MatProgressBarModule,
         MatExpansionModule,
         CommonModule,

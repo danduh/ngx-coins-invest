@@ -41,11 +41,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/take';
 
 import 'web-animations-js';
 import 'ts-helpers';
 
-import "rxjs/add/operator/take";
 import "rxjs/add/operator/takeWhile";
 
 import 'zone.js/dist/zone';

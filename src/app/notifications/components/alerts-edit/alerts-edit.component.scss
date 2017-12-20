@@ -1,0 +1,25 @@
+mat-card.coin-data {
+    .coin-logo {
+        padding: 0 10px 20px 0;
+        img {
+            width: 100%;
+        }
+    }
+    mat-card-title, mat-card-subtitle {
+        display: inline-block;
+    }
+    i.material-icons {
+        font-size: 20px;
+    }
+}
+
+mat-chip-list {
+    div.tail {
+        padding-right: 15px;
+    }
+    label {
+        display: block;
+        text-align: center;
+        line-height: 25px;
+    }
+}

@@ -1,0 +1,92 @@
+<mat-card *ngIf="!!coin" class="authorization-card coin-data">
+
+    <mat-card-header>
+        <div mat-card-avatar class="coin-logo">
+            <img [src]="coin.logo"/>
+        </div>
+        <mat-card-title>
+            <h1>{{coin.price | currency : coin.baseCurrency}}</h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <mat-icon color="{{coin.percent_change_24h > 0 ? 'primary' : 'warn'}}">arrow_drop_up</mat-icon>
+            <h2>{{coin.percent_change_24h}}%</h2>
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-chip-list>
+            <div class="tail">
+                <label>Mkt. Cap.</label>
+                <mat-chip>{{coin.market_cap | currency : coin.baseCurrency}}</mat-chip>
+            </div>
+            <div class="tail">
+                <label>Vol. 24H.</label>
+                <mat-chip>{{coin.volume_24h | currency : coin.baseCurrency}}</mat-chip>
+            </div>
+            <div class="tail">
+                <label>Low/High 24H</label>
+                <mat-chip>
+                    {{coin.low_24h | currency : coin.baseCurrency}} - {{coin.high_24h | currency : coin.baseCurrency}}
+                </mat-chip>
+            </div>
+        </mat-chip-list>
+    </mat-card-content>
+</mat-card>
+<mat-card class="authorization-card">
+    <div class="login-form">
+        <div *ngIf="isReady">
+            <form class="login-box" [formGroup]="alertForm" (ngSubmit)="onSave()">
+                <mat-form-field class="app-full-width">
+                    <mat-select matInput placeholder="Select Alert Type" formControlName="type">
+                        <mat-option *ngFor="let item of alertTypes" [value]="item.value">
+                            {{item.title}}
+                        </mat-option>
+                    </mat-select>
+                    <!--<mat-error *ngIf="alertTypesControl.hasError('required')">Please choose an alert type</mat-error>-->
+                    <!--<mat-hint>{{alertTypesControl.value?.value}}</mat-hint>-->
+                </mat-form-field>
+
+                <mat-form-field class="app-full-width">
+                    <mat-select matInput placeholder="Base Currency" formControlName="baseCurrency">
+                        <mat-option *ngFor="let item of currencies" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                    <!--<mat-error *ngIf="alertTypesControl.hasError('required')">Please choose an alert type</mat-error>-->
+                    <!--<mat-hint>{{alertTypesControl.value?.value}}</mat-hint>-->
+                </mat-form-field>
+
+                <mat-form-field class="app-full-width">
+                    <mat-select matInput placeholder="Currency To Watch" formControlName="coinId">
+                        <mat-option *ngFor="let item of coinIds" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                    <!--<mat-error *ngIf="alertTypesControl.hasError('required')">Please choose an alert type</mat-error>-->
+                    <!--<mat-hint>{{alertTypesControl.value?.value}}</mat-hint>-->
+                </mat-form-field>
+                <ng-container *ngIf="!!alertForm.value.type">
+                    <mat-form-field class="app-full-width">
+                        <mat-select matInput placeholder="Alert Me When" formControlName="direction">
+                            <mat-option *ngFor="let item of alertTriggers[alertForm.value.type]"
+                                        [value]="item.direction">
+                                {{item.title}}
+                            </mat-option>
+                        </mat-select>
+                        <!--<mat-hint>{{item|json}}{{type|json}}</mat-hint>-->
+                    </mat-form-field>
+
+                    <mat-form-field class="app-full-width">
+                        <input matInput placeholder="Amount" type="number" class="example-right-align"
+                               formControlName="targetPrice">
+                        <span matPrefix *ngIf="alertForm.value?.type === 'absPrice'">$&nbsp;</span>
+                        <span matSuffix *ngIf="alertForm.value?.type === 'pctPrice'">%</span>
+                    </mat-form-field>
+                </ng-container>
+                <button mat-raised-button color="primary" type="submit">Create Alert</button>
+
+            </form>
+        </div>
+    </div>
+</mat-card>
+
