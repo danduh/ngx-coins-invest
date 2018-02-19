@@ -23,6 +23,7 @@ export class AlertsEditComponent extends ErrorHandlerClass implements OnInit {
     public alertTriggers = AlertTriggerTypes;
     public coin: InvestedCoinModel;
 
+    private tempConfig;
     private coinDataSubs: Subscription;
 
     constructor(private fb: FormBuilder,
@@ -42,11 +43,18 @@ export class AlertsEditComponent extends ErrorHandlerClass implements OnInit {
         });
     }
 
+    shouldUpadteCoin(alertConfig) {
+        if ((alertConfig.coinId && alertConfig.baseCurrency) &&
+            ((!this.coin) ||
+                (this.coin.coinId !== alertConfig.coinId ||
+                    this.coin.baseCurrency !== alertConfig.baseCurrency))) {
+            this.loadCurrentCoinData(alertConfig.coinId, alertConfig.baseCurrency);
+        }
+    }
+
     ngOnInit() {
         this.alertForm.valueChanges.subscribe((alertConfig) => {
-            if (alertConfig.coinId && alertConfig.baseCurrency) {
-                this.loadCurrentCoinData(alertConfig.coinId, alertConfig.baseCurrency);
-            }
+            this.shouldUpadteCoin(alertConfig);
         });
     }
 

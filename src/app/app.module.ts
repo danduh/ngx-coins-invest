@@ -52,10 +52,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { Angulartics2Module } from "angulartics2";
 import { Angulartics2GoogleAnalytics } from "angulartics2/ga";
 import { PushNotificationsService } from "./services/service-workers/push-notifications";
-import { NotificationsComponent } from './notifications/notifications.component';
 import { ConfigResolver } from "./services/resolvers/config.resolver";
-import { AlertsViewComponent } from './notifications/components/alerts-view/alerts-view.component';
-import { AlertsEditComponent } from './notifications/components/alerts-edit/alerts-edit.component';
 
 
 export const MainRoutes: Routes = [
@@ -224,10 +221,5 @@ console.log(environment.production, 1);
 })
 export class AppModule {
     constructor(private applicationRef: ApplicationRef) {
-        this.applicationRef.isStable.subscribe((ready) => {
-            console.log(ready);
-        }, (ready) => {
-            console.error(ready);
-        });
     }
 }

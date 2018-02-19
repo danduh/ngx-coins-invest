@@ -8,7 +8,8 @@
             <h1>{{coin.price | currency : coin.baseCurrency}}</h1>
         </mat-card-title>
         <mat-card-subtitle>
-            <mat-icon color="{{coin.percent_change_24h > 0 ? 'primary' : 'warn'}}">arrow_drop_up</mat-icon>
+            <mat-icon *ngIf="coin.percent_change_24h > 0" color="primary">arrow_drop_up</mat-icon>
+            <mat-icon *ngIf="coin.percent_change_24h < 0" color="warn">arrow_drop_down</mat-icon>
             <h2>{{coin.percent_change_24h}}%</h2>
         </mat-card-subtitle>
     </mat-card-header>

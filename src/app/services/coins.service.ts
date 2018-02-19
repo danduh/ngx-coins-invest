@@ -43,6 +43,7 @@ export class CoinsService {
             let coin = _coins[sym][baseCurrency];
             results.push({
                 name: coin.FROMSYMBOL,
+                coinId: coin.FROMSYMBOL,
                 symbol: this.configService.config.mapCoinName[coin.FROMSYMBOL],
                 baseCurrency: coin.TOSYMBOL,
                 quantity: coin.FROMSYMBOL,
