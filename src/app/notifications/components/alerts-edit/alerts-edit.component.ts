@@ -6,7 +6,9 @@ import { ErrorHandlerClass } from "../../../components/extendable/error-handler.
 import { Subscription } from "rxjs/Subscription";
 import { CoinsService } from "../../../services/coins.service";
 import { InvestedCoinModel } from "../../../models/common";
-
+import { select, Store } from '@ngrx/store';
+import { notificationsStore } from "../../../store/notifications/index";
+import * as NotificationActions from './../../../store/notifications/actions';
 
 @Component({
     selector: 'app-alerts-edit',
@@ -22,14 +24,18 @@ export class AlertsEditComponent extends ErrorHandlerClass implements OnInit {
     public isReady = true;
     public alertTriggers = AlertTriggerTypes;
     public coin: InvestedCoinModel;
-
+    public notificationsStore$;
     private tempConfig;
     private coinDataSubs: Subscription;
 
     constructor(private fb: FormBuilder,
                 private route: ActivatedRoute,
+                private store: Store<any>,
                 private coinService: CoinsService) {
         super();
+
+        this.notificationsStore$ = store.pipe(select(notificationsStore));
+
         const config = route.snapshot.data['config'];
         this.currencies = config.currency;
         this.coinIds = config.allowedCoins;
@@ -71,7 +77,10 @@ export class AlertsEditComponent extends ErrorHandlerClass implements OnInit {
     }
 
     onSave() {
-        console.log(this.alertForm.getRawValue());
+        let payload = this.alertForm.getRawValue();
+        console.log(payload);
+        this.notificationsStore$.dispatch(new NotificationActions.CreateNewRecord(payload));
+
     }
 
 }

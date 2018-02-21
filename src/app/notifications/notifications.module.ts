@@ -7,6 +7,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { ConfigResolver } from "../services/resolvers/config.resolver";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AngularMaterialModule } from "../angular-material/angular-material.module";
+import { NotificationsService } from "../services/notifications.service";
 
 
 export const AccountRoutes: Routes = [

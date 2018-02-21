@@ -5,16 +5,24 @@ import { InvestmentsEffects, investmentsReducer, InvestmentsFacade } from './inv
 import { portfolioReducer } from './portfolio/portfolio.reducer';
 import { PortfolioFacade } from './portfolio/portfolio.facade';
 import { PortfolioEffects } from './portfolio/portfolio.effects';
+import { notificationsReducer } from "./notifications/reducer";
+import { NotificationsEffects } from "./notifications/effects";
+import { NotificationsService } from "../services/notifications.service";
 
 
 @NgModule({
     providers: [
         PortfolioFacade,
-        InvestmentsFacade
+        InvestmentsFacade,
+        NotificationsService
     ],
     imports: [
-        StoreModule.forRoot({investmentsStore: investmentsReducer, portfolioStore: portfolioReducer}),
-        EffectsModule.forRoot([PortfolioEffects, InvestmentsEffects])
+        StoreModule.forRoot({
+            investmentsStore: investmentsReducer,
+            portfolioStore: portfolioReducer,
+            notificationsStore: notificationsReducer
+        }),
+        EffectsModule.forRoot([PortfolioEffects, InvestmentsEffects, NotificationsEffects])
     ],
     exports: [
         StoreModule,
